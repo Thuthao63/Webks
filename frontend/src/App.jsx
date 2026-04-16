@@ -14,6 +14,9 @@ const RoomList = lazy(() => import('./pages/client/RoomList'));
 const RoomDetails = lazy(() => import('./pages/client/RoomDetails'));
 const Booking = lazy(() => import('./pages/client/Booking'));
 const Profile = lazy(() => import('./pages/client/Profile'));
+const Services = lazy(() => import('./pages/client/Services'));
+const Contact = lazy(() => import('./pages/client/Contact'));
+const About = lazy(() => import('./pages/client/About'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
@@ -60,6 +63,9 @@ const AppContent = () => {
           <Routes>
             {/* --- 🌍 PUBLIC ROUTES --- */}
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/rooms" element={<RoomList />} />
             <Route path="/room/:roomId" element={<RoomDetails />} />
             <Route path="/login" element={<Login />} />

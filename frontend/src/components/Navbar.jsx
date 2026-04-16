@@ -35,9 +35,10 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Trang chủ', path: '/' },
+    { name: 'Giới thiệu', path: '/about' },
     { name: 'Phòng nghỉ', path: '/rooms' },
     { name: 'Dịch vụ', path: '/services' },
-    { name: 'Liên hệ', path: '/#contact-form' },
+    { name: 'Liên hệ', path: '/contact' },
   ];
 
   return (

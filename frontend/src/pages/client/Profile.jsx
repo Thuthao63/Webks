@@ -2,12 +2,74 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
-import { User, Package, Calendar, CreditCard, ChevronRight, Clock, CheckCircle, XCircle, MapPin } from 'lucide-react';
+import { User, Package, Calendar, CreditCard, ChevronRight, Clock, CheckCircle, XCircle, MapPin, Edit2 } from 'lucide-react';
 
 const Profile = () => {
-    const { user } = useContext(AuthContext);
+    const { user, updateUserContext } = useContext(AuthContext);
     const [myBookings, setMyBookings] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const handleEditProfile = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Cập nhật thông tin',
+            html:
+                '<div class="flex flex-col gap-4 text-left mt-4">' +
+                '<label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-2">Họ và tên</label>' +
+                `<input id="swal-edit-name" type="text" value="${user?.fullName || ''}" class="bg-black/50 border border-white/10 text-white p-3 rounded-2xl outline-none focus:border-amber-500/50 text-sm">` +
+                '<label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-2 mt-2">Số điện thoại</label>' +
+                `<input id="swal-edit-phone" type="text" value="${user?.phone || ''}" class="bg-black/50 border border-white/10 text-white p-3 rounded-2xl outline-none focus:border-amber-500/50 text-sm">` +
+                '<label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-2 mt-2">Địa chỉ</label>' +
+                `<input id="swal-edit-address" type="text" value="${user?.address || ''}" class="bg-black/50 border border-white/10 text-white p-3 rounded-2xl outline-none focus:border-amber-500/50 text-sm">` +
+                '</div>',
+            focusConfirm: false,
+            background: '#0a0a0ae6',
+            color: '#fff',
+            showCancelButton: true,
+            confirmButtonText: 'Lưu Thông Tin',
+            cancelButtonText: 'Hủy bỏ',
+            customClass: {
+                popup: 'border border-amber-500/30 rounded-[2.5rem] shadow-[0_0_50px_rgba(217,119,6,0.15)] backdrop-blur-2xl p-8',
+                title: 'font-serif italic text-amber-500 text-3xl',
+                confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black px-8 py-3.5 rounded-xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-transform',
+                cancelButton: 'bg-white/5 text-gray-300 px-8 py-3.5 rounded-xl font-bold uppercase text-[10px] tracking-widest border border-white/10 hover:bg-white/10 transition-colors'
+            },
+            preConfirm: () => {
+                const username = document.getElementById('swal-edit-name').value;
+                const phone = document.getElementById('swal-edit-phone').value;
+                const address = document.getElementById('swal-edit-address').value;
+                if (!username) {
+                    Swal.showValidationMessage('Họ và tên không được để trống!');
+                    return false;
+                }
+                return { username, phone, address };
+            }
+        });
+
+        if (formValues) {
+            try {
+                // Hiển thị loading trong lúc gọi API
+                Swal.fire({ title: 'Đang xử lý...', background: '#0a0a0ae6', color: '#fff', didOpen: () => { Swal.showLoading() } });
+                const response = await axiosClient.put(`/auth/${user.id}`, formValues);
+                
+                // Cập nhật context
+                updateUserContext({
+                    fullName: response.data.user.fullName,
+                    phone: response.data.user.phone,
+                    address: response.data.user.address
+                });
+
+                Swal.fire({
+                    icon: 'success', title: 'Thành công!', text: 'Đã cập nhật hồ sơ cá nhân.', background: '#0a0a0ae6', color: '#fff',
+                    customClass: { popup: 'rounded-[2rem] border border-amber-500/20' }
+                });
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error', title: 'Thất bại', text: err.response?.data?.message || 'Có lỗi xảy ra cập nhật.', background: '#0a0a0ae6', color: '#fff',
+                    customClass: { popup: 'rounded-[2rem] border border-red-500/20' }
+                });
+            }
+        }
+    };
 
     useEffect(() => {
         if (user) {
@@ -101,18 +163,34 @@ const Profile = () => {
                 <div className="relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-10 shadow-2xl">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-[80px] -mr-20 -mt-20"></div>
                     
-                    <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center shadow-xl shadow-amber-600/20">
-                            <User size={40} className="text-black" />
-                        </div>
-                        <div className="text-center md:text-left space-y-2">
-                            <h2 className="text-4xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Xin chào, <span className="text-amber-500 not-italic font-sans font-bold">{user?.fullName}</span>
-                            </h2>
-                            <p className="text-gray-500 text-sm tracking-widest uppercase font-medium">Hội viên đặc quyền của Uy Nam Luxury</p>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                                <span className="text-[10px] bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-gray-400">{user?.email}</span>
-                                <span className="text-[10px] bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-gray-400">{user?.phone || 'Chưa cập nhật SĐT'}</span>
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 w-full">
+                        <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+                            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center shadow-xl shadow-amber-600/20 shrink-0">
+                                <User size={40} className="text-black" />
+                            </div>
+                            <div className="text-center md:text-left space-y-2 flex-1 relative">
+                                <div className="flex items-center justify-center md:justify-start gap-4">
+                                    <h2 className="text-4xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                        Xin chào, <span className="text-amber-500 not-italic font-sans font-bold">{user?.fullName}</span>
+                                    </h2>
+                                    <button 
+                                      onClick={handleEditProfile}
+                                      className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-amber-500 hover:border-amber-500/50 transition-all"
+                                      title="Chỉnh sửa thông tin"
+                                    >
+                                        <Edit2 size={14} />
+                                    </button>
+                                </div>
+                                <p className="text-gray-500 text-sm tracking-widest uppercase font-medium">Hội viên đặc quyền của Uy Nam Luxury</p>
+                                <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
+                                    <span className="text-[10px] bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-gray-400">{user?.email}</span>
+                                    <span className="text-[10px] bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-gray-400">{user?.phone || 'Chưa cập nhật SĐT'}</span>
+                                    {user?.address && (
+                                        <span className="text-[10px] bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-gray-400 flex flex-row items-center gap-1">
+                                            <MapPin size={10}/> {user.address}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

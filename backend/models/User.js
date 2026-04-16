@@ -36,6 +36,10 @@ const User = sequelize.define('User', {
     verificationCode: { 
         type: DataTypes.STRING, 
         allowNull: true 
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: 'users',
