@@ -17,6 +17,8 @@ const Profile = lazy(() => import('./pages/client/Profile'));
 const Services = lazy(() => import('./pages/client/Services'));
 const Contact = lazy(() => import('./pages/client/Contact'));
 const About = lazy(() => import('./pages/client/About'));
+const FAQ = lazy(() => import('./pages/client/FAQ'));
+const NotFound = lazy(() => import('./pages/client/NotFound'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
@@ -64,6 +66,7 @@ const AppContent = () => {
             {/* --- 🌍 PUBLIC ROUTES --- */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/rooms" element={<RoomList />} />
@@ -88,7 +91,8 @@ const AppContent = () => {
             <Route path="/admin/services" element={<AuthGuard requireAdmin={true}><ManageServices /></AuthGuard>} />
 
             {/* --- 404 FALLBACK --- */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </Suspense>
       </main>

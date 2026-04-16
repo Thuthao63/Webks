@@ -1,85 +1,128 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Bed, Globe, Send, Share2, Heart } from 'lucide-react';
+import { Mail, Phone, MapPin, Bed, Globe, Send, Share2, Heart, Instagram, Facebook, Twitter } from 'lucide-react';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-[#050505] text-white pt-20 pb-10 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
+    <footer className="bg-[#050505] text-white pt-32 pb-12 border-t border-white/5 relative overflow-hidden">
+      {/* Background Subtle Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* --- PHẦN TRÊN: BRAND & LINKS --- */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+        {/* --- MAIN CONTENT GRID --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 mb-24">
           
-          {/* Cột Logo & Slogan */}
-          <div className="md:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 border border-amber-500/50 rounded-full flex items-center justify-center">
-                <Bed size={16} className="text-amber-500" />
+          {/* Brand Identity */}
+          <div className="lg:col-span-4 space-y-8">
+            <Link to="/" className="flex items-center gap-4 group w-fit">
+              <div className="w-10 h-10 border border-amber-500/30 rounded-full flex items-center justify-center group-hover:border-amber-500 transition-all duration-700">
+                <Bed size={20} className="text-amber-500" />
               </div>
-              <span className="text-xl font-serif tracking-[0.3em] uppercase">Uy Nam</span>
-            </div>
-            <p className="text-gray-500 text-[10px] leading-relaxed max-w-xs font-light tracking-[0.2em] uppercase">
-              Định nghĩa lại nghệ thuật sống thượng lưu tại tâm điểm của sự sang trọng.
+              <div className="flex flex-col">
+                <span className="text-2xl font-serif tracking-[0.2em] uppercase italic" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+                <span className="text-[7px] tracking-[0.4em] text-amber-500 uppercase font-black">Private Collection</span>
+              </div>
+            </Link>
+            <p className="text-gray-500 text-xs leading-loose max-w-sm font-medium tracking-wide italic">
+              "Nơi mỗi khoảnh khắc đều trở thành một kiệt tác của sự tĩnh lặng và nghệ thuật phục vụ tận tâm."
             </p>
+            <div className="flex gap-5">
+              <SocialIcon icon={<Instagram size={18} />} />
+              <SocialIcon icon={<Facebook size={18} />} />
+              <SocialIcon icon={<Twitter size={18} />} />
+            </div>
           </div>
 
-          {/* Cột Liên kết nhanh */}
-          <div className="md:col-span-2 space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-amber-500">Khám phá</h4>
-            <ul className="space-y-4 text-[11px] text-gray-400 uppercase tracking-widest">
-              <li><Link to="/rooms" className="hover:text-amber-500 transition-colors">Phòng & Suite</Link></li>
-              <li><span className="hover:text-amber-500 cursor-pointer transition-colors">Dịch vụ Spa</span></li>
-              <li><span className="hover:text-amber-500 cursor-pointer transition-colors">Ẩm thực Á-Âu</span></li>
+          {/* Quick Explore */}
+          <div className="lg:col-span-2 space-y-8">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Khám phá</h4>
+            <ul className="space-y-4">
+              <FooterLink to="/about">Câu chuyện</FooterLink>
+              <FooterLink to="/rooms">Phòng & Suite</FooterLink>
+              <FooterLink to="/services">Dịch vụ</FooterLink>
+              <FooterLink to="/contact">Liên hệ</FooterLink>
             </ul>
           </div>
 
-          {/* Cột Thông tin */}
-          <div className="md:col-span-3 space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-amber-500">Thông tin</h4>
-            <div className="space-y-4 text-[11px] text-gray-400 uppercase tracking-widest font-medium">
-              <p className="flex items-start gap-3"><MapPin size={14} className="text-amber-500 shrink-0" /> 123 Võ Nguyên Giáp, Đà Nẵng</p>
-              <p className="flex items-center gap-3"><Phone size={14} className="text-amber-500" /> 0123.456.789</p>
-              <p className="flex items-center gap-3"><Mail size={14} className="text-amber-500" /> contact@uynam.com</p>
+          {/* Contact Details */}
+          <div className="lg:col-span-3 space-y-8">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Thông tin</h4>
+            <div className="space-y-5 text-gray-400">
+              <div className="flex items-start gap-4 group cursor-pointer">
+                <MapPin size={16} className="text-amber-500 mt-1 shrink-0 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] leading-relaxed tracking-widest uppercase font-bold group-hover:text-white transition-colors">123 Võ Nguyên Giáp, <br/>Phước Mỹ, Đà Nẵng</p>
+              </div>
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <Phone size={16} className="text-amber-500 shrink-0 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] tracking-widest uppercase font-bold group-hover:text-white transition-colors">0123.456.789</p>
+              </div>
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <Mail size={16} className="text-amber-500 shrink-0 group-hover:scale-110 transition-transform" />
+                <p className="text-[11px] tracking-widest uppercase font-bold group-hover:text-white transition-colors">contact@uynam.com</p>
+              </div>
             </div>
           </div>
 
-          {/* Cột Newsletter */}
-          <div className="md:col-span-3 space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-amber-500">Newsletter</h4>
-            <div className="relative">
+          {/* Newsletter */}
+          <div className="lg:col-span-3 space-y-8">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Đặc quyền Email</h4>
+            <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-widest font-bold">Nhận thông tin về các combo ưu đãi và sự kiện đặc biệt.</p>
+            <div className="relative group">
               <input 
                 type="email" 
-                placeholder="EMAIL CỦA BẠN" 
-                className="w-full bg-transparent border-b border-white/10 py-2 text-[10px] outline-none focus:border-amber-500 transition-all uppercase tracking-widest text-white"
+                placeholder="ĐỊA CHỈ EMAIL CỦA BẠN" 
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-[10px] outline-none focus:border-amber-500 focus:bg-white/10 transition-all uppercase tracking-[0.2em] text-white placeholder-gray-600"
               />
-              <button className="absolute right-0 top-2 text-amber-500 hover:text-white transition-colors">
-                <Send size={14} />
+              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-amber-500 hover:text-white hover:scale-110 transition-all">
+                <Send size={16} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* --- PHẦN DƯỚI: COPYRIGHT & SOCIAL --- */}
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[9px] text-gray-600 uppercase tracking-[0.3em] font-medium">
-            © 2026 UY NAM LUXURY HOTEL — BY <span className="text-gray-400">THU THAO</span>
-          </p>
-          
-          <div className="flex gap-8 items-center">
-            {/* Globe/Share2/Heart */}
-            <span className="text-gray-500 hover:text-amber-500 cursor-pointer transition-all"><Globe size={14} /></span>
-            <span className="text-gray-500 hover:text-amber-500 transition-all"><Heart size={14} /></span>
-            <span className="text-gray-500 hover:text-amber-500 transition-all"><Share2 size={14} /></span>
+        {/* --- BOTTOM BAR --- */}
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+             <p className="text-[9px] text-gray-600 uppercase tracking-[0.3em] font-black">
+               © {currentYear} UY NAM LUXURY HOTEL
+             </p>
+             <div className="w-1 h-1 bg-amber-500/30 rounded-full hidden md:block"></div>
+             <p className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold italic">
+               Designed with passion by Thu Thao
+             </p>
           </div>
-
-          <div className="flex gap-6 text-[9px] text-gray-600 uppercase tracking-widest font-bold">
-            <span className="hover:text-amber-500 cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-amber-500 cursor-pointer transition-colors">Privacy</span>
+          
+          <div className="flex gap-10 text-[9px] text-gray-600 uppercase tracking-[0.4em] font-bold">
+            <Link to="/faq" className="hover:text-amber-500 cursor-pointer transition-all hover:-translate-y-0.5">Quy định</Link>
+            <Link to="/faq" className="hover:text-amber-500 cursor-pointer transition-all hover:-translate-y-0.5">Bảo mật</Link>
+            <span className="hover:text-amber-500 cursor-pointer transition-all hover:-translate-y-0.5">Cookies</span>
           </div>
         </div>
       </div>
     </footer>
   );
 };
+
+const FooterLink = ({ to, children }) => (
+  <li>
+    <Link 
+      to={to} 
+      className="text-[11px] text-gray-500 uppercase tracking-[0.2em] font-bold hover:text-amber-500 transition-all flex items-center gap-2 group"
+    >
+      <div className="w-0 h-[1px] bg-amber-500 transition-all duration-300 group-hover:w-4"></div>
+      {children}
+    </Link>
+  </li>
+);
+
+const SocialIcon = ({ icon }) => (
+  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 hover:text-black hover:bg-amber-500 hover:border-amber-500 transition-all duration-500 cursor-pointer shadow-inner">
+     {icon}
+  </div>
+);
 
 export default Footer;

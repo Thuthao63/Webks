@@ -43,14 +43,14 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Overlay Gradient phía trên cùng */}
-      <div className={`fixed top-0 w-full h-40 z-[990] pointer-events-none transition-opacity duration-700 ${
-        isScrolled ? 'opacity-0' : 'opacity-100 bg-gradient-to-b from-black/90 via-black/40 to-transparent'
+      {/* Overlay Gradient phía trên cùng - Làm mượt hơn */}
+      <div className={`fixed top-0 w-full h-48 z-[990] pointer-events-none transition-opacity duration-1000 ${
+        isScrolled ? 'opacity-0' : 'opacity-100 bg-gradient-to-b from-black via-black/20 to-transparent'
       }`}></div>
 
-      <nav className={`fixed top-0 w-full z-[1000] transition-all duration-700 ease-in-out ${
+      <nav className={`fixed top-0 w-full z-[1000] transition-all duration-1000 ease-in-out ${
         isScrolled 
-          ? 'bg-[#050505]/80 backdrop-blur-2xl py-3 border-b border-white/5 shadow-2xl' 
+          ? 'bg-[#050505]/80 backdrop-blur-2xl py-4 border-b border-white/5 shadow-2xl' 
           : 'bg-transparent py-8'
       }`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center">
@@ -58,7 +58,7 @@ const Navbar = () => {
           {/* LOGO */}
           <Link to="/" className="flex items-center gap-4 group">
             <div className="relative">
-              <div className="w-12 h-12 border border-amber-500/30 rounded-full flex items-center justify-center group-hover:border-amber-500 transition-all duration-700 group-hover:rotate-[360deg]">
+              <div className="w-12 h-12 border border-amber-500/30 rounded-full flex items-center justify-center group-hover:border-amber-500 transition-all duration-1000 group-hover:rotate-[360deg]">
                 <Bed size={24} className="text-amber-500 group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full blur-[2px] animate-pulse"></div>
@@ -70,7 +70,7 @@ const Navbar = () => {
           </Link>
 
           {/* --- DESKTOP NAVIGATION --- */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link 
                 key={link.name}
@@ -93,13 +93,13 @@ const Navbar = () => {
               <div className="flex items-center gap-4">
                 <button className="p-2 text-gray-400 hover:text-amber-500 transition-all duration-300 hover:scale-110 hidden sm:block relative">
                   <Bell size={18} />
-                  <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-amber-500 rounded-full border border-black animate-bounce"></span>
+                  <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-amber-500 rounded-full border border-black animate-pulse"></span>
                 </button>
 
                 <div className="relative">
                   <button 
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
-                    className="flex items-center gap-4 pl-1.5 pr-5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition-all duration-500 group shadow-inner"
+                    className="flex items-center gap-4 pl-1.5 pr-5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition-all duration-500 group"
                   >
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-black font-black text-xs shadow-lg group-hover:shadow-amber-500/20">
                       {user.fullName?.charAt(0).toUpperCase()}
@@ -115,7 +115,7 @@ const Navbar = () => {
                   {isUserMenuOpen && (
                     <>
                       <div className="fixed inset-0 z-[-1]" onClick={() => setIsUserMenuOpen(false)}></div>
-                      <div className="absolute right-0 mt-6 w-80 bg-[#0a0a0a]/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                      <div className="absolute right-0 mt-6 w-80 bg-[#0a0a0ae6] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden animate-in fade-in zoom-in-95 duration-300">
                         <div className="p-8 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent border-b border-white/5 relative">
                           <Star className="absolute top-6 right-6 text-amber-500/20" size={40} />
                           <p className="text-[9px] text-amber-500 uppercase font-black tracking-[0.3em] mb-2">Hội viên đặc quyền</p>
@@ -147,9 +147,9 @@ const Navbar = () => {
             ) : (
               <Link 
                 to="/login" 
-                className="relative group px-10 py-3.5 overflow-hidden rounded-full transition-all duration-500"
+                className="relative group px-10 py-3.5 overflow-hidden rounded-full transition-all duration-700"
               >
-                <div className="absolute inset-0 bg-amber-500 group-hover:bg-white transition-colors duration-500"></div>
+                <div className="absolute inset-0 bg-amber-500 group-hover:bg-white transition-colors duration-700"></div>
                 <span className="relative z-10 text-black text-[10px] font-black uppercase tracking-[0.3em]">
                   Truy cập ngay
                 </span>
@@ -158,14 +158,65 @@ const Navbar = () => {
             )}
 
             <button 
-              className="md:hidden p-2 text-amber-500 hover:scale-110 transition-transform"
+              className="md:hidden p-2 text-amber-500 hover:scale-110 transition-transform active:scale-95 z-[1001]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {isMobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
             </button>
           </div>
         </div>
       </nav>
+
+      {/* --- MOBILE DRAWER --- */}
+      <div className={`fixed inset-0 z-[1000] transition-all duration-700 md:hidden ${
+        isMobileMenuOpen ? 'visible' : 'invisible'
+      }`}>
+         {/* Backdrop */}
+         <div className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-700 ${
+           isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+         }`} onClick={() => setIsMobileMenuOpen(false)}></div>
+         
+         {/* Content Drawer */}
+         <div className={`absolute right-0 top-0 h-full w-[80%] bg-[#050505] border-l border-white/5 shadow-2xll transition-transform duration-700 ease-out p-12 flex flex-col justify-between ${
+           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+         }`}>
+            <div className="space-y-12 mt-10">
+               <div className="space-y-2 border-b border-white/10 pb-6">
+                  <p className="text-amber-500 text-[10px] uppercase font-black tracking-[0.4em]">Danh mục</p>
+                  <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>Menu chính</h4>
+               </div>
+               
+               <div className="flex flex-col gap-8">
+                  {navLinks.map((link, idx) => (
+                    <Link 
+                      key={link.name}
+                      to={link.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`text-xl font-bold uppercase tracking-[0.3em] transition-all duration-500 ${
+                        location.pathname === link.path ? 'text-amber-500 translate-x-4' : 'text-gray-400 hover:text-white'
+                      }`}
+                      style={{ transitionDelay: `${idx * 50}ms` }}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+               </div>
+            </div>
+
+            <div className="space-y-6 pt-10 border-t border-white/5">
+                <p className="text-[10px] text-gray-500 tracking-widest uppercase font-bold">Liên hệ đặt phòng</p>
+                <p className="text-white font-serif italic text-xl">0123.456.789</p>
+                <div className="flex gap-4 pt-4">
+                   <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
+                      <Star size={16} />
+                   </div>
+                   <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
+                      <Bell size={16} />
+                   </div>
+                </div>
+            </div>
+         </div>
+      </div>
     </>
   );
 };
