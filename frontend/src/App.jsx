@@ -22,6 +22,9 @@ const Dashboard = lazy(() => import('./pages/Admin/Dashboard'));
 const ManageRooms = lazy(() => import('./pages/Admin/ManageRooms'));
 const ManageBookings = lazy(() => import('./pages/Admin/ManageBookings'));
 const ManageContacts = lazy(() => import('./pages/Admin/ManageContacts'));
+const ManageUsers = lazy(() => import('./pages/Admin/ManageUsers'));
+const ManageReviews = lazy(() => import('./pages/Admin/ManageReviews'));
+const ManageServices = lazy(() => import('./pages/Admin/ManageServices'));
 
 // --- 🛡️ HÀM KIỂM TRA QUYỀN TRUY CẬP ---
 const AuthGuard = ({ children, requireAdmin = false }) => {
@@ -72,6 +75,9 @@ const AppContent = () => {
             <Route path="/admin/rooms" element={<AuthGuard requireAdmin={true}><ManageRooms /></AuthGuard>} />
             <Route path="/admin/bookings" element={<AuthGuard requireAdmin={true}><ManageBookings /></AuthGuard>} />
             <Route path="/admin/contacts" element={<AuthGuard requireAdmin={true}><ManageContacts /></AuthGuard>} />
+            <Route path="/admin/users" element={<AuthGuard requireAdmin={true}><ManageUsers /></AuthGuard>} />
+            <Route path="/admin/reviews" element={<AuthGuard requireAdmin={true}><ManageReviews /></AuthGuard>} />
+            <Route path="/admin/services" element={<AuthGuard requireAdmin={true}><ManageServices /></AuthGuard>} />
 
             {/* --- 404 FALLBACK --- */}
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -53,13 +53,16 @@ const roomRoutes = require('./routes/roomRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const userRoutes = require('./routes/userRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/rooms', roomRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/contacts', contactRoutes);
-
+app.use('/api/users', userRoutes);
+app.use('/api/services', serviceRoutes);
 
 app.get('/', (req, res) => {
     res.send('🚀 Hệ thống Backend Khách sạn Uy Nam đang sẵn sàng!');

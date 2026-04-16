@@ -56,16 +56,18 @@ const getAllBookings = async (req, res) => {
     }
 };
 
-// 4. Admin cập nhật trạng thái đơn (Duyệt/Hủy)
+// 4. Admin cập nhật trạng thái đơn (Duyệt/Hủy) hoặc Gia hạn phòng
 const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
+        const { status, checkOutDate } = req.body;
         
         const booking = await Booking.findByPk(id);
         if (!booking) return res.status(404).json({ message: "Đơn hàng không tồn tại" });
 
-        booking.status = status;
+        if (status) booking.status = status;
+        if (checkOutDate) booking.checkOutDate = checkOutDate;
+        
         await booking.save();
 
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn

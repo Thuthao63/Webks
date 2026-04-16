@@ -367,7 +367,7 @@ const ManageBookings = () => {
             </div>
             <div className="text-right">
               <h2 className="text-3xl font-black uppercase text-gray-800 tracking-widest mb-2">Hóa Đơn</h2>
-              <p className="text-sm font-medium text-gray-600">Số HĐ: #{printingBooking.id.substring(0, 8).toUpperCase()}</p>
+              <p className="text-sm font-medium text-gray-600">Số HĐ: #{String(printingBooking.id).substring(0, 8).toUpperCase()}</p>
               <p className="text-sm font-medium text-gray-600">Ngày in: {new Date().toLocaleDateString('vi-VN')} {new Date().toLocaleTimeString('vi-VN')}</p>
             </div>
           </div>

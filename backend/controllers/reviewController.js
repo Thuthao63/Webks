@@ -1,5 +1,6 @@
 const Review = require('../models/Review');
 const User = require('../models/User');
+const Room = require('../models/Room');
 
 // ==========================================
 // 1. TẠO ĐÁNH GIÁ MỚI
@@ -47,5 +48,42 @@ exports.getRoomReviews = async (req, res) => {
     } catch (error) {
         console.error("❌ Lỗi lấy đánh giá:", error);
         res.status(500).json({ message: "Lỗi Server khi tải danh sách đánh giá" });
+    }
+};
+
+// ==========================================
+// 3. LẤY TOÀN BỘ ĐÁNH GIÁ (Dành cho Admin)
+// ==========================================
+exports.getAllReviews = async (req, res) => {
+    try {
+        const reviews = await Review.findAll({
+            include: [
+                { model: User, as: 'reviewer', attributes: ['id', 'fullName', 'email'] },
+                { model: Room, as: 'room', attributes: ['id', 'roomNumber'] }
+            ],
+            order: [['createdAt', 'DESC']]
+        });
+        res.status(200).json(reviews);
+    } catch (error) {
+        console.error("❌ Lỗi lấy tất cả đánh giá:", error);
+        res.status(500).json({ message: "Lỗi Server khi tải toàn bộ đánh giá" });
+    }
+};
+
+// ==========================================
+// 4. XÓA ĐÁNH GIÁ (Dành cho Admin)
+// ==========================================
+exports.deleteReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const review = await Review.findByPk(id);
+        
+        if (!review) return res.status(404).json({ message: "Đánh giá không tồn tại!" });
+
+        await review.destroy();
+        res.status(200).json({ message: "Đã xóa đánh giá thành công!" });
+    } catch (error) {
+        console.error("❌ Lỗi xóa đánh giá:", error);
+        res.status(500).json({ message: "Lỗi Server khi xóa đánh giá" });
     }
 };

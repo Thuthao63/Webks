@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Bed, CalendarCheck, MessageSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, Bed, CalendarCheck, MessageSquare, LogOut, Users, Star, Coffee } from 'lucide-react';
 import { AuthContext } from "../context/AuthContext";
 
 const AdminNav = () => {
@@ -16,8 +16,11 @@ const AdminNav = () => {
   const navs = [
     { name: 'Bảng điều khiển', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
     { name: 'Phòng', path: '/admin/rooms', icon: <Bed size={18} /> },
+    { name: 'Dịch vụ', path: '/admin/services', icon: <Coffee size={18} /> },
     { name: 'Đặt phòng', path: '/admin/bookings', icon: <CalendarCheck size={18} /> },
+    { name: 'Đánh giá', path: '/admin/reviews', icon: <Star size={18} /> },
     { name: 'Hộp thư', path: '/admin/contacts', icon: <MessageSquare size={18} /> },
+    { name: 'Người dùng', path: '/admin/users', icon: <Users size={18} /> },
   ];
 
   return (
