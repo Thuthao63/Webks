@@ -30,7 +30,7 @@ User.hasMany(Booking, { foreignKey: 'userId', as: 'bookings' });
 Room.hasMany(Booking, { foreignKey: 'roomId', as: 'bookings' });
 
 // Mối quan hệ Đánh giá (Review)
-Review.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Review.belongsTo(User, { foreignKey: 'userId', as: 'reviewer' });
 Review.belongsTo(Room, { foreignKey: 'roomId', as: 'room' });
 
 // Mối quan hệ Dịch vụ đi kèm đơn hàng
