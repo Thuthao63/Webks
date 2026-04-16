@@ -24,10 +24,10 @@ const Navbar = () => {
   };
 
   const currentPath = location.pathname.toLowerCase();
-  
+
   const isAuthPage = ['/login', '/register', '/verify', '/forgot-password', '/reset-password']
-                     .some(path => currentPath.includes(path));
-                     
+    .some(path => currentPath.includes(path));
+
   const isAdminPage = currentPath.startsWith('/admin');
 
   // Nếu là trang Auth hoặc Admin, không render bất cứ thứ gì
@@ -44,17 +44,15 @@ const Navbar = () => {
   return (
     <>
       {/* Overlay Gradient phía trên cùng - Làm mượt hơn */}
-      <div className={`fixed top-0 w-full h-48 z-[990] pointer-events-none transition-opacity duration-1000 ${
-        isScrolled ? 'opacity-0' : 'opacity-100 bg-gradient-to-b from-black via-black/20 to-transparent'
-      }`}></div>
+      <div className={`fixed top-0 w-full h-48 z-[990] pointer-events-none transition-opacity duration-1000 ${isScrolled ? 'opacity-0' : 'opacity-100 bg-gradient-to-b from-black via-black/20 to-transparent'
+        }`}></div>
 
-      <nav className={`fixed top-0 w-full z-[1000] transition-all duration-1000 ease-in-out ${
-        isScrolled 
-          ? 'bg-[#050505]/80 backdrop-blur-2xl py-4 border-b border-white/5 shadow-2xl' 
+      <nav className={`fixed top-0 w-full z-[1000] transition-all duration-1000 ease-in-out ${isScrolled
+          ? 'bg-[#050505]/80 backdrop-blur-2xl py-4 border-b border-white/5 shadow-2xl'
           : 'bg-transparent py-8'
-      }`}>
+        }`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center">
-          
+
           {/* LOGO */}
           <Link to="/" className="flex items-center gap-4 group">
             <div className="relative">
@@ -72,17 +70,15 @@ const Navbar = () => {
           {/* --- DESKTOP NAVIGATION --- */}
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.name}
-                to={link.path} 
-                className={`text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group py-2 ${
-                  location.pathname === link.path ? 'text-amber-500' : 'text-gray-300 hover:text-white'
-                }`}
+                to={link.path}
+                className={`text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-amber-500' : 'text-gray-300 hover:text-white'
+                  }`}
               >
                 {link.name}
-                <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-amber-500 transition-all duration-500 shadow-[0_0_10px_#f59e0b] ${
-                  location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
-                }`}></span>
+                <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-amber-500 transition-all duration-500 shadow-[0_0_10px_#f59e0b] ${location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}></span>
               </Link>
             ))}
           </div>
@@ -97,8 +93,8 @@ const Navbar = () => {
                 </button>
 
                 <div className="relative">
-                  <button 
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="flex items-center gap-4 pl-1.5 pr-5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition-all duration-500 group"
                   >
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-black font-black text-xs shadow-lg group-hover:shadow-amber-500/20">
@@ -122,7 +118,7 @@ const Navbar = () => {
                           <p className="text-white font-serif text-xl italic leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</p>
                           <p className="text-[10px] text-gray-500 mt-2 tracking-wide font-medium">{user.email}</p>
                         </div>
-                        
+
                         <div className="p-4 space-y-1">
                           {user.role?.toLowerCase() === 'admin' && (
                             <button onClick={() => { navigate('/admin/dashboard'); setIsUserMenuOpen(false); }} className="w-full flex items-center gap-4 px-5 py-4 text-amber-500 hover:bg-amber-500/5 rounded-2xl transition-all duration-300 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -145,8 +141,8 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="relative group px-10 py-3.5 overflow-hidden rounded-full transition-all duration-700"
               >
                 <div className="absolute inset-0 bg-amber-500 group-hover:bg-white transition-colors duration-700"></div>
@@ -157,7 +153,7 @@ const Navbar = () => {
               </Link>
             )}
 
-            <button 
+            <button
               className="md:hidden p-2 text-amber-500 hover:scale-110 transition-transform active:scale-95 z-[1001]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
@@ -168,54 +164,50 @@ const Navbar = () => {
       </nav>
 
       {/* --- MOBILE DRAWER --- */}
-      <div className={`fixed inset-0 z-[1000] transition-all duration-700 md:hidden ${
-        isMobileMenuOpen ? 'visible' : 'invisible'
-      }`}>
-         {/* Backdrop */}
-         <div className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-700 ${
-           isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
-         }`} onClick={() => setIsMobileMenuOpen(false)}></div>
-         
-         {/* Content Drawer */}
-         <div className={`absolute right-0 top-0 h-full w-[80%] bg-[#050505] border-l border-white/5 shadow-2xll transition-transform duration-700 ease-out p-12 flex flex-col justify-between ${
-           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-         }`}>
-            <div className="space-y-12 mt-10">
-               <div className="space-y-2 border-b border-white/10 pb-6">
-                  <p className="text-amber-500 text-[10px] uppercase font-black tracking-[0.4em]">Danh mục</p>
-                  <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>Menu chính</h4>
-               </div>
-               
-               <div className="flex flex-col gap-8">
-                  {navLinks.map((link, idx) => (
-                    <Link 
-                      key={link.name}
-                      to={link.path}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`text-xl font-bold uppercase tracking-[0.3em] transition-all duration-500 ${
-                        location.pathname === link.path ? 'text-amber-500 translate-x-4' : 'text-gray-400 hover:text-white'
-                      }`}
-                      style={{ transitionDelay: `${idx * 50}ms` }}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-               </div>
+      <div className={`fixed inset-0 z-[1000] transition-all duration-700 md:hidden ${isMobileMenuOpen ? 'visible' : 'invisible'
+        }`}>
+        {/* Backdrop */}
+        <div className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-700 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`} onClick={() => setIsMobileMenuOpen(false)}></div>
+
+        {/* Content Drawer */}
+        <div className={`absolute right-0 top-0 h-full w-[80%] bg-[#050505] border-l border-white/5 shadow-2xll transition-transform duration-700 ease-out p-12 flex flex-col justify-between ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}>
+          <div className="space-y-12 mt-10">
+            <div className="space-y-2 border-b border-white/10 pb-6">
+              <p className="text-amber-500 text-[10px] uppercase font-black tracking-[0.4em]">Danh mục</p>
+              <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>Menu chính</h4>
             </div>
 
-            <div className="space-y-6 pt-10 border-t border-white/5">
-                <p className="text-[10px] text-gray-500 tracking-widest uppercase font-bold">Liên hệ đặt phòng</p>
-                <p className="text-white font-serif italic text-xl">0123.456.789</p>
-                <div className="flex gap-4 pt-4">
-                   <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
-                      <Star size={16} />
-                   </div>
-                   <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
-                      <Bell size={16} />
-                   </div>
-                </div>
+            <div className="flex flex-col gap-8">
+              {navLinks.map((link, idx) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-xl font-bold uppercase tracking-[0.3em] transition-all duration-500 ${location.pathname === link.path ? 'text-amber-500 translate-x-4' : 'text-gray-400 hover:text-white'
+                    }`}
+                  style={{ transitionDelay: `${idx * 50}ms` }}
+                >
+                  {link.name}
+                </Link>
+              ))}
             </div>
-         </div>
+          </div>
+
+          <div className="space-y-6 pt-10 border-t border-white/5">
+            <p className="text-[10px] text-gray-500 tracking-widest uppercase font-bold">Liên hệ đặt phòng</p>
+            <p className="text-white font-serif italic text-xl">0123.456.789</p>
+            <div className="flex gap-4 pt-4">
+              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
+                <Star size={16} />
+              </div>
+              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400">
+                <Bell size={16} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

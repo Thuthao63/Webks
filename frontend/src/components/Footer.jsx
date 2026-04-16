@@ -6,15 +6,16 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#050505] text-white pt-32 pb-12 border-t border-white/5 relative overflow-hidden">
-      {/* Background Subtle Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <footer className="bg-[#050505] text-white pt-40 pb-16 border-t border-white/10 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[180px] pointer-events-none translate-y-1/2 translate-x-1/4"></div>
+ 
+      <div className="max-w-7xl mx-auto px-8 lg:px-12 relative z-10">
 
         {/* --- MAIN CONTENT GRID --- */}
-        <div className="grid grid-cols-1 lg:grid-cofls-12 gap-16 lg:gap-8 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-12 mb-32">
 
           {/* Brand Identity */}
           <div className="lg:col-span-4 space-y-8">
@@ -27,9 +28,16 @@ const Footer = () => {
                 <span className="text-[7px] tracking-[0.4em] text-amber-500 uppercase font-black">Private Collection</span>
               </div>
             </Link>
-            <p className="text-gray-500 text-xs leading-loose max-w-sm font-medium tracking-wide italic">
+            <p className="text-gray-500 text-[13px] leading-relaxed max-w-sm font-medium italic opacity-80">
               "Nơi mỗi khoảnh khắc đều trở thành một kiệt tác của sự tĩnh lặng và nghệ thuật phục vụ tận tâm."
             </p>
+            <div className="flex gap-4 pt-4">
+              {[Globe, Mail, Phone].map((Icon, i) => (
+                <div key={i} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-500 hover:text-amber-500 hover:border-amber-500/50 transition-all cursor-pointer group/icon">
+                   <Icon size={16} className="group-hover/icon:scale-110 transition-transform" />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Quick Explore */}
@@ -64,16 +72,16 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className="lg:col-span-3 space-y-8">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500">Đặc quyền Email</h4>
-            <p className="text-[10px] text-gray-500 leading-relaxed uppercase tracking-widest font-bold">Nhận thông tin về các combo ưu đãi và sự kiện đặc biệt.</p>
-            <div className="relative group">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-amber-500">Đặc quyền Email</h4>
+            <p className="text-[11px] text-gray-400 leading-relaxed uppercase tracking-[0.3em] font-bold">Nhận thông tin về các combo ưu đãi và sự kiện đặc biệt tại Uy Nam.</p>
+            <div className="relative group max-w-md">
               <input
                 type="email"
                 placeholder="ĐỊA CHỈ EMAIL CỦA BẠN"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-[10px] outline-none focus:border-amber-500 focus:bg-white/10 transition-all uppercase tracking-[0.2em] text-white placeholder-gray-600"
+                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-5 px-6 text-[10px] outline-none focus:border-amber-500/50 focus:bg-white/[0.07] transition-all uppercase tracking-[0.3em] text-white placeholder-gray-700 font-bold"
               />
-              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-amber-500 hover:text-white hover:scale-110 transition-all">
-                <Send size={16} />
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-black hover:bg-white transition-all shadow-lg active:scale-95">
+                <Send size={18} />
               </button>
             </div>
           </div>
