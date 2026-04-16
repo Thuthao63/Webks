@@ -78,12 +78,12 @@ const ManageReviews = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#000] text-white p-6 md:p-10 pt-24 relative overflow-hidden">
-      
+
       {/* Background glow toàn trang */}
       <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[180px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto space-y-10 relative z-10">
-        
+
         {/* THANH ĐIỀU HƯỚNG Admin */}
         <AdminNav />
 
@@ -106,60 +106,60 @@ const ManageReviews = () => {
 
         {/* BẢNG ĐÁNH GIÁ (Dạng danh sách Card ngang) */}
         <div className="space-y-4">
-           {reviews.length > 0 ? reviews.map(review => (
-               <div key={review.id} className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-[0_10px_40px_rgba(217,119,6,0.15)] hover:border-amber-500/30 transition-all duration-300">
-                  <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                     
-                     {/* THÔNG TIN NGƯỜI ĐÁNH GIÁ */}
-                     <div className="flex items-center gap-4 min-w-[250px]">
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                           <User size={20} />
-                        </div>
-                        <div>
-                           <p className="font-bold text-white text-base group-hover:text-amber-400 transition-colors drop-shadow-sm">
-                              {review.reviewer?.fullName || 'Khách ẩn danh'}
-                           </p>
-                           <span className="flex items-center gap-1.5 text-[10px] text-gray-500 tracking-wider mt-1 uppercase font-bold">
-                              {new Date(review.createdAt).toLocaleDateString('vi-VN')}
-                           </span>
-                        </div>
-                     </div>
+          {reviews.length > 0 ? reviews.map(review => (
+            <div key={review.id} className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-[0_10px_40px_rgba(217,119,6,0.15)] hover:border-amber-500/30 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
 
-                     {/* THÔNG TIN PHÒNG VÀ SAO */}
-                     <div className="flex flex-col items-start gap-2 min-w-[150px]">
-                         <div className="flex items-center gap-2 text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl font-bold text-xs shadow-inner">
-                            <Bed size={14} className="text-amber-500" />
-                            Phòng {review.room?.roomNumber || '---'}
-                         </div>
-                         <div className="mt-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
-                            {renderStars(review.rating)}
-                         </div>
-                     </div>
-
-                     {/* NỘI DUNG ĐÁNH GIÁ */}
-                     <div className="flex-1 text-sm text-gray-300 italic px-4 border-l border-white/10">
-                        "{review.comment}"
-                     </div>
-
-                     {/* NÚT XÓA */}
-                     <div className="ml-auto pl-4 border-l border-white/10">
-                        <button 
-                           onClick={() => handleDeleteReview(review)}
-                           className="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-2xl hover:bg-rose-500 hover:text-black hover:shadow-[0_0_15px_rgba(251,113,133,0.4)] transition-all duration-300"
-                           title="Xóa đánh giá này"
-                        >
-                           <Trash2 size={16} strokeWidth={2}/>
-                        </button>
-                     </div>
-
+                {/* THÔNG TIN NGƯỜI ĐÁNH GIÁ */}
+                <div className="flex items-center gap-4 min-w-[250px]">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                    <User size={20} />
                   </div>
-               </div>
-           )) : (
-              <div className="flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-3xl p-16">
-                  <Search size={40} className="text-gray-500 mb-4 opacity-50" />
-                  <span className="text-gray-400 text-xs font-bold tracking-[0.2em] uppercase">Chưa có đánh giá nào</span>
+                  <div>
+                    <p className="font-bold text-white text-base group-hover:text-amber-400 transition-colors drop-shadow-sm">
+                      {review.reviewer?.fullName || 'Khách ẩn danh'}
+                    </p>
+                    <span className="flex items-center gap-1.5 text-[10px] text-gray-500 tracking-wider mt-1 uppercase font-bold">
+                      {new Date(review.createdAt).toLocaleDateString('vi-VN')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* THÔNG TIN PHÒNG VÀ SAO */}
+                <div className="flex flex-col items-start gap-2 min-w-[150px]">
+                  <div className="flex items-center gap-2 text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl font-bold text-xs shadow-inner">
+                    <Bed size={14} className="text-amber-500" />
+                    Phòng {review.room?.roomNumber || '---'}
+                  </div>
+                  <div className="mt-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
+                    {renderStars(review.rating)}
+                  </div>
+                </div>
+
+                {/* NỘI DUNG ĐÁNH GIÁ */}
+                <div className="flex-1 text-sm text-gray-300 italic px-4 border-l border-white/10">
+                  "{review.comment}"
+                </div>
+
+                {/* NÚT XÓA */}
+                <div className="ml-auto pl-4 border-l border-white/10">
+                  <button
+                    onClick={() => handleDeleteReview(review)}
+                    className="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-2xl hover:bg-rose-500 hover:text-black hover:shadow-[0_0_15px_rgba(251,113,133,0.4)] transition-all duration-300"
+                    title="Xóa đánh giá này"
+                  >
+                    <Trash2 size={16} strokeWidth={2} />
+                  </button>
+                </div>
+
               </div>
-           )}
+            </div>
+          )) : (
+            <div className="flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-3xl p-16">
+              <Search size={40} className="text-gray-500 mb-4 opacity-50" />
+              <span className="text-gray-400 text-xs font-bold tracking-[0.2em] uppercase">Chưa có đánh giá nào</span>
+            </div>
+          )}
         </div>
 
       </div>

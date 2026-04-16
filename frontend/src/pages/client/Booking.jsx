@@ -7,7 +7,7 @@ import { Calendar, CreditCard, ArrowLeft, Loader2, Info, CheckCircle2, Star } fr
 // Import DatePicker và CSS của nó
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from  "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import vi from 'date-fns/locale/vi';
 
 registerLocale('vi', vi);
@@ -17,7 +17,7 @@ const Booking = () => {
   const navigate = useNavigate();
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Quản lý ngày bằng đối tượng Date để DatePicker hoạt động mượt mà
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date(Date.now() + 86400000));
@@ -44,7 +44,7 @@ const Booking = () => {
     if (price > 0 && startDate && endDate) {
       const diffTime = endDate.getTime() - startDate.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+
       if (diffDays > 0) {
         setDays(diffDays);
         setTotalPrice(diffDays * price);
@@ -116,10 +116,10 @@ const Booking = () => {
             </div>
 
             <div className="rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
-              <img 
-                src={room?.roomType?.image ? `http://localhost:5000/uploads/${room.roomType.image}` : 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop'} 
-                className="w-full h-[400px] object-cover" 
-                alt="Room" 
+              <img
+                src={room?.roomType?.image ? `http://localhost:5000/uploads/${room.roomType.image}` : 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop'}
+                className="w-full h-[400px] object-cover"
+                alt="Room"
               />
             </div>
 
@@ -132,7 +132,7 @@ const Booking = () => {
           <div className="lg:col-span-5">
             <div className="bg-[#0a0a0a] border border-amber-500/20 p-10 rounded-[2.5rem] sticky top-32 shadow-2xl">
               <h3 className="text-2xl font-serif italic mb-8 text-center">Lịch trình của bạn</h3>
-              
+
               <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">Ngày nhận & trả phòng</label>
@@ -187,7 +187,7 @@ const Booking = () => {
                   </div>
                 </div>
 
-                <button 
+                <button
                   onClick={handleBooking}
                   className="w-full bg-amber-600 hover:bg-white text-black py-5 rounded-2xl font-black uppercase text-[11px] tracking-[0.3em] transition-all duration-500 flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
                 >

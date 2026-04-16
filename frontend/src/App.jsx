@@ -11,6 +11,7 @@ import ContactFab from './components/ContactFab';
 // --- LAZY LOADING PAGES ---
 const Home = lazy(() => import('./pages/client/Home'));
 const RoomList = lazy(() => import('./pages/client/RoomList'));
+const RoomDetails = lazy(() => import('./pages/client/RoomDetails'));
 const Booking = lazy(() => import('./pages/client/Booking'));
 const Profile = lazy(() => import('./pages/client/Profile'));
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -60,6 +61,7 @@ const AppContent = () => {
             {/* --- 🌍 PUBLIC ROUTES --- */}
             <Route path="/" element={<Home />} />
             <Route path="/rooms" element={<RoomList />} />
+            <Route path="/room/:roomId" element={<RoomDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             

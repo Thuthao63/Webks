@@ -55,7 +55,10 @@ const RoomList = () => {
                 className="group bg-[#0a0a0a] border border-white/5 overflow-hidden hover:border-amber-500/30 transition-all duration-700 shadow-2xl"
               >
                 {/* Hình ảnh phòng */}
-                <div className="relative h-80 overflow-hidden">
+                <div 
+                  className="relative h-80 overflow-hidden cursor-pointer"
+                  onClick={() => navigate(`/room/${room.id}`)}
+                >
                   <img 
                     src={details.image ? `http://localhost:5000/uploads/${details.image}` : 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80'}
                     alt={room.roomNumber}
@@ -70,7 +73,11 @@ const RoomList = () => {
                 <div className="p-10 space-y-8">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="text-2xl font-serif italic text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <h4 
+                        onClick={() => navigate(`/room/${room.id}`)}
+                        className="text-2xl font-serif italic text-white mb-2 cursor-pointer hover:text-amber-500 transition-colors" 
+                        style={{ fontFamily: "'Playfair Display', serif" }}
+                      >
                         Phòng {room.roomNumber}
                       </h4>
                       <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">

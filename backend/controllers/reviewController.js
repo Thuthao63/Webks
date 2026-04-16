@@ -14,10 +14,10 @@ exports.createReview = async (req, res) => {
         }
 
         const review = await Review.create({ comment, rating, roomId, userId });
-        
-        res.status(201).json({ 
+
+        res.status(201).json({
             message: "Cảm ơn bạn đã để lại đánh giá!",
-            review 
+            review
         });
     } catch (error) {
         console.error("❌ Lỗi tạo đánh giá:", error);
@@ -35,10 +35,10 @@ exports.getRoomReviews = async (req, res) => {
         const reviews = await Review.findAll({
             where: { roomId: roomId },
             include: [
-                { 
-                    model: User, 
-                    as: 'reviewer', 
-                    attributes: ['id', 'fullName', 'email'] 
+                {
+                    model: User,
+                    as: 'reviewer',
+                    attributes: ['id', 'fullName', 'email']
                 }
             ],
             order: [['createdAt', 'DESC']]
@@ -77,7 +77,7 @@ exports.deleteReview = async (req, res) => {
     try {
         const { id } = req.params;
         const review = await Review.findByPk(id);
-        
+
         if (!review) return res.status(404).json({ message: "Đánh giá không tồn tại!" });
 
         await review.destroy();

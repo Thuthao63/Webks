@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
+import Swal from 'sweetalert2';
 import { User, Package, Calendar, CreditCard, ChevronRight, Clock, CheckCircle, XCircle, MapPin } from 'lucide-react';
 
 const Profile = () => {
@@ -21,6 +22,60 @@ const Profile = () => {
                 });
         }
     }, [user]);
+
+    const handleWriteReview = async (roomId) => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Trải nghiệm của bạn',
+            html:
+                '<div class="flex flex-col gap-4 text-left mt-4">' +
+                '<label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-2">Đánh giá sao (1-5)</label>' +
+                '<input id="swal-input1" type="number" min="1" max="5" value="5" class="bg-black/50 border border-white/10 text-amber-500 font-black text-xl p-3 rounded-2xl outline-none focus:border-amber-500/50">' +
+                '<label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-2 mt-2">Góp ý / Cảm nhận</label>' +
+                '<textarea id="swal-input2" class="bg-black/50 border border-white/10 text-white p-4 rounded-2xl outline-none focus:border-amber-500/50 text-sm" rows="4" placeholder="Phòng rất sạch sẽ, nhân viên thân thiện..."></textarea>' +
+                '</div>',
+            focusConfirm: false,
+            background: '#0a0a0ae6',
+            color: '#fff',
+            showCancelButton: true,
+            confirmButtonText: 'Gửi Đánh Giá',
+            cancelButtonText: 'Khép lại',
+            customClass: {
+                popup: 'border border-amber-500/30 rounded-[2.5rem] shadow-[0_0_50px_rgba(217,119,6,0.15)] backdrop-blur-2xl p-8',
+                title: 'font-serif italic text-amber-500 text-3xl',
+                confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black px-8 py-3.5 rounded-xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-transform',
+                cancelButton: 'bg-white/5 text-gray-300 px-8 py-3.5 rounded-xl font-bold uppercase text-[10px] tracking-widest border border-white/10 hover:bg-white/10 transition-colors'
+            },
+            preConfirm: () => {
+                const rating = document.getElementById('swal-input1').value;
+                const comment = document.getElementById('swal-input2').value;
+                if (!rating || !comment) {
+                    Swal.showValidationMessage('Vui lòng điền đủ sao và đánh giá!');
+                    return false;
+                }
+                return { rating, comment };
+            }
+        });
+
+        if (formValues) {
+            try {
+                await axiosClient.post('/reviews', {
+                    roomId,
+                    userId: user.id,
+                    rating: Number(formValues.rating),
+                    comment: formValues.comment
+                });
+                Swal.fire({
+                    icon: 'success', title: 'Cảm ơn bạn!', text: 'Đánh giá chân thực của bạn đã được ghi nhận.', background: '#0a0a0ae6', color: '#fff',
+                    customClass: { popup: 'rounded-[2rem] border border-amber-500/20' }
+                });
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error', title: 'Thất bại', text: err.response?.data?.message || 'Có lỗi xảy ra khi gửi.', background: '#0a0a0ae6', color: '#fff',
+                    customClass: { popup: 'rounded-[2rem] border border-red-500/20' }
+                });
+            }
+        }
+    };
 
     // Hàm render Badge trạng thái cho chuyên nghiệp
     const renderStatus = (status) => {
@@ -103,7 +158,17 @@ const Profile = () => {
                                             <p className="text-amber-500 font-bold text-lg">{Number(b.totalPrice).toLocaleString()}đ</p>
                                             <p className="text-[9px] text-gray-600 uppercase tracking-tighter">Tổng thanh toán</p>
                                         </div>
-                                        {renderStatus(b.status)}
+                                        <div className="flex flex-col items-end gap-3">
+                                            {renderStatus(b.status)}
+                                            {b.status === 'completed' && (
+                                                <button 
+                                                    onClick={() => handleWriteReview(b.roomId)} 
+                                                    className="text-[9px] px-4 py-1.5 border border-amber-500/30 bg-amber-500/5 text-amber-500 rounded-full hover:bg-amber-500 hover:text-black font-bold uppercase tracking-widest transition-all shadow-[0_0_10px_rgba(217,119,6,0.1)]"
+                                                >
+                                                    Mời đánh giá
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             ))

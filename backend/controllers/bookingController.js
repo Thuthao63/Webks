@@ -6,10 +6,10 @@ const User = require('../models/User');
 const createBooking = async (req, res) => {
     try {
         const { roomId, checkInDate, checkOutDate, totalPrice } = req.body;
-        
+
         // Thảo lưu ý: Nếu chưa làm Login thì tạm thời gán userId = 1 
         // Nếu đã có Login thì lấy từ req.user.id
-        const userId = req.user ? req.user.id : 1; 
+        const userId = req.user ? req.user.id : 1;
 
         const newBooking = await Booking.create({
             roomId,
@@ -61,13 +61,13 @@ const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status, checkOutDate } = req.body;
-        
+
         const booking = await Booking.findByPk(id);
         if (!booking) return res.status(404).json({ message: "Đơn hàng không tồn tại" });
 
         if (status) booking.status = status;
         if (checkOutDate) booking.checkOutDate = checkOutDate;
-        
+
         await booking.save();
 
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn
