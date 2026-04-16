@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/AdminNav';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { Check, X, Clock, CheckCircle, XCircle, Package, Bed, Calendar, Loader2, RefreshCw } from 'lucide-react';
+import { Check, X, Clock, CheckCircle, XCircle, Package, Bed, Calendar, Loader2, RefreshCw, Printer } from 'lucide-react';
 
 const ManageBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [printingBooking, setPrintingBooking] = useState(null);
 
   const fetchBookings = () => {
     setLoading(true);
@@ -116,6 +117,14 @@ const ManageBookings = () => {
     }
   };
 
+  // Hàm xử lý In Hóa Đơn
+  const handlePrintInvoice = (booking) => {
+    setPrintingBooking(booking);
+    setTimeout(() => {
+      window.print();
+    }, 500); // Đợi DOM cập nhật layout in
+  };
+
   // Hàm tính toán số ngày còn lại (Bộ đếm ngược)
   const getRemainingTime = (checkOutDate) => {
     const today = new Date();
@@ -162,7 +171,8 @@ const ManageBookings = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#050505] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#000] text-white p-6 md:p-10 pt-24 relative overflow-hidden">
+    <>
+      <div className="min-h-screen bg-[#050505] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#000] text-white p-6 md:p-10 pt-24 relative overflow-hidden print:hidden">
       
       {/* Background glow toàn trang */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[180px] pointer-events-none"></div>
@@ -307,8 +317,17 @@ const ManageBookings = () => {
                           </>
                         )}
 
-                        {/* 3. Đã hủy hoặc Đã hoàn thành -> Ẩn xử lý tĩnh */}
-                        {(booking.status === 'completed' || booking.status === 'cancelled') && (
+                        {/* 3. Đã hủy hoặc Đã hoàn thành */}
+                        {booking.status === 'completed' && (
+                          <button 
+                            onClick={() => handlePrintInvoice(booking)} 
+                            className="flex items-center gap-2 px-4 py-2.5 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-2xl hover:bg-sky-500 hover:text-black hover:shadow-[0_0_15px_rgba(56,189,248,0.4)] transition-all duration-300 text-[9px] font-black uppercase tracking-[0.2em]"
+                            title="In hóa đơn thanh toán"
+                          >
+                            <Printer size={14} /> Xuất HĐ
+                          </button>
+                        )}
+                        {booking.status === 'cancelled' && (
                            <div className="px-4 py-2 bg-white/5 border border-white/5 rounded-full">
                              <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Đã khép luồng</span>
                            </div>
@@ -335,6 +354,82 @@ const ManageBookings = () => {
 
       </div>
     </div>
+
+    {/* LAYOUT IN HÓA ĐƠN KHI GỌI window.print() */}
+    {printingBooking && (
+      <div className="hidden print:block fixed inset-0 bg-white text-black z-[9999] p-10 font-sans">
+        <div className="max-w-3xl mx-auto border border-gray-300 p-12 rounded-xl shadow-none">
+          <div className="flex justify-between items-start border-b-2 border-gray-200 pb-8 mb-8">
+            <div>
+              <h1 className="text-4xl font-serif italic text-amber-600 mb-2">Uy Nam Luxury Hotel</h1>
+              <p className="text-sm text-gray-500">123 Đường Ngọc Hà, Cầu Giấy, Hà Nội</p>
+              <p className="text-sm text-gray-500">Phone: (+84) 243 1234 567 | Email: contact@uynam-hotel.vn</p>
+            </div>
+            <div className="text-right">
+              <h2 className="text-3xl font-black uppercase text-gray-800 tracking-widest mb-2">Hóa Đơn</h2>
+              <p className="text-sm font-medium text-gray-600">Số HĐ: #{printingBooking.id.substring(0, 8).toUpperCase()}</p>
+              <p className="text-sm font-medium text-gray-600">Ngày in: {new Date().toLocaleDateString('vi-VN')} {new Date().toLocaleTimeString('vi-VN')}</p>
+            </div>
+          </div>
+
+          <div className="flex justify-between mb-10">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Khách hàng / Người thanh toán</p>
+              <p className="text-xl font-bold text-gray-800">{printingBooking.user?.fullName || printingBooking.customer?.fullName || 'Khách vãng lai'}</p>
+              <p className="text-sm text-gray-600">{printingBooking.user?.email || printingBooking.customer?.email || 'N/A'}</p>
+            </div>
+            <div className="text-right border border-gray-200 p-4 rounded-lg bg-gray-50">
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Thời gian lưu trú</p>
+              <p className="text-sm text-gray-800 font-bold">In: {new Date(printingBooking.checkInDate).toLocaleDateString('vi-VN')} - Out: {new Date(printingBooking.checkOutDate).toLocaleDateString('vi-VN')}</p>
+            </div>
+          </div>
+
+          <table className="w-full text-left mb-8 border-collapse">
+            <thead>
+              <tr className="bg-gray-100/50">
+                <th className="py-3 px-4 uppercase text-xs font-bold text-gray-600 border-b border-gray-200">Mô tả Dịch vụ</th>
+                <th className="py-3 px-4 uppercase text-xs font-bold text-gray-600 border-b border-gray-200 text-center">Đơn giá</th>
+                <th className="py-3 px-4 uppercase text-xs font-bold text-gray-600 border-b border-gray-200 text-center">Số lượng</th>
+                <th className="py-3 px-4 uppercase text-xs font-bold text-gray-600 border-b border-gray-200 text-right">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="py-4 px-4 border-b border-gray-100">
+                  <p className="font-bold text-gray-800">Phòng {printingBooking.room?.roomNumber || printingBooking.roomDetails?.roomNumber || '---'}</p>
+                  <p className="text-xs text-gray-500">Lưu trú tại không gian tiêu chuẩn.</p>
+                </td>
+                <td className="py-4 px-4 border-b border-gray-100 text-center text-gray-600">---</td>
+                <td className="py-4 px-4 border-b border-gray-100 text-center text-gray-600">1</td>
+                <td className="py-4 px-4 border-b border-gray-100 text-right font-bold text-gray-800">{Number(printingBooking.totalPrice || 0).toLocaleString()} VNĐ</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="flex justify-end pt-4">
+            <div className="w-1/2">
+              <div className="flex justify-between py-2 border-b border-gray-100 text-gray-600 font-medium">
+                <span>Tổng Tạm tính:</span>
+                <span>{Number(printingBooking.totalPrice || 0).toLocaleString()} VNĐ</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100 text-gray-600 font-medium">
+                <span>Thuế (VAT 10% - Đã bao gồm):</span>
+                <span>0 VNĐ</span>
+              </div>
+              <div className="flex justify-between py-3 mt-2">
+                <span className="text-xl font-black text-gray-800 uppercase">Khách Đã Thanh Toán:</span>
+                <span className="text-2xl font-black text-amber-600">{Number(printingBooking.totalPrice || 0).toLocaleString()} VNĐ</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 text-center text-sm text-gray-400 italic">
+            Cảm ơn quý khách đã đồng hành cùng Uy Nam Luxury Hotel. Hẹn gặp lại!
+          </div>
+        </div>
+      </div>
+    )}
+  </>
   );
 };
 
