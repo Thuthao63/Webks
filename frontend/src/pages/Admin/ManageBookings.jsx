@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
@@ -140,13 +140,28 @@ const ManageBookings = () => {
                         </div>
                       </td>
                       <td className="px-6 py-5">
-                        <div className="flex items-center gap-2 text-white bg-white/5 border border-white/5 w-fit px-3 py-1.5 rounded-xl font-bold text-[12px] group-hover:border-amber-500/20 transition-colors">
-                          <Bed size={14} className="text-amber-500" />
-                          P. {booking.room?.roomNumber || '---'}
+                        <div className="flex items-center gap-3">
+                          {/* Room Image Thumbnail */}
+                          <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 group-hover:border-amber-500/30 transition-colors">
+                            <img
+                              src={`/Hinh anh/Hinh${((booking.room?.id || 1) % 20) + 1}.png`}
+                              alt={`Phong ${booking.room?.roomNumber}`}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              onError={e => { e.target.style.display='none'; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                          </div>
+                          {/* Room Info */}
+                          <div>
+                            <div className="flex items-center gap-1.5 text-white font-bold text-[12px] group-hover:text-amber-400 transition-colors">
+                              <Bed size={12} className="text-amber-500" />
+                              P. {booking.room?.roomNumber || '---'}
+                            </div>
+                            <p className="text-[11px] font-black text-amber-500/80 mt-1 tracking-widest">
+                              {Number(booking.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-gray-700 uppercase font-bold">VND</span>
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-[11px] font-black text-amber-500/80 mt-2 tracking-widest">
-                          {Number(booking.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-gray-700 uppercase font-bold">VNĐ</span>
-                        </p>
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex flex-col gap-1 text-[10px] text-gray-500 font-bold uppercase tracking-widest">

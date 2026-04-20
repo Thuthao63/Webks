@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
 import { Plus, Edit, Trash2, Image as ImageIcon, Bed, DollarSign, Tag, Loader2, X, AlertCircle } from 'lucide-react';
@@ -119,10 +119,22 @@ const ManageRooms = () => {
                   <tr key={room.id} className="group hover:bg-white/[0.01] transition-all">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 group-hover:text-amber-500 group-hover:border-amber-500/30 transition-all font-black text-lg">
-                          {room.roomNumber}
+                        <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 group-hover:border-amber-500/30 transition-all duration-500">
+                          <img
+                            src={`/Hinh anh/Hinh${((room.id || 1) % 20) + 1}.png`}
+                            alt={`Phong ${room.roomNumber}`}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            onError={e => { e.target.style.display = 'none'; }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <span className="absolute bottom-1 left-0 right-0 text-center text-[9px] text-white/90 font-black tracking-widest">
+                            P.{room.roomNumber}
+                          </span>
                         </div>
-                        <span className="text-[10px] text-gray-500 font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Room ID</span>
+                        <div>
+                          <p className="text-white font-black text-sm group-hover:text-amber-400 transition-colors">#{room.id}</p>
+                          <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">Room ID</p>
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
