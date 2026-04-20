@@ -124,7 +124,7 @@ const RoomDetails = () => {
 
                     <div className="lg:col-span-7 rounded-[3rem] overflow-hidden border border-slate-100 shadow-premium relative h-[500px] lg:h-[750px] animate-in fade-in slide-in-from-right-10 duration-1000 group">
                         <img
-                            src={details.image ? `http://localhost:5000/uploads/${details.image}` : 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000'}
+                            src={`/Hinh anh/Hinh${(room.id % 20) + 1}.png`}
                             className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                             alt={`Room ${room.roomNumber}`}
                         />

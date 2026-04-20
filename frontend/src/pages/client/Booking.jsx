@@ -118,7 +118,7 @@ const Booking = () => {
 
             <div className="rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-2xl relative group">
               <img
-                src={room?.roomType?.image ? `http://localhost:5000/uploads/${room.roomType.image}` : 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop'}
+                src={`/Hinh anh/Hinh${(room?.id % 20) + 1}.png`}
                 className="w-full h-[450px] object-cover group-hover:scale-105 transition-transform duration-1000"
                 alt="Room"
               />

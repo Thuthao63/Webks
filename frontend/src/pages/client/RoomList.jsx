@@ -241,7 +241,7 @@ const RoomList = () => {
                           onClick={() => navigate(`/room/${room.id}`)}
                         >
                           <img 
-                            src={details.image ? `http://localhost:5000/uploads/${details.image}` : 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800'}
+                            src={`/Hinh anh/Hinh${(room.id % 20) + 1}.png`}
                             alt={`Room ${room.roomNumber}`}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1500ms]"
                           />

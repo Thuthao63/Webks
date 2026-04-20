@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import AdminNav from '../../components/AdminNav';
+﻿import React, { useState, useEffect } from 'react';
+import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { Loader2, RefreshCw, Star, Trash2, Bed, Search, User } from 'lucide-react';
+import { Loader2, RefreshCw, Star, Trash2, Bed, Search, User, MoreVertical, MessageSquareQuote } from 'lucide-react';
 
 const ManageReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -23,37 +23,30 @@ const ManageReviews = () => {
     color: '#fff',
     backdrop: 'rgba(0,0,0,0.8)',
     customClass: {
-      popup: 'border border-amber-500/20 rounded-[2rem] shadow-[0_0_50px_rgba(217,119,6,0.15)] backdrop-blur-2xl',
+      popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
       title: 'font-serif italic text-amber-500 text-2xl',
       htmlContainer: 'text-gray-400 text-sm',
-      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-6 py-3 rounded-xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-white/10 transition-colors'
+      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
+      cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-white/10 transition-colors'
     }
   });
 
   const handleDeleteReview = async (reviewTarget) => {
     const result = await luxurySwal.fire({
       title: `Gỡ bỏ đánh giá?`,
-      text: 'Đánh giá này sẽ bị xóa khỏi hệ thống và không hiển thị trên trang chủ phòng nữa.',
+      text: 'Đánh giá này sẽ biến mất vĩnh viễn khỏi danh sách công khai.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Đồng ý xóa',
-      cancelButtonText: 'Quay lại'
     });
 
     if (result.isConfirmed) {
       try {
         await axiosClient.delete(`/reviews/${reviewTarget.id}`);
-        luxurySwal.fire({
-          icon: 'success',
-          title: 'Đã xóa!',
-          text: `Đã xóa đánh giá thành công.`,
-          timer: 1500,
-          showConfirmButton: false
-        });
+        luxurySwal.fire({ icon: 'success', title: 'Đã xóa', timer: 1500, showConfirmButton: false });
         fetchReviews();
       } catch (err) {
-        luxurySwal.fire('Thao tác từ chối', err.response?.data?.message || 'Không thể xóa đánh giá này!', 'error');
+        luxurySwal.fire('Thất bại', 'Không thể gỡ bỏ đánh giá này', 'error');
       }
     }
   };
@@ -62,108 +55,100 @@ const ManageReviews = () => {
     return (
       <div className="flex items-center gap-0.5">
         {[...Array(5)].map((_, i) => (
-          <Star key={i} size={12} className={i < rating ? "text-amber-400 fill-amber-400" : "text-white/10"} />
+          <Star key={i} size={10} strokeWidth={3} className={i < rating ? "text-amber-500 fill-amber-500" : "text-white/10"} />
         ))}
       </div>
     );
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center gap-6 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px]"></div>
-      <Loader2 className="animate-spin text-amber-500 relative z-10" size={48} />
-      <p className="text-amber-500 text-xs tracking-[0.4em] uppercase font-bold animate-pulse relative z-10">Đang Tải Đánh Giá</p>
+    <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
+      <Loader2 className="animate-spin text-amber-500" size={40} />
+      <p className="text-gray-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang thu thập phản hồi...</p>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#050505] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#000] text-white p-6 md:p-10 pt-24 relative overflow-hidden">
-
-      {/* Background glow toàn trang */}
-      <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[180px] pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto space-y-10 relative z-10">
-
-        {/* THANH ĐIỀU HƯỚNG Admin */}
-        <AdminNav />
-
-        {/* HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-8 gap-6 backdrop-blur-sm">
-          <div>
-            <h2 className="text-5xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Quản lý <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-amber-600 not-italic font-sans font-black uppercase text-3xl ml-2 tracking-wider">Đánh giá</span>
-            </h2>
-            <p className="text-gray-400 text-[11px] mt-4 tracking-[0.4em] uppercase font-bold">Kiểm duyệt chất lượng & phản hồi từ khách hàng</p>
+    <AdminLayout title="Đánh giá & Phản hồi" subtitle="Kiểm duyệt chất lượng dịch vụ qua lăng kính của khách hàng">
+      <div className="space-y-8 pb-10">
+        
+        {/* Header/Stats Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0a0a0a] border border-white/5 p-4 rounded-3xl">
+          <div className="flex items-center gap-4 pl-2">
+             <div className="w-10 h-10 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
+                <Star size={20} />
+             </div>
+             <div>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Feedback tích lũy</p>
+                <p className="text-lg font-serif italic text-white leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{reviews.length} đánh giá từ khách lưu trú</p>
+             </div>
           </div>
-          <div className="bg-black/40 backdrop-blur-xl border border-white/10 px-8 py-4 rounded-[2rem] flex items-center gap-6 shadow-2xl">
-            <span className="text-4xl font-serif italic text-amber-500 leading-none drop-shadow-md">{reviews.length}</span>
-            <div className="flex flex-col">
-              <span className="text-[10px] text-amber-500 font-bold uppercase tracking-widest border-b border-white/10 pb-1 mb-1">Tổng Feedback</span>
-              <span onClick={fetchReviews} className="cursor-pointer hover:text-amber-400 transition-colors text-[9px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5 border-none"><RefreshCw size={10} className="hover:animate-spin" /> Đồng bộ</span>
-            </div>
-          </div>
+          <button onClick={fetchReviews} className="w-full sm:w-auto px-6 py-3 bg-white/5 border border-white/10 text-gray-400 hover:text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+            <RefreshCw size={14} /> Làm mới
+          </button>
         </div>
 
-        {/* BẢNG ĐÁNH GIÁ (Dạng danh sách Card ngang) */}
+        {/* Reviews List */}
         <div className="space-y-4">
           {reviews.length > 0 ? reviews.map(review => (
-            <div key={review.id} className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-[0_10px_40px_rgba(217,119,6,0.15)] hover:border-amber-500/30 transition-all duration-300">
-              <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+            <div key={review.id} className="group relative bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-6 shadow-xl hover:border-amber-500/10 transition-all duration-500 flex flex-col md:flex-row gap-6 items-start md:items-center">
+               
+               {/* User Info */}
+               <div className="flex items-center gap-4 min-w-[200px]">
+                 <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 group-hover:text-amber-500 transition-all">
+                   <User size={20} />
+                 </div>
+                 <div>
+                   <p className="font-black text-white group-hover:text-amber-500 transition-colors uppercase tracking-tight">
+                     {review.reviewer?.fullName || 'Khách vãng lai'}
+                   </p>
+                   <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-0.5">
+                     {new Date(review.createdAt).toLocaleDateString('vi-VN')}
+                   </p>
+                 </div>
+               </div>
 
-                {/* THÔNG TIN NGƯỜI ĐÁNH GIÁ */}
-                <div className="flex items-center gap-4 min-w-[250px]">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                    <User size={20} />
-                  </div>
-                  <div>
-                    <p className="font-bold text-white text-base group-hover:text-amber-400 transition-colors drop-shadow-sm">
-                      {review.reviewer?.fullName || 'Khách ẩn danh'}
-                    </p>
-                    <span className="flex items-center gap-1.5 text-[10px] text-gray-500 tracking-wider mt-1 uppercase font-bold">
-                      {new Date(review.createdAt).toLocaleDateString('vi-VN')}
-                    </span>
-                  </div>
-                </div>
-
-                {/* THÔNG TIN PHÒNG VÀ SAO */}
-                <div className="flex flex-col items-start gap-2 min-w-[150px]">
-                  <div className="flex items-center gap-2 text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl font-bold text-xs shadow-inner">
+               {/* Room & Rating */}
+               <div className="flex flex-col gap-2 min-w-[120px]">
+                  <div className="flex items-center gap-2 text-white bg-white/5 border border-white/5 px-3 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-widest group-hover:border-amber-500/20 transition-colors">
                     <Bed size={14} className="text-amber-500" />
-                    Phòng {review.room?.roomNumber || '---'}
+                    P. {review.room?.roomNumber || '---'}
                   </div>
-                  <div className="mt-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
+                  <div className="px-3">
                     {renderStars(review.rating)}
                   </div>
-                </div>
+               </div>
 
-                {/* NỘI DUNG ĐÁNH GIÁ */}
-                <div className="flex-1 text-sm text-gray-300 italic px-4 border-l border-white/10">
-                  "{review.comment}"
-                </div>
+               {/* Comment */}
+               <div className="flex-1 relative">
+                  <div className="text-gray-400 text-sm leading-relaxed italic group-hover:text-gray-200 transition-colors">
+                    "{review.comment}"
+                  </div>
+               </div>
 
-                {/* NÚT XÓA */}
-                <div className="ml-auto pl-4 border-l border-white/10">
-                  <button
-                    onClick={() => handleDeleteReview(review)}
-                    className="w-10 h-10 flex items-center justify-center bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-2xl hover:bg-rose-500 hover:text-black hover:shadow-[0_0_15px_rgba(251,113,133,0.4)] transition-all duration-300"
-                    title="Xóa đánh giá này"
-                  >
-                    <Trash2 size={16} strokeWidth={2} />
-                  </button>
-                </div>
-
-              </div>
+               {/* Actions */}
+               <div className="flex items-center gap-2 opacity-20 group-hover:opacity-100 transition-all ml-auto">
+                 <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-all">
+                    <MoreVertical size={16} />
+                 </button>
+                 <button
+                   onClick={() => handleDeleteReview(review)}
+                   className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-rose-500 hover:border-rose-500/20 transition-all"
+                 >
+                   <Trash2 size={16} />
+                 </button>
+               </div>
             </div>
           )) : (
-            <div className="flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-3xl p-16">
-              <Search size={40} className="text-gray-500 mb-4 opacity-50" />
-              <span className="text-gray-400 text-xs font-bold tracking-[0.2em] uppercase">Chưa có đánh giá nào</span>
+            <div className="py-24 flex flex-col items-center justify-center bg-[#0a0a0a] border border-white/5 border-dashed rounded-[3rem]">
+              <Search size={48} className="text-gray-800 mb-4" />
+              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em]">Hệ thống chưa ghi nhận phản hồi nào</p>
             </div>
           )}
         </div>
 
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

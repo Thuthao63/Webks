@@ -98,7 +98,7 @@ const Home = () => {
         <div className="grid md:grid-cols-2 gap-24 items-center">
           <div className="relative order-2 md:order-1">
             <img
-              src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&q=80"
+              src="/Hinh anh/Hinh1.png"
               className="w-full h-[600px] object-cover shadow-xl"
               alt="Luxury Suite"
             />
@@ -163,7 +163,7 @@ const Home = () => {
               >
                 <div className="relative h-56 overflow-hidden">
                   <img
-                    src={room.roomType?.image ? `http://localhost:5000/uploads/${room.roomType.image}` : 'https://images.unsplash.com/photo-1590490360182-c33d57733427'}
+                    src={`/Hinh anh/Hinh${(room.id % 20) + 1}.png`}
                     className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                     alt={room.roomNumber}
                   />
