@@ -17,6 +17,8 @@ const Profile = lazy(() => import('./pages/client/Profile'));
 const Services = lazy(() => import('./pages/client/Services'));
 const Contact = lazy(() => import('./pages/client/Contact'));
 const About = lazy(() => import('./pages/client/About'));
+const Gallery = lazy(() => import('./pages/client/Gallery'));
+const Promotions = lazy(() => import('./pages/client/Promotions'));
 const FAQ = lazy(() => import('./pages/client/FAQ'));
 const NotFound = lazy(() => import('./pages/client/NotFound'));
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -66,6 +68,8 @@ const AppContent = () => {
             {/* --- 🌍 PUBLIC ROUTES --- */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/promotions" element={<Promotions />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />

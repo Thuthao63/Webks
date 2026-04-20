@@ -45,7 +45,9 @@ const Footer = () => {
             <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B59A6D]">Khám phá</h4>
             <ul className="space-y-4">
               <FooterLink to="/about">Câu chuyện</FooterLink>
+              <FooterLink to="/promotions">Ưu đãi độc quyền</FooterLink>
               <FooterLink to="/rooms">Phòng & Suite</FooterLink>
+              <FooterLink to="/gallery">Thư viện ảnh</FooterLink>
               <FooterLink to="/services">Dịch vụ</FooterLink>
               <FooterLink to="/contact">Liên hệ</FooterLink>
             </ul>

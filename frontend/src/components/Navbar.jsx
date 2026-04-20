@@ -35,7 +35,9 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Trang chủ', path: '/' },
     { name: 'Giới thiệu', path: '/about' },
-    { name: 'Phòng nghỉ', path: '/rooms' },
+    { name: 'Ưu đãi', path: '/promotions' },
+    { name: 'Đặt phòng', path: '/rooms' },
+    { name: 'Thư viện', path: '/gallery' },
     { name: 'Dịch vụ', path: '/services' },
     { name: 'Liên hệ', path: '/contact' },
   ];
@@ -100,7 +102,7 @@ const Navbar = () => {
                       {user.fullName?.charAt(0).toUpperCase()}
                     </div>
                     <div className="hidden lg:flex flex-col items-start leading-none gap-1">
-                      <span className="text-[9px] text-[#B59A6D] font-black uppercase tracking-widest opacity-70">Hội Viên</span>
+                      <span className="text-[9px] text-[#B59A6D] font-black uppercase tracking-widest opacity-70">Tài khoản</span>
                       <span className="text-[11px] text-white font-bold">{user.fullName}</span>
                     </div>
                     <ChevronDown size={14} className={`text-[#B59A6D] transition-transform duration-500 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
@@ -113,7 +115,7 @@ const Navbar = () => {
                       <div className="absolute right-0 mt-6 w-80 bg-[#0a0a0ae6] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden animate-in fade-in zoom-in-95 duration-500">
                         <div className="p-8 bg-gradient-to-br from-[#B59A6D]/10 via-transparent to-transparent border-b border-white/5 relative">
                           <Star className="absolute top-6 right-6 text-[#B59A6D]/20" size={40} />
-                          <p className="text-[9px] text-[#B59A6D] uppercase font-black tracking-[0.3em] mb-2">Đặc quyền hội viên</p>
+                          <p className="text-[9px] text-[#B59A6D] uppercase font-black tracking-[0.3em] mb-2">Đặc quyền Tài khoản</p>
                           <p className="text-white font-serif text-xl italic leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</p>
                           <p className="text-[10px] text-gray-500 mt-2 tracking-wide font-medium">{user.email}</p>
                         </div>
@@ -204,4 +206,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;

@@ -18,11 +18,22 @@ const RoomList = () => {
 
   const [filters, setFilters] = useState({
     typeId: searchParams.get('typeId') || '',
-    minPrice: searchParams.get('minPrice') || 0,
-    maxPrice: searchParams.get('maxPrice') || 20000000,
+    minPrice: Number(searchParams.get('minPrice')) || 0,
+    maxPrice: Number(searchParams.get('maxPrice')) || 20000000,
     capacity: searchParams.get('capacity') || '',
     status: searchParams.get('status') || ''
   });
+
+  // Đồng bộ URL params vào state khi URL thay đổi (VD: từ trang chủ chuyển sang)
+  useEffect(() => {
+    setFilters({
+      typeId: searchParams.get('typeId') || '',
+      minPrice: Number(searchParams.get('minPrice')) || 0,
+      maxPrice: Number(searchParams.get('maxPrice')) || 20000000,
+      capacity: searchParams.get('capacity') || '',
+      status: searchParams.get('status') || ''
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchTypes = async () => {
@@ -62,12 +73,17 @@ const RoomList = () => {
       
       const newParams = {};
       if (filters.typeId) newParams.typeId = filters.typeId;
-      if (filters.minPrice > 0) newParams.minPrice = filters.minPrice;
-      if (filters.maxPrice < 20000000) newParams.maxPrice = filters.maxPrice;
+      if (filters.minPrice > 0) newParams.minPrice = filters.minPrice.toString();
+      if (filters.maxPrice < 20000000) newParams.maxPrice = filters.maxPrice.toString();
       if (filters.capacity) newParams.capacity = filters.capacity;
       if (filters.status) newParams.status = filters.status;
       
-      setSearchParams(newParams);
+      // Chỉ cập nhật URL nếu nó thực sự thay đổi để tránh vòng lặp
+      const currentParamsString = searchParams.toString();
+      const newParamsString = new URLSearchParams(newParams).toString();
+      if (currentParamsString !== newParamsString) {
+        setSearchParams(newParams, { replace: true });
+      }
     }, 500);
 
     return () => clearTimeout(timeoutId);
@@ -176,6 +192,22 @@ const RoomList = () => {
                   </div>
                 </div>
 
+                {/* Sức chứa */}
+                <div className="space-y-5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Sức chứa (Khách)</label>
+                  <select 
+                    value={filters.capacity}
+                    onChange={(e) => setFilters(prev => ({...prev, capacity: e.target.value}))}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-4 text-[11px] font-bold text-slate-600 outline-none focus:border-[#B59A6D]/50 transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="">Tất cả</option>
+                    <option value="1">1 Khách</option>
+                    <option value="2">2 Khách</option>
+                    <option value="4">3-4 Khách</option>
+                    <option value="10">8-10 Khách</option>
+                  </select>
+                </div>
+
                 {/* Trạng thái */}
                 <div className="space-y-5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Trạng thái</label>
@@ -199,16 +231,37 @@ const RoomList = () => {
             {/* Main Content */}
             <main className="lg:w-3/4 space-y-12">
               
-              <div className="flex justify-between items-center bg-white px-10 py-6 rounded-[2rem] border border-slate-100 shadow-sm">
+              <div className="flex flex-col md:flex-row justify-between items-center bg-white px-10 py-6 rounded-[2rem] border border-slate-100 shadow-sm gap-6">
                 <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic">
                   Khám phá <span className="text-[#B59A6D]">{rooms.length}</span> tuyệt tác lưu trú
                 </p>
-                {filtering && (
-                  <div className="flex items-center gap-3 text-[#B59A6D]">
-                    <Loader2 size={16} className="animate-spin" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Đang cập nhật...</span>
+                <div className="flex items-center gap-6">
+                  {filtering && (
+                    <div className="flex items-center gap-3 text-[#B59A6D]">
+                      <Loader2 size={16} className="animate-spin" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">Đang cập nhật...</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-4 border-l border-slate-100 pl-6">
+                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Sắp xếp:</label>
+                     <select 
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const sorted = [...rooms];
+                          if (val === 'price-asc') sorted.sort((a,b) => a.roomType?.price - b.roomType?.price);
+                          if (val === 'price-desc') sorted.sort((a,b) => b.roomType?.price - a.roomType?.price);
+                          if (val === 'capacity') sorted.sort((a,b) => b.roomType?.capacity - a.roomType?.capacity);
+                          setRooms(sorted);
+                        }}
+                        className="bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-900 outline-none cursor-pointer hover:text-[#B59A6D] transition-colors"
+                     >
+                        <option value="default">Mặc định</option>
+                        <option value="price-asc">Giá: Thấp đến Cao</option>
+                        <option value="price-desc">Giá: Cao đến Thấp</option>
+                        <option value="capacity">Sức chứa lớn nhất</option>
+                     </select>
                   </div>
-                )}
+                </div>
               </div>
 
               {rooms.length === 0 ? (

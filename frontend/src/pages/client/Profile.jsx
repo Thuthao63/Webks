@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
-import { 
-    User, Package, Calendar, CreditCard, ChevronRight, Clock, 
-    CheckCircle, XCircle, MapPin, Edit2, LogOut, Shield, 
+import {
+    User, Package, Calendar, CreditCard, ChevronRight, Clock,
+    CheckCircle, XCircle, MapPin, Edit2, LogOut, Shield,
     Star, Award, Bell, Settings, Heart, History, LayoutDashboard
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const Profile = () => {
             navigate('/login');
             return;
         }
-        
+
         const fetchData = async () => {
             try {
                 const res = await axiosClient.get(`/bookings/user/${user.id}`);
@@ -137,16 +137,16 @@ const Profile = () => {
 
     return (
         <div className="min-h-screen bg-[#050505] text-white selection:bg-[#B59A6D] selection:text-black font-sans pb-32">
-            
+
             {/* HERO BANNER SECTION */}
             <div className="relative h-[45vh] w-full overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505] z-10"></div>
-                <img 
-                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=2000" 
-                    className="w-full h-full object-cover opacity-50 contrast-125 scale-110" 
+                <img
+                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=2000"
+                    className="w-full h-full object-cover opacity-50 contrast-125 scale-110"
                     alt="Cover"
                 />
-                
+
                 <div className="absolute bottom-0 left-0 w-full px-6 md:px-20 pb-12 z-20">
                     <div className="flex flex-col md:flex-row items-end gap-10">
                         <div className="relative group">
@@ -158,7 +158,7 @@ const Profile = () => {
                             </div>
                             <div className="absolute -bottom-2 -right-2 bg-emerald-500 w-8 h-8 rounded-full border-4 border-[#050505] shadow-lg" title="Thành viên hạng kim cương"></div>
                         </div>
-                        
+
                         <div className="flex-1 space-y-4 text-center md:text-left">
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
                                 <h1 className="text-3xl md:text-5xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -182,7 +182,7 @@ const Profile = () => {
 
             {/* MAIN CONTENT AREA */}
             <div className="max-w-7xl mx-auto px-6 mt-16 flex flex-col lg:flex-row gap-12">
-                
+
                 {/* SIDEBAR NAVIGATION */}
                 <aside className="lg:w-1/4 space-y-4">
                     <div className="bg-[#0a0a0a] border border-white/5 p-4 rounded-[2.5rem] shadow-premium">
@@ -190,7 +190,7 @@ const Profile = () => {
                             { id: 'dashboard', label: 'Tổng quan', icon: LayoutDashboard },
                             { id: 'bookings', label: 'Chuyến đi của tôi', icon: History },
                             { id: 'settings', label: 'Cài đặt tài khoản', icon: Settings },
-                            { id: 'membership', label: 'Đặc quyền hội viên', icon: Award },
+                            { id: 'membership', label: 'Đặc quyền Tài khoản', icon: Award },
                         ].map((tab) => {
                             const Icon = tab.icon;
                             const isActive = activeTab === tab.id;
@@ -198,11 +198,10 @@ const Profile = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`w-full flex items-center gap-5 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
-                                        isActive 
-                                        ? 'bg-gradient-to-r from-[#B59A6D] to-[#8E7955] text-black shadow-[0_10px_30px_rgba(181,154,109,0.2)]' 
+                                    className={`w-full flex items-center gap-5 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${isActive
+                                        ? 'bg-gradient-to-r from-[#B59A6D] to-[#8E7955] text-black shadow-[0_10px_30px_rgba(181,154,109,0.2)]'
                                         : 'text-gray-500 hover:bg-white/5 hover:text-white'
-                                    }`}
+                                        }`}
                                 >
                                     <Icon size={18} strokeWidth={isActive ? 2.5 : 1.5} />
                                     {tab.label}
@@ -213,7 +212,7 @@ const Profile = () => {
 
                     <div className="bg-gradient-to-br from-[#B59A6D]/10 to-transparent border border-[#B59A6D]/20 p-8 rounded-[2.5rem] space-y-6 relative overflow-hidden">
                         <Award className="absolute -right-8 -bottom-8 text-[#B59A6D]/10 rotate-12" size={150} />
-                        <h4 className="text-xs font-black uppercase tracking-widest text-[#B59A6D]">Hạng mức Hội viên</h4>
+                        <h4 className="text-xs font-black uppercase tracking-widest text-[#B59A6D]">Hạng mức Tài khoản</h4>
                         <div className="space-y-1">
                             <p className="text-4xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>12,450</p>
                             <p className="text-[10px] uppercase font-black text-gray-500 tracking-[0.2em]">Điểm tích lũy hiện có</p>
@@ -224,7 +223,7 @@ const Profile = () => {
 
                 {/* DYNAMIC CONTENT AREA */}
                 <main className="lg:w-3/4 animate-in fade-in slide-in-from-right-4 duration-500">
-                    
+
                     {activeTab === 'dashboard' && (
                         <div className="space-y-12">
                             {/* STATS GRID */}
@@ -272,7 +271,7 @@ const Profile = () => {
                             {/* RECENT BOOKING TEASER */}
                             <div className="bg-[#0a0a0a] border border-white/5 rounded-[3rem] p-12 space-y-10 relative overflow-hidden">
                                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#B59A6D]/5 rounded-full blur-[120px] -mr-64 -mt-64"></div>
-                                
+
                                 <div className="flex justify-between items-center relative z-10">
                                     <h3 className="text-2xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Hoạt động gần đây</h3>
                                     <button onClick={() => setActiveTab('bookings')} className="text-[10px] font-black uppercase tracking-widest text-[#B59A6D] hover:text-white transition-colors">Xem toàn bộ lịch sử</button>
@@ -282,10 +281,10 @@ const Profile = () => {
                                     {myBookings.slice(0, 1).map((booking) => (
                                         <div key={booking.id} className="flex gap-10 items-center bg-white/[0.02] border border-white/5 p-8 rounded-[2rem] hover:bg-white/[0.05] transition-all">
                                             <div className="w-32 h-32 rounded-2xl overflow-hidden border border-white/10 shrink-0 shadow-2xl">
-                                                <img 
-                                                    src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} 
-                                                    className="w-full h-full object-cover" 
-                                                    alt="Room" 
+                                                <img
+                                                    src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`}
+                                                    className="w-full h-full object-cover"
+                                                    alt="Room"
                                                 />
                                             </div>
                                             <div className="flex-1 space-y-3">
@@ -327,12 +326,12 @@ const Profile = () => {
                                 {myBookings.map((booking) => (
                                     <div key={booking.id} className="group flex flex-col md:flex-row gap-10 bg-[#0a0a0a] border border-white/5 p-10 rounded-[3rem] hover:border-[#B59A6D]/30 transition-all duration-700 shadow-premium hover:shadow-2xl relative overflow-hidden">
                                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#B59A6D]/5 rounded-full blur-[80px] pointer-events-none"></div>
-                                        
+
                                         <div className="md:w-64 h-48 rounded-[2rem] overflow-hidden border border-white/5 shrink-0 shadow-2xl relative">
-                                            <img 
-                                                src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} 
-                                                className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
-                                                alt="Room" 
+                                            <img
+                                                src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`}
+                                                className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                                                alt="Room"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                                             <div className="absolute bottom-6 left-6 text-[10px] font-black uppercase text-white tracking-widest bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 shadow-lg">
@@ -371,7 +370,7 @@ const Profile = () => {
                                             </div>
 
                                             <div className="flex gap-4">
-                                                <button 
+                                                <button
                                                     onClick={() => navigate(`/room/${booking.roomId}`)}
                                                     className="flex-1 py-4 bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all"
                                                 >
@@ -393,7 +392,7 @@ const Profile = () => {
                                         </div>
                                         <h4 className="text-3xl font-serif italic text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Hành trình của bạn còn trống</h4>
                                         <p className="text-gray-500 max-w-sm mx-auto text-sm italic font-medium mb-12">Hãy để Uy Nam cùng bạn tạo nên những kỷ niệm khó quên giữa lòng đại dương.</p>
-                                        <button onClick={() => navigate('/rooms')} className="bg-[#B59A6D] text-black px-12 py-5 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-xl shadow-[#B59A6D]/10">Khám phá các phòng nghỉ</button>
+                                        <button onClick={() => navigate('/rooms')} className="bg-[#B59A6D] text-black px-12 py-5 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-xl shadow-[#B59A6D]/10">Khám phá các Đặt phòng</button>
                                     </div>
                                 )}
                             </div>
@@ -410,7 +409,7 @@ const Profile = () => {
                             <div className="grid md:grid-cols-2 gap-8 items-start">
                                 <div className="bg-[#0a0a0a] border border-white/5 p-12 rounded-[3.5rem] space-y-10 shadow-premium relative overflow-hidden">
                                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#B59A6D]/5 rounded-full blur-[80px] pointer-events-none"></div>
-                                    
+
                                     <div className="space-y-3">
                                         <h4 className="text-xl font-bold flex items-center gap-4"><User className="text-[#B59A6D]" size={20} /> Thông tin cá nhân</h4>
                                         <p className="text-xs text-gray-500">Các thông tin được sử dụng cho việc đặt phòng và liên hệ.</p>
@@ -435,7 +434,7 @@ const Profile = () => {
                                         </div>
                                     </div>
 
-                                    <button 
+                                    <button
                                         onClick={handleEditProfile}
                                         className="w-full py-5 bg-[#B59A6D] text-black text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-[#B59A6D]/10 hover:bg-white transition-all transform hover:-translate-y-1"
                                     >
@@ -454,7 +453,7 @@ const Profile = () => {
                                     <div className="bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/10 p-12 rounded-[3.5rem] space-y-6 shadow-premium relative overflow-hidden group">
                                         <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none"></div>
                                         <h4 className="text-xl font-bold flex items-center gap-4"><Bell className="text-blue-500" size={20} /> Thông báo & Ưu đãi</h4>
-                                        <p className="text-xs text-gray-500">Nhận thông báo về các ưu đãi hội viên và quản lý yêu cầu qua Email.</p>
+                                        <p className="text-xs text-gray-500">Nhận thông báo về các ưu đãi Tài khoản và quản lý yêu cầu qua Email.</p>
                                         <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[9px] font-black uppercase tracking-widest text-blue-400 hover:bg-blue-500/10 transition-all">Thiết lập thông báo</button>
                                     </div>
                                 </div>
@@ -465,7 +464,7 @@ const Profile = () => {
                     {activeTab === 'membership' && (
                         <div className="space-y-12">
                             <div className="border-b border-white/5 pb-8">
-                                <h3 className="text-3xl font-serif italic text-[#B59A6D]" style={{ fontFamily: "'Playfair Display', serif" }}>Thẻ Hội Viên Elite</h3>
+                                <h3 className="text-3xl font-serif italic text-[#B59A6D]" style={{ fontFamily: "'Playfair Display', serif" }}>Thẻ Tài khoản Elite</h3>
                                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2 italic">Dành riêng cho những chủ nhân đáng kính</p>
                             </div>
 
@@ -473,7 +472,7 @@ const Profile = () => {
                                 <div className="bg-gradient-to-br from-slate-900 to-[#050505] p-12 rounded-[4rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden group min-h-[400px] flex flex-col justify-between">
                                     <div className="absolute top-12 left-12 opacity-20"><Shield size={100} strokeWidth={0.5} /></div>
                                     <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-[#B59A6D]/20 to-transparent rounded-full blur-[100px] -mr-48 -mb-48"></div>
-                                    
+
                                     <div className="flex justify-between items-start relative z-10 leading-none">
                                         <span className="text-3xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Luxury</span>
                                         <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest border border-amber-500/20 px-4 py-2 rounded-xl backdrop-blur-md bg-black/40 shadow-xl">Platinum Elite Members</span>
