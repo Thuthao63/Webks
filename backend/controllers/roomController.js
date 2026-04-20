@@ -1,14 +1,43 @@
+const { Op } = require('sequelize');
 const Room = require('../models/Room');
 const RoomType = require('../models/RoomType');
 
-// 1. Lấy tất cả phòng
+// 1. Lấy tất cả phòng (Có hỗ trợ lọc)
 const getAllRooms = async (req, res) => {
     try {
+        const { typeId, minPrice, maxPrice, capacity, status } = req.query;
+        
+        // Điều kiện lọc cho bảng Rooms
+        let whereCondition = {};
+        if (status) whereCondition.status = status;
+        if (typeId) whereCondition.typeId = typeId;
+
+        // Điều kiện lọc cho bảng RoomType (giá, sức chứa)
+        let typeWhereCondition = {};
+        if (minPrice && maxPrice) {
+            typeWhereCondition.price = { [Op.between]: [Number(minPrice), Number(maxPrice)] };
+        } else if (minPrice) {
+            typeWhereCondition.price = { [Op.gte]: Number(minPrice) };
+        } else if (maxPrice) {
+            typeWhereCondition.price = { [Op.lte]: Number(maxPrice) };
+        }
+
+        if (capacity) {
+            typeWhereCondition.capacity = { [Op.gte]: Number(capacity) };
+        }
+
         const rooms = await Room.findAll({
-            include: [{ model: RoomType, as: 'roomType' }]
+            where: whereCondition,
+            include: [{ 
+                model: RoomType, 
+                as: 'roomType',
+                where: Object.keys(typeWhereCondition).length > 0 ? typeWhereCondition : undefined
+            }]
         });
+
         res.status(200).json(rooms);
     } catch (error) {
+        console.error("Lỗi lấy danh sách phòng:", error);
         res.status(500).json({ message: "Lỗi lấy danh sách phòng" });
     }
 };

@@ -14,8 +14,12 @@ const BookingBar = () => {
     const [guests, setGuests] = useState(2);
 
     const handleSearch = () => {
-        // Điều hướng đến danh sách phòng, có thể kèm theo state hoặc đơn giản là chuyển hướng
-        navigate('/rooms');
+        const queryParams = new URLSearchParams();
+        if (startDate) queryParams.append('checkIn', startDate.toISOString());
+        if (endDate) queryParams.append('checkOut', endDate.toISOString());
+        queryParams.append('capacity', guests);
+        
+        navigate(`/rooms?${queryParams.toString()}`);
     };
 
     return (
