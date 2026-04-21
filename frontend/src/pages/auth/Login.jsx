@@ -61,7 +61,7 @@ const Login = () => {
     >
       <form onSubmit={handleLogin} className="space-y-5">
         {/* Email */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -70,20 +70,20 @@ const Login = () => {
           <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
           <div className="relative group">
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
-            <input 
+            <input
               name="email"
-              type="email" 
-              required 
+              type="email"
+              required
               placeholder="email@luxury.com"
               autoComplete="username"
               className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
-              onChange={(e) => setFormData({...formData, email: e.target.value})} 
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
         </motion.div>
 
         {/* Mật khẩu */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -97,16 +97,16 @@ const Login = () => {
           </div>
           <div className="relative group">
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
-            <input 
+            <input
               name="password"
-              type={showPassword ? "text" : "password"} 
-              required 
+              type={showPassword ? "text" : "password"}
+              required
               placeholder="••••••••"
               autoComplete="current-password"
               className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
-              onChange={(e) => setFormData({...formData, password: e.target.value})} 
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
-            <button 
+            <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors"
@@ -115,31 +115,31 @@ const Login = () => {
             </button>
           </div>
         </motion.div>
-        
-        <motion.button 
+
+        <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          type="submit" 
-          disabled={loading} 
+          type="submit"
+          disabled={loading}
           className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-4 flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-amber-600/10 uppercase text-[12px] tracking-wider"
         >
-          {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />} 
+          {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />}
           Đăng Nhập
         </motion.button>
       </form>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
         className="text-center mt-10"
       >
         <p className="text-gray-500 text-[11px] uppercase tracking-wider">
-          Nếu chưa có tài khoản? 
-          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase text-[12px]">Khám phá & Đăng ký</Link>
+          Nếu chưa có tài khoản?
+          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase text-[12px]">Đăng ký</Link>
         </p>
       </motion.div>
     </AuthLayout>
