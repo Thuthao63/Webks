@@ -15,6 +15,7 @@ const Review = require('./models/Review');
 const Contact = require('./models/Contact');
 const Service = require('./models/Service');
 const BookingService = require('./models/BookingService');
+const Discount = require('./models/Discount');
 
 // ========================================================
 // BỘ NÃO TRUNG TÂM: ĐỊNH NGHĨA QUAN HỆ TRỰC TIẾP
@@ -37,6 +38,10 @@ Review.belongsTo(Room, { foreignKey: 'roomId', as: 'room' });
 Booking.belongsToMany(Service, { through: BookingService, foreignKey: 'bookingId', as: 'services' });
 Service.belongsToMany(Booking, { through: BookingService, foreignKey: 'serviceId', as: 'bookings' });
 
+// Mối quan hệ Giảm giá
+Discount.belongsTo(RoomType, { foreignKey: 'roomTypeId', as: 'roomType' });
+RoomType.hasMany(Discount, { foreignKey: 'roomTypeId', as: 'discounts' });
+
 // ========================================================
 // 3. KHỞI TẠO EXPRESS & MIDDLEWARE
 // ========================================================
@@ -55,6 +60,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const userRoutes = require('./routes/userRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
+const discountRoutes = require('./routes/discountRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/rooms', roomRoutes);
@@ -63,6 +69,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/discounts', discountRoutes);
 
 app.get('/', (req, res) => {
     res.send('🚀 Hệ thống Backend Khách sạn Uy Nam đang sẵn sàng!');

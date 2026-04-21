@@ -60,14 +60,15 @@ const getAllBookings = async (req, res) => {
 const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status, checkOutDate } = req.body;
-
+        const { status, checkOutDate, totalPrice } = req.body;
+        
         const booking = await Booking.findByPk(id);
         if (!booking) return res.status(404).json({ message: "Đơn hàng không tồn tại" });
-
+        
         if (status) booking.status = status;
         if (checkOutDate) booking.checkOutDate = checkOutDate;
-
+        if (totalPrice) booking.totalPrice = totalPrice;
+        
         await booking.save();
 
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn

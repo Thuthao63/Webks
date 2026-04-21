@@ -8,17 +8,26 @@ const RoomDetails = () => {
     const navigate = useNavigate();
     const [room, setRoom] = useState(null);
     const [reviews, setReviews] = useState([]);
+    const [discount, setDiscount] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [roomRes, reviewRes] = await Promise.all([
+                const [roomRes, reviewRes, discountRes] = await Promise.all([
                     axiosClient.get(`/rooms/${roomId}`),
-                    axiosClient.get(`/reviews/${roomId}`)
+                    axiosClient.get(`/reviews/${roomId}`),
+                    axiosClient.get('/discounts/active')
                 ]);
-                setRoom(roomRes.data);
+                const roomData = roomRes.data;
+                setRoom(roomData);
                 setReviews(reviewRes.data);
+
+                // Tìm khuyến mãi cho hạng phòng này
+                const activeDiscount = (discountRes.data || []).find(d => 
+                    d.roomTypeId === (roomData.roomType?.id || roomData.typeId)
+                );
+                setDiscount(activeDiscount);
             } catch (err) {
                 console.error("Lỗi lấy chi tiết phòng:", err);
             } finally {
@@ -101,10 +110,21 @@ const RoomDetails = () => {
 
                         <div className="space-y-10">
                             <div>
-                                <p className="text-[10px] text-slate-400 uppercase tracking-[0.4em] font-black mb-3 italic">Mức phí lưu trú tiêu chuẩn</p>
-                                <p className="text-5xl text-[#B59A6D] font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                    {Number(details.price || 0).toLocaleString()}<span className="text-[10px] text-slate-400 not-italic uppercase font-black tracking-[0.3em] ml-4">VNĐ / ĐÊM</span>
+                                <p className="text-[10px] text-slate-400 uppercase tracking-[0.4em] font-black mb-3 italic flex items-center gap-2">
+                                    Mức phí lưu trú tiêu chuẩn
+                                    {discount && <span className="bg-rose-500 text-white px-2 py-0.5 rounded text-[8px] animate-pulse">-{Math.floor(discount.discountPercent)}% OFF</span>}
                                 </p>
+                                <div className="flex items-baseline gap-4">
+                                    {discount && (
+                                        <p className="text-xl text-slate-300 line-through font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                            {Number(details.price || 0).toLocaleString()}
+                                        </p>
+                                    )}
+                                    <p className="text-5xl text-[#B59A6D] font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                        {(Number(details.price || 0) * (discount ? (1 - discount.discountPercent / 100) : 1)).toLocaleString()}
+                                        <span className="text-[10px] text-slate-400 not-italic uppercase font-black tracking-[0.3em] ml-4">VNĐ / ĐÊM</span>
+                                    </p>
+                                </div>
                             </div>
                             <button
                                 onClick={() => navigate(`/booking/${room.id}`)}

@@ -31,15 +31,127 @@ const ManageBookings = () => {
     backdrop: 'rgba(0,0,0,0.8)',
     customClass: {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
-      title: 'font-serif italic text-amber-500 text-2xl',
+      title: 'font-sans font-bold text-amber-500 text-2xl',
       htmlContainer: 'text-gray-400 text-sm',
       confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
       cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-white/10 transition-colors'
     }
   });
 
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (id, status, bookingData = null) => {
     let actionText = status === 'confirmed' ? 'Xác nhận' : (status === 'cancelled' ? 'Hủy bỏ' : 'Hoàn tất');
+    
+    // Nếu là Trả phòng (completed), xử lý logic thông minh
+    if (status === 'completed' && bookingData) {
+      const now = new Date();
+      const scheduledOut = new Date(bookingData.checkOutDate);
+      const isLate = now > scheduledOut;
+      const hoursLate = isLate ? Math.ceil((now - scheduledOut) / (1000 * 60 * 60)) : 0;
+      
+      let finalPrice = Number(bookingData.totalPrice);
+      let surchargeText = "Khách trả phòng đúng hạn.";
+
+      if (isLate) {
+        surchargeText = `Khách trả phòng muộn ${hoursLate} giờ. Bạn có muốn thêm phụ phí không?`;
+        
+        const { value: surchargeChoice } = await luxurySwal.fire({
+          title: 'Xử lý trả phòng muộn',
+          text: surchargeText,
+          icon: 'clock',
+          showCancelButton: true,
+          confirmButtonText: 'Có, tính phụ phí',
+          cancelButtonText: 'Không, giữ nguyên giá',
+          input: 'select',
+          inputOptions: {
+            '0': 'Giữ nguyên giá gốc',
+            '30': 'Phụ phí 30% giá phòng',
+            '50': 'Phụ phí 50% giá phòng',
+            '100': 'Phụ phí 100% (Thêm 1 ngày)',
+            'custom': 'Nhập số tiền tùy chỉnh'
+          },
+          inputPlaceholder: 'Chọn mức phụ phí'
+        });
+
+        if (surchargeChoice === 'custom') {
+          const { value: customAmountRaw } = await luxurySwal.fire({
+            title: 'Nhập số tiền phụ phí',
+            input: 'text',
+            inputLabel: 'Số tiền (VNĐ)',
+            placeholder: 'Ví dụ: 100.000',
+            showCancelButton: true,
+            didOpen: () => {
+              const input = Swal.getInput();
+              input.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\D/g, '');
+                e.target.value = new Intl.NumberFormat('de-DE').format(val);
+              });
+            },
+            preConfirm: (value) => {
+              if (!value) return Swal.showValidationMessage('Vui lòng nhập số tiền');
+              return value.replace(/\./g, ''); // Trả về số nguyên để tính toán
+            }
+          });
+          if (customAmountRaw) finalPrice += Number(customAmountRaw);
+        } else if (surchargeChoice && surchargeChoice !== '0') {
+          // Tính phụ phí dựa trên giá phòng 1 ngày (ước tính từ tổng price / số ngày nếu có thể, hoặc dùng giá gốc)
+          // Ở đây đơn giản là tính % trên tổng đơn để Admin dễ kiểm soát
+          const percent = Number(surchargeChoice) / 100;
+          finalPrice += (finalPrice * percent);
+        }
+      } else {
+        const confirmEarly = await luxurySwal.fire({
+          title: 'Xác nhận trả phòng sớm',
+          text: "Khách trả phòng trước thời hạn. Bạn có muốn giảm trừ tiền không?",
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Giảm trừ tiền',
+          cancelButtonText: 'Giữ nguyên giá'
+        });
+
+        if (confirmEarly.isConfirmed) {
+          const { value: reductionRaw } = await luxurySwal.fire({
+            title: 'Nhập số tiền giảm trừ',
+            input: 'text',
+            inputLabel: 'Số tiền (VNĐ)',
+            placeholder: 'Ví dụ: 200.000',
+            showCancelButton: true,
+            didOpen: () => {
+              const input = Swal.getInput();
+              input.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\D/g, '');
+                e.target.value = new Intl.NumberFormat('de-DE').format(val);
+              });
+            },
+            preConfirm: (value) => {
+              if (!value) return Swal.showValidationMessage('Vui lòng nhập số tiền');
+              return value.replace(/\./g, '');
+            }
+          });
+          if (reductionRaw) finalPrice -= Number(reductionRaw);
+        }
+      }
+
+      // Cuối cùng gửi request cập nhật
+      const finalConfirm = await luxurySwal.fire({
+        title: 'Chốt hóa đơn',
+        text: `Tổng tiền cuối cùng: ${finalPrice.toLocaleString()} VNĐ. Xác nhận hoàn tất lưu trú?`,
+        icon: 'success',
+        showCancelButton: true
+      });
+
+      if (finalConfirm.isConfirmed) {
+        try {
+          await axiosClient.put(`/bookings/${id}`, { status: 'completed', totalPrice: finalPrice });
+          luxurySwal.fire({ icon: 'success', title: 'Đã hoàn tất lưu trú', timer: 1500, showConfirmButton: false });
+          fetchBookings();
+        } catch (err) {
+          luxurySwal.fire('Lỗi', 'Không thể cập nhật hồ sơ', 'error');
+        }
+      }
+      return;
+    }
+
+    // Luồng mặc định cho Xác nhận/Hủy
     const result = await luxurySwal.fire({
       title: `${actionText} yêu cầu?`,
       text: "Hành động này sẽ cập nhật trạng thái đơn đặt phòng trên toàn hệ thống.",
@@ -190,8 +302,8 @@ const ManageBookings = () => {
                               </button>
                             </>
                           )}
-                          {booking.status === 'confirmed' && (
-                            <button onClick={() => updateStatus(booking.id, 'completed')} className="px-4 py-2 rounded-xl bg-amber-500 text-black font-black text-[10px] uppercase tracking-widest hover:shadow-luxury">
+                           {booking.status === 'confirmed' && (
+                            <button onClick={() => updateStatus(booking.id, 'completed', booking)} className="px-4 py-2 rounded-xl bg-amber-500 text-black font-black text-[10px] uppercase tracking-widest hover:shadow-luxury">
                               Trả phòng
                             </button>
                           )}

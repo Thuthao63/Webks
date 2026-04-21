@@ -33,6 +33,7 @@ const ManageContacts = lazy(() => import('./pages/Admin/ManageContacts'));
 const ManageUsers = lazy(() => import('./pages/Admin/ManageUsers'));
 const ManageReviews = lazy(() => import('./pages/Admin/ManageReviews'));
 const ManageServices = lazy(() => import('./pages/Admin/ManageServices'));
+const ManageDiscounts = lazy(() => import('./pages/Admin/ManageDiscounts'));
 
 // --- 🛡️ HÀM KIỂM TRA QUYỀN TRUY CẬP ---
 const AuthGuard = ({ children, requireAdmin = false }) => {
@@ -93,6 +94,7 @@ const AppContent = () => {
             <Route path="/admin/users" element={<AuthGuard requireAdmin={true}><ManageUsers /></AuthGuard>} />
             <Route path="/admin/reviews" element={<AuthGuard requireAdmin={true}><ManageReviews /></AuthGuard>} />
             <Route path="/admin/services" element={<AuthGuard requireAdmin={true}><ManageServices /></AuthGuard>} />
+            <Route path="/admin/discounts" element={<AuthGuard requireAdmin={true}><ManageDiscounts /></AuthGuard>} />
 
             {/* --- 404 FALLBACK --- */}
             <Route path="/404" element={<NotFound />} />

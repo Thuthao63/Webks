@@ -22,6 +22,7 @@
   body {
     background-color: var(--base-alabaster);
     color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -64,6 +65,11 @@
     transition: all 700ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* Fix for SweetAlert titles and headers appearing broken */
+  .swal2-title, .swal2-content {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  }
+
   .admin-scrollbar::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -99,4 +105,14 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-800);
+}
+
+/* Fix for Browser Auto-fill in Dark Theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #111 inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
 }

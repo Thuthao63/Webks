@@ -63,8 +63,8 @@ const Navbar = () => {
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#B59A6D] rounded-full blur-[2px] animate-pulse"></div>
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-serif tracking-[0.3em] text-white uppercase leading-none italic" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
-              <span className="text-[8px] tracking-[0.5em] text-[#B59A6D] uppercase font-black mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
+              <span className="text-2xl font-serif tracking-tight text-white uppercase leading-none italic" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+              <span className="text-[10px] tracking-[0.2em] text-[#B59A6D] uppercase font-bold mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
             </div>
           </Link>
 
@@ -74,7 +74,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-[#B59A6D]' : 'text-gray-300 hover:text-white'
+                className={`text-[13px] uppercase tracking-wider font-semibold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-[#B59A6D]' : 'text-gray-300 hover:text-white'
                   }`}
               >
                 {link.name}
@@ -102,8 +102,8 @@ const Navbar = () => {
                       {user.fullName?.charAt(0).toUpperCase()}
                     </div>
                     <div className="hidden lg:flex flex-col items-start leading-none gap-1">
-                      <span className="text-[9px] text-[#B59A6D] font-black uppercase tracking-widest opacity-70">Tài khoản</span>
-                      <span className="text-[11px] text-white font-bold">{user.fullName}</span>
+                      <span className="text-[10px] text-[#B59A6D] font-bold uppercase tracking-widest opacity-70">Tài khoản</span>
+                      <span className="text-[13px] text-white font-semibold">{user.fullName}</span>
                     </div>
                     <ChevronDown size={14} className={`text-[#B59A6D] transition-transform duration-500 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
@@ -112,28 +112,64 @@ const Navbar = () => {
                   {isUserMenuOpen && (
                     <>
                       <div className="fixed inset-0 z-[-1]" onClick={() => setIsUserMenuOpen(false)}></div>
-                      <div className="absolute right-0 mt-6 w-80 bg-[#0a0a0ae6] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden animate-in fade-in zoom-in-95 duration-500">
-                        <div className="p-8 bg-gradient-to-br from-[#B59A6D]/10 via-transparent to-transparent border-b border-white/5 relative">
-                          <Star className="absolute top-6 right-6 text-[#B59A6D]/20" size={40} />
-                          <p className="text-[9px] text-[#B59A6D] uppercase font-black tracking-[0.3em] mb-2">Đặc quyền Tài khoản</p>
-                          <p className="text-white font-serif text-xl italic leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</p>
-                          <p className="text-[10px] text-gray-500 mt-2 tracking-wide font-medium">{user.email}</p>
+                      <div className="absolute right-0 mt-6 w-80 bg-white/90 backdrop-blur-3xl border border-slate-200/60 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+                        {/* Member Card Header - Light Version */}
+                        <div className="p-8 bg-gradient-to-br from-[#B59A6D]/10 to-[#F9F8F6] relative overflow-hidden group/header">
+                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-[#B59A6D]/5 to-transparent opacity-0 group-hover/header:opacity-100 transition-opacity duration-1000"></div>
+                          <Star className="absolute top-6 right-6 text-[#B59A6D] opacity-10 group-hover/header:opacity-40 group-hover/header:rotate-12 transition-all duration-700" size={48} strokeWidth={1} />
+                          
+                          <div className="relative z-10">
+                            <span className="text-[9px] text-[#B59A6D] uppercase font-black tracking-[0.4em] mb-4 block">Thành viên đặc quyền</span>
+                            <h4 className="text-slate-900 font-serif text-2xl italic leading-none mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</h4>
+                            <p className="text-[11px] text-slate-500 tracking-wider font-medium flex items-center gap-2">
+                              <span className="w-1 h-1 bg-[#B59A6D] rounded-full"></span>
+                              {user.email}
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="p-4 space-y-1">
+                        <div className="p-4 space-y-1 bg-white/50">
                           {user.role?.toLowerCase() === 'admin' && (
-                            <button onClick={() => { navigate('/admin/dashboard'); setIsUserMenuOpen(false); }} className="w-full flex items-center gap-4 px-5 py-4 text-[#B59A6D] hover:bg-[#B59A6D]/5 rounded-2xl transition-all duration-300 text-[10px] font-black uppercase tracking-[0.2em]">
-                              <Settings size={18} className="opacity-70" /> Quản trị hệ thống
+                            <button 
+                              onClick={() => { navigate('/admin/dashboard'); setIsUserMenuOpen(false); }} 
+                              className="w-full flex items-center justify-between px-5 py-4 text-[#B59A6D] hover:bg-amber-50 rounded-2xl transition-all duration-500 group/item border border-transparent hover:border-[#B59A6D]/10"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 rounded-xl bg-amber-500/5 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                  <Settings size={18} />
+                                </div>
+                                <div>
+                                  <p className="text-[11px] font-black uppercase tracking-widest leading-none mb-1">Quản trị hệ thống</p>
+                                  <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">Toàn quyền kiểm soát</p>
+                                </div>
+                              </div>
+                              <div className="w-1.5 h-1.5 bg-[#B59A6D] rounded-full opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
                             </button>
                           )}
-                          <button onClick={() => { navigate('/profile'); setIsUserMenuOpen(false); }} className="w-full flex items-center gap-4 px-5 py-4 text-gray-300 hover:bg-white/5 rounded-2xl transition-all duration-300 text-[10px] font-bold uppercase tracking-[0.1em]">
-                            <User size={18} className="opacity-50" /> Hồ sơ cá nhân
+                          
+                          <button 
+                            onClick={() => { navigate('/profile'); setIsUserMenuOpen(false); }} 
+                            className="w-full flex items-center justify-between px-5 py-4 text-slate-600 hover:bg-slate-50 rounded-2xl transition-all duration-500 group/item border border-transparent hover:border-slate-100"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                <User size={18} className="text-slate-400 group-hover:text-[#B59A6D] transition-colors" />
+                              </div>
+                              <div>
+                                <p className="text-[11px] font-black uppercase tracking-widest leading-none mb-1">Hồ sơ cá nhân</p>
+                                <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">Cài đặt của khách</p>
+                              </div>
+                            </div>
                           </button>
                         </div>
 
-                        <div className="p-4 bg-white/5 mt-2">
-                          <button onClick={handleLogout} className="w-full flex items-center gap-4 px-5 py-4 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all duration-300 text-[10px] font-black uppercase tracking-[0.3em]">
-                            <LogOut size={18} /> Đăng xuất
+                        <div className="p-6 bg-slate-50/80 border-t border-slate-100">
+                          <button 
+                            onClick={handleLogout} 
+                            className="w-full flex items-center justify-center gap-3 py-4 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white rounded-2xl transition-all duration-500 text-[10px] font-black uppercase tracking-[0.3em] relative group/logout overflow-hidden shadow-sm"
+                          >
+                            <LogOut size={16} className="relative z-10" />
+                            <span className="relative z-10">Đăng xuất ngay</span>
                           </button>
                         </div>
                       </div>
@@ -147,7 +183,7 @@ const Navbar = () => {
                 className="relative group px-10 py-3.5 overflow-hidden rounded-full transition-all duration-700"
               >
                 <div className="absolute inset-0 bg-[#B59A6D] group-hover:bg-white transition-colors duration-700"></div>
-                <span className="relative z-10 text-slate-900 text-[10px] font-black uppercase tracking-[0.3em] group-hover:text-[#B59A6D] transition-colors duration-700">
+                <span className="relative z-10 text-slate-900 text-[12px] font-bold uppercase tracking-wider group-hover:text-[#B59A6D] transition-colors duration-700">
                   Truy cập
                 </span>
                 <div className="absolute -inset-1 bg-[#B59A6D]/30 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -176,7 +212,7 @@ const Navbar = () => {
           }`}>
           <div className="space-y-12 mt-10">
             <div className="space-y-2 border-b border-white/10 pb-6">
-              <p className="text-[#B59A6D] text-[10px] uppercase font-black tracking-[0.4em]">Danh mục</p>
+              <p className="text-[#B59A6D] text-[12px] uppercase font-bold tracking-widest">Danh mục</p>
               <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>Menu</h4>
             </div>
 
@@ -186,7 +222,7 @@ const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-xl font-bold uppercase tracking-[0.3em] transition-all duration-500 ${location.pathname === link.path ? 'text-[#B59A6D] translate-x-4' : 'text-gray-400 hover:text-white'
+                  className={`text-xl font-bold uppercase tracking-widest transition-all duration-500 ${location.pathname === link.path ? 'text-[#B59A6D] translate-x-4' : 'text-gray-400 hover:text-white'
                     }`}
                   style={{ transitionDelay: `${idx * 50}ms` }}
                 >

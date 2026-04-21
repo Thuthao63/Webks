@@ -13,6 +13,7 @@ const RoomList = () => {
   
   const [rooms, setRooms] = useState([]);
   const [roomTypes, setRoomTypes] = useState([]);
+  const [activeDiscounts, setActiveDiscounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filtering, setFiltering] = useState(false);
 
@@ -36,15 +37,19 @@ const RoomList = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const fetchTypes = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axiosClient.get('/rooms/types');
-        setRoomTypes(res.data);
+        const [typesRes, discountsRes] = await Promise.all([
+          axiosClient.get('/rooms/types'),
+          axiosClient.get('/discounts/active')
+        ]);
+        setRoomTypes(typesRes.data);
+        setActiveDiscounts(discountsRes.data);
       } catch (err) {
-        console.error("Lỗi lấy loại phòng:", err);
+        console.error("Lỗi lấy dữ liệu khởi tạo:", err);
       }
     };
-    fetchTypes();
+    fetchData();
   }, []);
 
   const fetchRooms = useCallback(async (currentFilters) => {
@@ -284,6 +289,13 @@ const RoomList = () => {
                     const details = room.roomType || {}; 
                     const isAvailable = room.status === 'Available';
                     
+                    // Tìm khuyến mãi cho hạng phòng này
+                    const discount = activeDiscounts.find(d => d.roomTypeId === details.id);
+                    const originalPrice = Number(details.price || 0);
+                    const discountedPrice = discount 
+                      ? originalPrice * (1 - Number(discount.discountPercent) / 100) 
+                      : originalPrice;
+                    
                     return (
                       <div 
                         key={room.id} 
@@ -301,6 +313,11 @@ const RoomList = () => {
                           <div className={`absolute top-6 left-6 backdrop-blur-md px-4 py-2 border text-[9px] font-black uppercase tracking-widest rounded-xl transition-colors ${isAvailable ? 'bg-emerald-50/90 text-emerald-600 border-emerald-100' : 'bg-red-50/90 text-red-600 border-red-100'}`}>
                             {isAvailable ? 'Khả dụng' : 'Hết phòng'}
                           </div>
+                          {discount && (
+                            <div className="absolute top-6 right-6 bg-rose-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg animate-pulse">
+                              Ưu đãi -{Math.floor(discount.discountPercent)}%
+                            </div>
+                          )}
                           <div className="absolute bottom-6 right-6 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-xl text-[10px] font-black text-[#B59A6D] border border-white/10 uppercase tracking-widest">
                             Phòng {room.roomNumber}
                           </div>
@@ -319,8 +336,13 @@ const RoomList = () => {
                               <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black italic">Private Collection</p>
                             </div>
                             <div className="text-right">
+                              {discount && (
+                                <p className="text-[10px] text-slate-300 line-through font-bold decoration-rose-500/30">
+                                  {originalPrice.toLocaleString()}đ
+                                </p>
+                              )}
                               <p className="text-[#B59A6D] font-serif text-2xl italic leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                {Number(details.price || 0).toLocaleString()}
+                                {discountedPrice.toLocaleString()}
                               </p>
                               <span className="text-[9px] text-slate-300 uppercase tracking-widest font-black mt-1 block">VNĐ / Đêm</span>
                             </div>

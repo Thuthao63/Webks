@@ -16,6 +16,7 @@ const Booking = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const [room, setRoom] = useState(null);
+  const [activeDiscounts, setActiveDiscounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Quản lý ngày bằng đối tượng Date để DatePicker hoạt động mượt mà
@@ -25,17 +26,21 @@ const Booking = () => {
   const [days, setDays] = useState(1);
 
   useEffect(() => {
-    const fetchRoom = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axiosClient.get(`/rooms/${roomId}`);
-        setRoom(res.data);
+        const [roomRes, discountRes] = await Promise.all([
+          axiosClient.get(`/rooms/${roomId}`),
+          axiosClient.get('/discounts/active')
+        ]);
+        setRoom(roomRes.data);
+        setActiveDiscounts(discountRes.data || []);
       } catch (err) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Không tìm thấy phòng!' });
+        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Không tìm thấy thông tin phòng!' });
       } finally {
         setLoading(false);
       }
     };
-    fetchRoom();
+    fetchData();
   }, [roomId]);
 
   // Logic tính tiền tự động
@@ -47,7 +52,12 @@ const Booking = () => {
 
       if (diffDays > 0) {
         setDays(diffDays);
-        setTotalPrice(diffDays * price);
+        
+        // Tính giảm giá
+        const activeDiscount = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
+        const discountFactor = activeDiscount ? (1 - Number(activeDiscount.discountPercent) / 100) : 1;
+        
+        setTotalPrice(Math.round(diffDays * price * discountFactor));
       } else {
         setDays(0);
         setTotalPrice(0);
@@ -178,8 +188,14 @@ const Booking = () => {
                   </div>
                   <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-gray-400 font-bold">
                     <span>Đơn giá</span>
-                    <span className="text-gray-900">{(room?.roomType?.price || 0).toLocaleString()}đ</span>
+                    <span className="text-gray-900">{(room?.roomType?.price || 0).toLocaleString()}đ / đêm</span>
                   </div>
+                  {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
+                    <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-rose-500 font-bold">
+                      <span>Ưu đãi áp dụng</span>
+                      <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-end pt-4">
                     <span className="text-[10px] font-black uppercase text-amber-600 tracking-[0.2em]">Tổng giá trị</span>
                     <span className="text-4xl font-serif text-gray-900 italic" style={{ fontFamily: "'Playfair Display', serif" }}>

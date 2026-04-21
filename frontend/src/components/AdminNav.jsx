@@ -23,6 +23,7 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
     { name: 'Dịch vụ', path: '/admin/services', icon: <Coffee size={20} /> },
     { name: 'Đơn hàng', path: '/admin/bookings', icon: <CalendarCheck size={20} /> },
     { name: 'Đánh giá', path: '/admin/reviews', icon: <Star size={20} /> },
+    { name: 'Giảm giá', path: '/admin/discounts', icon: <Sparkles size={20} /> },
     { name: 'Hộp thư', path: '/admin/contacts', icon: <MessageSquare size={20} /> },
     { name: 'Tài khoản', path: '/admin/users', icon: <Users size={20} /> },
   ];
