@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
-import { Mail, Lock, Phone, User, Eye, EyeOff, ArrowRight, Bed, Loader2 } from 'lucide-react';
+import { Mail, Lock, Phone, User, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
+import AuthLayout from './AuthLayout';
+import registerBg from '../../assets/auth/register-bg.png';
 
 const Register = () => {
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '', phone: '' });
@@ -54,124 +57,130 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] relative overflow-hidden px-4 py-12">
-      {/* Hiệu ứng ánh sáng nền mờ đồng bộ với trang Login */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(180,130,50,0.05),transparent_60%)]"></div>
-
-      {/* Độ rộng chuẩn 480px để bằng với khung Login */}
-      <div className="w-full max-w-[480px] relative z-10">
-        <div className="bg-white/[0.03] backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
-          
-          {/* Header */}
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-amber-500/30 mb-6">
-              <Bed className="text-amber-500 w-8 h-8" />
-            </div>
-            <h2 className="text-3xl font-serif text-white mb-2 tracking-widest uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Đăng Ký
-            </h2>
-            <p className="text-amber-500/60 text-[10px] uppercase tracking-[0.4em] font-bold">Tạo tài khoản Uy Nam Luxury Hotel</p>
-          </div>
-
-          <form onSubmit={handleRegister} className="space-y-5">
-            {/* Họ và tên */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Họ và tên</label>
-              <InputGroup 
-                icon={<User size={18}/>} 
-                placeholder="Nhập họ và tên" 
-                onChange={(val) => setFormData({...formData, fullName: val})} 
-              />
-            </div>
-
-            {/* Số điện thoại */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Số điện thoại</label>
-              <InputGroup 
-                icon={<Phone size={18}/>} 
-                placeholder="Nhập số điện thoại" 
-                onChange={(val) => setFormData({...formData, phone: val})} 
-              />
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Địa chỉ Email</label>
-              <InputGroup 
-                icon={<Mail size={18}/>} 
-                type="email" 
-                placeholder="email@example.com" 
-                onChange={(val) => setFormData({...formData, email: val})} 
-              />
-            </div>
-
-            {/* Mật khẩu */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Mật khẩu</label>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={18} />
-                <input 
-                  type={showPass ? "text" : "password"} 
-                  placeholder="Nhập mật khẩu" 
-                  className="w-full bg-white/5 border border-white/10 p-4 pl-12 pr-12 rounded-xl text-sm text-white focus:border-amber-500/50 outline-none transition-all placeholder:text-gray-600"
-                  onChange={(e) => setFormData({...formData, password: e.target.value})} 
-                  required 
-                />
-                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
-                  {showPass ? <EyeOff size={18}/> : <Eye size={18}/>}
-                </button>
-              </div>
-            </div>
-
-            {/* Xác nhận mật khẩu */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Xác nhận mật khẩu</label>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={18} />
-                <input 
-                  type={showConfirmPass ? "text" : "password"} 
-                  placeholder="Nhập lại mật khẩu" 
-                  className="w-full bg-white/5 border border-white/10 p-4 pl-12 pr-12 rounded-xl text-sm text-white focus:border-amber-500/50 outline-none transition-all placeholder:text-gray-600"
-                  onChange={(e) => setConfirmPassword(e.target.value)} 
-                  required 
-                />
-                <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
-                  {showConfirmPass ? <EyeOff size={18}/> : <Eye size={18}/>}
-                </button>
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black py-4 rounded-xl mt-6 transition-all duration-300 uppercase text-[12px] tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-amber-600/10"
-            >
-              {loading ? <Loader2 className="animate-spin" size={18} /> : <>Đăng Ký Tài Khoản <ArrowRight size={18}/></>}
-            </button>
-          </form>
-
-          <div className="text-center mt-10">
-            <p className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">
-              Đã có tài khoản? 
-              <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black">Đăng nhập</Link>
-            </p>
-          </div>
+    <AuthLayout
+      title="Gia Nhập Đặc Quyền"
+      subtitle="Trở thành thành viên để nhận những ưu đãi và dịch vụ thượng lưu nhất."
+      image={registerBg}
+      imageAlt="Luxury Hotel Exterior"
+    >
+      <form onSubmit={handleRegister} className="space-y-4">
+        {/* Full Name & Phone - Grid on larger mobile, stacked on small */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Họ và tên</label>
+            <InputGroup 
+              name="fullName"
+              icon={<User size={16}/>} 
+              placeholder="Nguyễn Văn A" 
+              autoComplete="name"
+              onChange={(val) => setFormData({...formData, fullName: val})} 
+            />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Số điện thoại</label>
+            <InputGroup 
+              name="phone"
+              icon={<Phone size={16}/>} 
+              placeholder="0901234567" 
+              autoComplete="tel"
+              onChange={(val) => setFormData({...formData, phone: val})} 
+            />
+          </motion.div>
         </div>
-      </div>
-    </div>
+
+        {/* Email */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-1.5">
+          <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <InputGroup 
+            name="email"
+            icon={<Mail size={16}/>} 
+            type="email" 
+            placeholder="guest@luxury.com" 
+            autoComplete="email"
+            onChange={(val) => setFormData({...formData, email: val})} 
+          />
+        </motion.div>
+
+        {/* Passwords */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+              <input 
+                name="password"
+                type={showPass ? "text" : "password"} 
+                placeholder="••••••••" 
+                autoComplete="new-password"
+                className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+                onChange={(e) => setFormData({...formData, password: e.target.value})} 
+                required 
+              />
+              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
+                {showPass ? <EyeOff size={16}/> : <Eye size={16}/>}
+              </button>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-1.5">
+            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Xác nhận</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+              <input 
+                name="confirmPassword"
+                type={showConfirmPass ? "text" : "password"} 
+                placeholder="••••••••" 
+                autoComplete="new-password"
+                className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+                onChange={(e) => setConfirmPassword(e.target.value)} 
+                required 
+              />
+              <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
+                {showConfirmPass ? <EyeOff size={16}/> : <Eye size={16}/>}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.button 
+          initial={{ opacity: 0, y: 10 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.7 }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          type="submit" 
+          disabled={loading}
+          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-6 transition-all duration-300 uppercase text-[12px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
+        >
+          {loading ? <Loader2 className="animate-spin" size={18} /> : <>Khởi tạo tài khoản <ArrowRight size={16}/></>}
+        </motion.button>
+      </form>
+
+      <motion.div 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        transition={{ delay: 0.9 }}
+        className="text-center mt-10"
+      >
+        <p className="text-gray-500 text-[11px] uppercase tracking-wider">
+          Đã có tài khoản thành viên? 
+          <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black text-[12px] uppercase">Đăng nhập</Link>
+        </p>
+      </motion.div>
+    </AuthLayout>
   );
 };
 
-// Component con hỗ trợ Input
-const InputGroup = ({ icon, type = "text", placeholder, onChange }) => (
+const InputGroup = ({ icon, type = "text", placeholder, name, autoComplete, onChange }) => (
   <div className="relative group">
     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors">
       {icon}
     </div>
     <input 
+      name={name}
       type={type} 
       placeholder={placeholder} 
-      className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded-xl text-sm text-white focus:border-amber-500/50 outline-none transition-all placeholder:text-gray-600"
+      autoComplete={autoComplete}
+      className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
       onChange={(e) => onChange(e.target.value)} 
       required 
     />

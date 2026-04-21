@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken'); 
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 // Cấu hình gửi Email (Nên dùng App Password của Google)
 const transporter = nodemailer.createTransport({
@@ -20,6 +21,10 @@ const register = async (req, res) => {
         const userExists = await User.findOne({ where: { email } });
         if (userExists) return res.status(400).json({ message: 'Email này đã được đăng ký!' });
 
+        // Mã hóa mật khẩu
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
         // Tạo mã OTP 6 số ngẫu nhiên
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -27,7 +32,7 @@ const register = async (req, res) => {
         await User.create({ 
             fullName, 
             email, 
-            password, // Lưu ý: Trong thực tế nên dùng bcrypt để mã hóa mật khẩu ở đây
+            password: hashedPassword, 
             phone: phone || '', 
             verificationCode: otp 
         });
@@ -38,12 +43,16 @@ const register = async (req, res) => {
             to: email,
             subject: 'Xác thực tài khoản Uy Nam Luxury',
             html: `
-                <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px;">
-                    <h2 style="color: #3b82f6;">Uy Nam Luxury Hotel</h2>
+                <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 30px; max-width: 600px; margin: auto; border-radius: 10px;">
+                    <h2 style="color: #d97706; text-align: center;">Uy Nam Luxury Hotel</h2>
                     <p>Chào <b>${fullName}</b>,</p>
-                    <p>Mã xác thực tài khoản (OTP) của bạn là:</p>
-                    <h1 style="color: #3b82f6; letter-spacing: 5px;">${otp}</h1>
-                    <p>Mã này có hiệu lực trong 10 phút. Đừng chia sẻ mã này với bất kỳ ai.</p>
+                    <p>Cảm ơn bạn đã lựa chọn Uy Nam Luxury. Mã xác thực tài khoản (OTP) của bạn là:</p>
+                    <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
+                        <h1 style="color: #d97706; letter-spacing: 10px; margin: 0; font-size: 40px;">${otp}</h1>
+                    </div>
+                    <p style="color: #666; font-size: 13px;">Mã này có hiệu lực trong 10 phút. Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.</p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="text-align: center; color: #999; font-size: 12px;">© 2026 Uy Nam Luxury Hotel. All rights reserved.</p>
                 </div>
             `
         };
@@ -86,7 +95,11 @@ const login = async (req, res) => {
 
         // Kiểm tra tài khoản
         if (!user) return res.status(404).json({ message: 'Email này chưa được đăng ký!' });
-        if (user.password !== password) return res.status(401).json({ message: 'Mật khẩu không chính xác!' });
+        
+        // Kiểm tra mật khẩu mã hóa
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(401).json({ message: 'Mật khẩu không chính xác!' });
+        
         if (!user.isVerified) return res.status(403).json({ message: 'Tài khoản chưa được xác thực email!' });
 
         // Tạo mã Token JWT
@@ -96,7 +109,7 @@ const login = async (req, res) => {
             { expiresIn: '1d' }
         );
 
-        // Trả về dữ liệu cho Frontend (Map fullName sang username để Frontend không bị lỗi hiển thị)
+        // Trả về dữ liệu cho Frontend
         res.status(200).json({
             message: 'Đăng nhập thành công!',
             token,

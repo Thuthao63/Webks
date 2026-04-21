@@ -24,6 +24,8 @@ const NotFound = lazy(() => import('./pages/client/NotFound'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const Verify = lazy(() => import('./pages/auth/Verify'));
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'));
 
 // Admin Pages
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'));
@@ -79,8 +81,10 @@ const AppContent = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
-            {/* CHỐT: Route Quên mật khẩu ở đây */}
+            {/* CHỐT: Các Route xác thực */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
 
             {/* --- 👤 CLIENT SECURE ROUTES (Cần Login) --- */}
             <Route path="/booking/:roomId" element={<AuthGuard><Booking /></AuthGuard>} />

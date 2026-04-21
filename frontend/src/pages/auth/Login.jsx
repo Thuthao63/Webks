@@ -2,8 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
-import { Mail, Lock, Eye, EyeOff, Loader2, LogIn, Bed } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2, LogIn } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
+import AuthLayout from './AuthLayout';
+import loginBg from '../../assets/auth/login-bg.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -39,7 +42,7 @@ const Login = () => {
       Swal.fire({
         icon: 'error',
         title: 'Lỗi đăng nhập',
-        text: 'Email hoặc mật khẩu không chính xác.',
+        text: err.response?.data?.message || 'Email hoặc mật khẩu không chính xác.',
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#ef4444',
@@ -50,88 +53,96 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] relative overflow-hidden px-4">
-      {/* Hiệu ứng ánh sáng nền mờ */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(180,130,50,0.05),transparent_50%)]"></div>
-
-      <div className="w-full max-w-[420px] relative z-10">
-        <div className="bg-white/[0.03] backdrop-blur-xl p-10 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl">
-          
-          {/* Logo Khách Sạn */}
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-amber-500/30 mb-6">
-              <Bed className="text-amber-500 w-8 h-8" />
-            </div>
-            <h2 className="text-3xl font-serif text-white mb-2 tracking-widest uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Đăng Nhập
-            </h2>
-            <p className="text-amber-500/60 text-[10px] uppercase tracking-[0.4em] font-bold">Uy Nam Luxury Hotel</p>
+    <AuthLayout
+      title="Chào Mừng Trở Lại"
+      subtitle="Đăng nhập để trải nghiệm không gian nghỉ dưỡng đẳng cấp bậc nhất."
+      image={loginBg}
+      imageAlt="Luxury Hotel Lobby"
+    >
+      <form onSubmit={handleLogin} className="space-y-5">
+        {/* Email */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="space-y-1.5"
+        >
+          <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <div className="relative group">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+            <input 
+              name="email"
+              type="email" 
+              required 
+              placeholder="email@luxury.com"
+              autoComplete="username"
+              className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+              onChange={(e) => setFormData({...formData, email: e.target.value})} 
+            />
           </div>
+        </motion.div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input 
-                  type="email" 
-                  required 
-                  placeholder="Nhập email của bạn"
-                  className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded-xl text-sm text-white focus:border-amber-500/50 outline-none transition-all placeholder:text-gray-600"
-                  onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                />
-              </div>
-            </div>
-
-            {/* Mật khẩu */}
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-wider text-gray-400 font-bold ml-1">Mật khẩu</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  required 
-                  placeholder="Nhập mật khẩu"
-                  className="w-full bg-white/5 border border-white/10 p-4 pl-12 pr-12 rounded-xl text-sm text-white focus:border-amber-500/50 outline-none transition-all placeholder:text-gray-600"
-                  onChange={(e) => setFormData({...formData, password: e.target.value})} 
-                />
-                <button 
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-
-              {/* QUÊN MẬT KHẨU NẰM DƯỚI Ô INPUT */}
-              <div className="flex justify-end pr-1">
-                <Link to="/forgot-password" size={16} className="text-[10px] uppercase tracking-widest text-amber-500/50 hover:text-amber-500 transition-colors font-bold">
-                  Quên mật khẩu?
-                </Link>
-              </div>
-            </div>
-            
+        {/* Mật khẩu */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="space-y-1.5"
+        >
+          <div className="flex justify-between items-center px-1">
+            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold">Mật khẩu</label>
+            <Link to="/forgot-password" global="true" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
+              Quên mật khẩu?
+            </Link>
+          </div>
+          <div className="relative group">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+            <input 
+              name="password"
+              type={showPassword ? "text" : "password"} 
+              required 
+              placeholder="••••••••"
+              autoComplete="current-password"
+              className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+              onChange={(e) => setFormData({...formData, password: e.target.value})} 
+            />
             <button 
-              type="submit" 
-              disabled={loading} 
-              className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black py-4 rounded-xl mt-6 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-amber-600/10 uppercase text-[12px] tracking-widest"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors"
             >
-              {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />} 
-              Đăng Nhập
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
-          </form>
-
-          <div className="text-center mt-10">
-            <p className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">
-              Chưa có tài khoản? 
-              <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors">Đăng ký ngay</Link>
-            </p>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+        
+        <motion.button 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          type="submit" 
+          disabled={loading} 
+          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-4 flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-amber-600/10 uppercase text-[12px] tracking-wider"
+        >
+          {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />} 
+          Đăng Nhập
+        </motion.button>
+      </form>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="text-center mt-10"
+      >
+        <p className="text-gray-500 text-[11px] uppercase tracking-wider">
+          Nếu chưa có tài khoản? 
+          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase text-[12px]">Khám phá & Đăng ký</Link>
+        </p>
+      </motion.div>
+    </AuthLayout>
   );
 };
 
