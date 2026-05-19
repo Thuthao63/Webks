@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-[#FDFBF7] text-gray-900 selection:bg-amber-100 selection:text-amber-900" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+    <div className="bg-[#FDFBF7] text-gray-900 selection:bg-amber-100 selection:text-amber-900 font-sans">
 
       {/* --- 1. HERO SECTION --- */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -71,19 +71,20 @@ const Home = () => {
             ))}
           </div>
 
-          <h1 className="mb-6 tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="block text-3xl md:text-5xl font-light mb-4 tracking-[0.3em] uppercase text-gray-800">The Art of</span>
-            <span className="block text-6xl md:text-[10rem] font-bold italic text-amber-600 drop-shadow-lg leading-none">Living</span>
+          <h1 className="mb-6 tracking-tight font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <span className="block text-3xl md:text-5xl font-light mb-4 tracking-[0.3em] uppercase text-gray-800 font-serif">The Art of</span>
+            <span className="block text-6xl md:text-[10rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">Living</span>
           </h1>
 
-          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.5em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60">
+          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.5em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
             Nghệ thuật nghỉ dưỡng thượng lưu
           </p>
 
           <div className="flex justify-center mt-4">
             <button
               onClick={() => document.getElementById('explore').scrollIntoView({ behavior: 'smooth' })}
-              className="group text-[11px] font-bold uppercase tracking-[0.2em] text-gray-800 flex items-center gap-3 border-b border-gray-400 pb-2 hover:border-amber-600 hover:text-amber-700 transition-all"
+              className="group text-[11px] font-bold uppercase tracking-widest text-gray-800 flex items-center gap-3 border-b border-gray-400 pb-2 hover:border-amber-600 hover:text-amber-700 transition-all rounded-lg px-6 py-2 bg-white/80 shadow-premium font-sans"
+              style={{ fontFamily: 'Inter, sans-serif' }}
             >
               Khám phá thêm <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
             </button>
@@ -103,19 +104,19 @@ const Home = () => {
             />
             <div className="absolute -bottom-10 -right-10 bg-white p-10 shadow-2xl border border-gray-50 rounded-[2rem] hidden md:block z-20">
               <p className="text-4xl font-serif text-amber-600 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>100%</p>
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Sự hài lòng</p>
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">Sự hài lòng</p>
             </div>
           </div>
 
           <div className="space-y-10 order-1 md:order-2">
             <div className="space-y-4">
-              <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block">Kỳ nghỉ mơ ước</span>
-              <h2 className="text-4xl md:text-6xl leading-tight text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Tuyệt tác <br /> <span className="italic font-light text-amber-700">giữa đại dương</span>
+              <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block font-sans">Kỳ nghỉ mơ ước</span>
+              <h2 className="text-4xl md:text-6xl leading-tight text-gray-900 font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Tuyệt tác <br /> <span className="italic font-light text-amber-700 font-serif">giữa đại dương</span>
               </h2>
             </div>
 
-            <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic">
+            <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic font-sans">
               "Uy Nam Luxury mang đến một chuẩn mực mới về sự tinh tế. Nơi ánh sáng tự nhiên hòa quyện cùng nội thất đương đại, tạo nên không gian nghỉ dưỡng hoàn mỹ dành riêng cho bạn."
             </p>
 

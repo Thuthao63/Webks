@@ -91,7 +91,7 @@ const Login = () => {
         >
           <div className="flex justify-between items-center px-1">
             <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold">Mật khẩu</label>
-            <Link to="/forgot-password" global="true" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
+            <Link to="/forgot-password" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
               Quên mật khẩu?
             </Link>
           </div>

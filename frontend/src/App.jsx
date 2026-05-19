@@ -20,6 +20,8 @@ const About = lazy(() => import('./pages/client/About'));
 const Gallery = lazy(() => import('./pages/client/Gallery'));
 const Promotions = lazy(() => import('./pages/client/Promotions'));
 const FAQ = lazy(() => import('./pages/client/FAQ'));
+const Terms = lazy(() => import('./pages/client/Terms'));
+const Privacy = lazy(() => import('./pages/client/Privacy'));
 const NotFound = lazy(() => import('./pages/client/NotFound'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
@@ -55,6 +57,9 @@ const AppContent = () => {
   
   // Kiểm tra nếu đang ở trang Admin
   const isAdminPage = currentPath.startsWith('/admin');
+  const isAuthPage = ['/login', '/register', '/verify', '/forgot-password', '/reset-password']
+    .some(path => currentPath.includes(path));
+  const shouldShowSiteChrome = !isAdminPage && !isAuthPage;
 
   return (
     <>
@@ -74,6 +79,8 @@ const AppContent = () => {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/promotions" element={<Promotions />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/rooms" element={<RoomList />} />
@@ -108,8 +115,8 @@ const AppContent = () => {
       </main>
 
       {/* 2. Chỉ hiện Footer và nút Chat nếu không phải trang admin */}
-      {!isAdminPage && <Footer />}
-      {!isAdminPage && <ContactFab />}
+      {shouldShowSiteChrome && <Footer />}
+      {shouldShowSiteChrome && <ContactFab />}
     </>
   );
 };

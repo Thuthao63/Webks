@@ -102,8 +102,8 @@ const Footer = () => {
           </div>
 
           <div className="flex gap-10 text-[9px] text-slate-400 uppercase tracking-[0.4em] font-bold">
-            <Link to="/" className="hover:text-[#B59A6D] cursor-pointer transition-all hover:-translate-y-0.5">Quy định</Link>
-            <Link to="/" className="hover:text-[#B59A6D] cursor-pointer transition-all hover:-translate-y-0.5">Bảo mật</Link>
+            <Link to="/terms" className="hover:text-[#B59A6D] cursor-pointer transition-all hover:-translate-y-0.5">Quy định</Link>
+            <Link to="/privacy" className="hover:text-[#B59A6D] cursor-pointer transition-all hover:-translate-y-0.5">Bảo mật</Link>
           </div>
         </div>
       </div>
@@ -123,4 +123,4 @@ const FooterLink = ({ to, children }) => (
   </li>
 );
 
-export default Footer;
+export default Footer;
