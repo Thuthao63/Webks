@@ -35,9 +35,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Trang chủ', path: '/' },
     { name: 'Giới thiệu', path: '/about' },
-    { name: 'Ưu đãi', path: '/promotions' },
     { name: 'Đặt phòng', path: '/rooms' },
-    { name: 'Thư viện', path: '/gallery' },
     { name: 'Dịch vụ', path: '/services' },
     { name: 'Liên hệ', path: '/contact' },
   ];
@@ -85,16 +83,18 @@ const Navbar = () => {
           </div>
 
           {/* --- RIGHT ACTIONS --- */}
-          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6">
             {user ? (
               <div className="flex items-center gap-4">
-                <button className="p-2 text-gray-400 hover:text-[#B59A6D] transition-all duration-300 hover:scale-110 hidden sm:block relative">
+                <button aria-label="Thông báo" className="p-2 text-gray-400 hover:text-[#B59A6D] transition-all duration-300 hover:scale-110 hidden sm:block relative">
                   <Bell size={18} />
                   <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-[#B59A6D] rounded-full border border-black animate-pulse"></span>
                 </button>
 
                 <div className="relative">
                   <button
+                    aria-haspopup="true"
+                    aria-expanded={isUserMenuOpen}
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="flex items-center gap-4 pl-1.5 pr-5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-[#B59A6D]/50 hover:bg-white/10 transition-all duration-500 group"
                   >
@@ -191,6 +191,7 @@ const Navbar = () => {
             )}
 
             <button
+              aria-label="Mở menu di động"
               className="md:hidden p-2 text-[#B59A6D] hover:scale-110 transition-transform active:scale-95 z-[1001]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >

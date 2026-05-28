@@ -59,9 +59,16 @@ const Home = () => {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-white/40 z-10 backdrop-blur-[2px]"></div>
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-            <source src="/video/hotel.mp4" type="video/mp4" />
-          </video>
+
+          {/* Video for medium+ screens; poster helps first paint. */}
+          <div className="hidden md:block w-full h-full">
+            <video autoPlay loop muted playsInline preload="metadata" poster="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" className="w-full h-full object-cover">
+              <source src="/video/hotel.mp4" type="video/mp4" />
+            </video>
+          </div>
+
+          {/* Static image for small screens to improve load and layout */}
+          <img className="md:hidden w-full h-full object-cover" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80" alt="Hero" />
         </div>
 
         <div className="relative z-20 text-center px-6 max-w-6xl animate-in fade-in slide-in-from-bottom-10 duration-1000">
@@ -72,8 +79,8 @@ const Home = () => {
           </div>
 
           <h1 className="mb-6 tracking-tight font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="block text-3xl md:text-5xl font-light mb-4 tracking-[0.3em] uppercase text-gray-800 font-serif">The Art of</span>
-            <span className="block text-6xl md:text-[10rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">Living</span>
+            <span className="block text-3xl md:text-4xl font-light mb-4 tracking-[0.3em] uppercase text-gray-800 font-serif">The Art of</span>
+            <span className="block text-6xl md:text-[8rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">Living</span>
           </h1>
 
           <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.5em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
@@ -93,41 +100,43 @@ const Home = () => {
       </section>
 
       {/* --- 2. THE STORY --- */}
-      <section id="explore" className="py-32 px-6 max-w-7xl mx-auto bg-white my-32 shadow-[0_0_50px_rgba(0,0,0,0.02)] rounded-[4rem]">
-        <div className="grid md:grid-cols-2 gap-24 items-center">
-          <div className="relative order-2 md:order-1">
-            <div className="absolute -inset-6 border border-amber-500/10 rounded-[3rem] -rotate-3"></div>
-            <img
-              src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80"
-              className="w-full h-[600px] object-cover shadow-xl rounded-[2.5rem] relative z-10"
-              alt="Luxury Suite"
-            />
-            <div className="absolute -bottom-10 -right-10 bg-white p-10 shadow-2xl border border-gray-50 rounded-[2rem] hidden md:block z-20">
-              <p className="text-4xl font-serif text-amber-600 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>100%</p>
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">Sự hài lòng</p>
-            </div>
-          </div>
-
-          <div className="space-y-10 order-1 md:order-2">
-            <div className="space-y-4">
-              <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block font-sans">Kỳ nghỉ mơ ước</span>
-              <h2 className="text-4xl md:text-6xl leading-tight text-gray-900 font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Tuyệt tác <br /> <span className="italic font-light text-amber-700 font-serif">giữa đại dương</span>
-              </h2>
-            </div>
-
-            <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic font-sans">
-              "Uy Nam Luxury mang đến một chuẩn mực mới về sự tinh tế. Nơi ánh sáng tự nhiên hòa quyện cùng nội thất đương đại, tạo nên không gian nghỉ dưỡng hoàn mỹ dành riêng cho bạn."
-            </p>
-
-            <div className="grid grid-cols-2 gap-10 border-t border-gray-100 pt-10">
-              <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
-                <ShieldCheck className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
-                <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Riêng tư tuyệt đối</h5>
+      <section id="explore" className="py-24 px-6 md:py-32 bg-white my-24 md:my-32">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
+            <div className="relative order-2 md:order-1">
+              <div className="absolute -inset-6 border border-amber-500/10 rounded-[3rem] -rotate-3"></div>
+              <img
+                src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80"
+                className="w-full h-[600px] object-cover shadow-xl rounded-[2.5rem] relative z-10"
+                alt="Luxury Suite"
+              />
+              <div className="absolute -bottom-10 -right-10 bg-white p-10 shadow-2xl border border-gray-50 rounded-[2rem] hidden md:block z-20">
+                <p className="text-4xl font-serif text-amber-600 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>100%</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">Sự hài lòng</p>
               </div>
-              <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
-                <Zap className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
-                <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Phục vụ 24/7</h5>
+            </div>
+
+            <div className="space-y-10 order-1 md:order-2">
+              <div className="space-y-4">
+                <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block font-sans">Kỳ nghỉ mơ ước</span>
+                <h2 className="text-4xl md:text-6xl leading-tight text-gray-900 font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Tuyệt tác <br /> <span className="italic font-light text-amber-700 font-serif">giữa đại dương</span>
+                </h2>
+              </div>
+
+              <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic font-sans">
+                "Uy Nam Luxury mang đến một chuẩn mực mới về sự tinh tế. Nơi ánh sáng tự nhiên hòa quyện cùng nội thất đương đại, tạo nên không gian nghỉ dưỡng hoàn mỹ dành riêng cho bạn."
+              </p>
+
+              <div className="grid grid-cols-2 gap-10 border-t border-gray-100 pt-10">
+                <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
+                  <ShieldCheck className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
+                  <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Riêng tư tuyệt đối</h5>
+                </div>
+                <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
+                  <Zap className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
+                  <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Phục vụ 24/7</h5>
+                </div>
               </div>
             </div>
           </div>
@@ -135,8 +144,8 @@ const Home = () => {
       </section>
 
       {/* --- 2.5 AMENITIES HIGHLIGHT --- */}
-      <section className="py-32 bg-[#FDFBF7]">
-        <div className="max-w-7xl mx-auto px-6 text-center mb-24">
+      <section className="py-24 md:py-32 bg-[#FDFBF7]">
+        <div className="max-w-7xl mx-auto px-6 text-center mb-16 md:mb-24">
            <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.5em] mb-6 block">Premium Facilities</span>
            <h2 className="text-4xl md:text-7xl font-serif italic text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
               Tiện ích <span className="text-amber-600 not-italic font-bold">Thượng hạng</span>
@@ -159,9 +168,9 @@ const Home = () => {
       </section>
 
       {/* --- 3. FEATURED ROOMS --- */}
-      <section className="py-40 bg-white">
+      <section className="py-24 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-8">
             <div className="space-y-4">
               <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block text-center md:text-left">Lựa chọn hàng đầu</span>
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Không gian <span className="not-italic text-amber-600">tuyệt mỹ</span></h3>
@@ -174,7 +183,7 @@ const Home = () => {
             </button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {loadingRooms ? (
               [...Array(3)].map((_, i) => (
                 <div key={i} className="h-[450px] bg-gray-100 animate-pulse rounded-3xl"></div>
@@ -219,9 +228,9 @@ const Home = () => {
       </section>
 
       {/* --- 4. LIFESTYLE GALLERY MASONRY --- */}
-      <section className="py-40 bg-[#FDFBF7]">
+      <section className="py-24 md:py-32 bg-[#FDFBF7]">
          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-24">
+            <div className="text-center mb-16 md:mb-24">
                <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.5em] mb-4 block">Capturing Moments</span>
                <h3 className="text-4xl md:text-7xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Cảm hứng <span className="not-italic text-amber-600">Sống</span></h3>
             </div>
@@ -254,9 +263,9 @@ const Home = () => {
       </section>
 
       {/* --- 5. NEWSLETTER - EXCLUSIVE MEMBERSHIP --- */}
-      <section className="py-40 bg-white">
+      <section className="py-24 md:py-32 bg-white">
          <div className="max-w-7xl mx-auto px-6">
-            <div className="bg-[#1E293B] rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl flex flex-col items-center">
+            <div className="bg-[#1E293B] rounded-3xl md:rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl flex flex-col items-center">
                <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] -mr-40 -mt-40"></div>
                <Mail size={48} className="text-amber-500 mb-8 opacity-50" />
                <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -283,14 +292,14 @@ const Home = () => {
 
       {/* --- 6. TESTIMONIALS --- */}
       {reviews.length > 0 && (
-        <section className="py-40 bg-[#FDFBF7]">
+        <section className="py-24 md:py-32 bg-[#FDFBF7]">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-24 space-y-4">
+            <div className="text-center mb-16 md:mb-24 space-y-4">
               <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block">Cảm nhận từ Thượng khách</span>
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Ký ức <span className="not-italic text-amber-600">tuyệt vời</span></h3>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-12">
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12">
               {reviews.map((rev, idx) => (
                 <div key={rev.id} className="relative p-12 bg-white rounded-[3rem] border border-gray-50 shadow-premium hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 group">
                   <Quote className="absolute top-10 right-10 text-amber-600/5 group-hover:text-amber-600/10 transition-colors" size={60} />

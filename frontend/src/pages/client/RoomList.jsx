@@ -125,12 +125,12 @@ const RoomList = () => {
         },
       }}
     >
-      <div className="min-h-screen bg-[#F9F8F6] pt-44 pb-32 px-6 md:px-12">
+      <div className="min-h-screen bg-[#F9F8F6] pt-44 pb-32 px-6 md:px-12 font-sans">
         <div className="max-w-7xl mx-auto">
           
           {/* Header Section */}
           <div className="text-center mb-24 space-y-6">
-            <span className="text-[#B59A6D] text-[11px] font-black uppercase tracking-[0.6em] block">Exclusive Stay</span>
+            <span className="text-[#B59A6D] text-[11px] font-black uppercase tracking-[0.6em] block font-sans">Exclusive Stay</span>
             <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
               Tìm không gian riêng
             </h2>
@@ -144,11 +144,11 @@ const RoomList = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <SlidersHorizontal size={20} className="text-[#B59A6D]" />
-                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Bộ lọc</h3>
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-900 font-sans">Bộ lọc</h3>
                   </div>
                   <button 
                     onClick={resetFilters}
-                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#B59A6D] transition-luxury flex items-center gap-3"
+                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#B59A6D] transition-luxury flex items-center gap-3 font-sans"
                   >
                     <Trash2 size={14} /> Xóa
                   </button>
@@ -156,7 +156,7 @@ const RoomList = () => {
 
                 {/* Loại phòng */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Loại phòng</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Loại phòng</label>
                   <div className="flex flex-col gap-2">
                     <button 
                       onClick={() => setFilters(prev => ({...prev, typeId: ''}))}
@@ -168,7 +168,7 @@ const RoomList = () => {
                       <button 
                         key={type.id}
                         onClick={() => setFilters(prev => ({...prev, typeId: type.id.toString()}))}
-                        className={`px-6 py-4 rounded-xl text-left text-[11px] font-bold transition-luxury flex justify-between items-center ${filters.typeId === type.id.toString() ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
+                        className={`px-6 py-4 rounded-xl text-left text-[11px] font-bold transition-luxury flex justify-between items-center font-sans ${filters.typeId === type.id.toString() ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
                       >
                         {type.name}
                         {filters.typeId === type.id.toString() && <Check size={16} />}
@@ -179,7 +179,7 @@ const RoomList = () => {
 
                 {/* Lọc theo Giá */}
                 <div className="space-y-8">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Khoảng giá (VNĐ)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Khoảng giá (VNĐ)</label>
                   <div className="px-2">
                     <Slider 
                       range 
@@ -199,7 +199,7 @@ const RoomList = () => {
 
                 {/* Sức chứa */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Sức chứa (Khách)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Sức chứa (Khách)</label>
                   <select 
                     value={filters.capacity}
                     onChange={(e) => setFilters(prev => ({...prev, capacity: e.target.value}))}
@@ -215,7 +215,7 @@ const RoomList = () => {
 
                 {/* Trạng thái */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Trạng thái</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Trạng thái</label>
                   <label className="flex items-center gap-4 cursor-pointer group">
                     <div className="relative">
                       <input 
@@ -227,7 +227,7 @@ const RoomList = () => {
                       <div className={`w-14 h-7 rounded-full transition-luxury ${filters.status === 'Available' ? 'bg-[#B59A6D]' : 'bg-slate-200'}`}></div>
                       <div className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-luxury ${filters.status === 'Available' ? 'translate-x-7' : ''}`}></div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-[#B59A6D] transition-luxury">Còn phòng trống</span>
+                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-[#B59A6D] transition-luxury font-sans">Còn phòng trống</span>
                   </label>
                 </div>
               </div>
@@ -237,7 +237,7 @@ const RoomList = () => {
             <main className="lg:w-3/4 space-y-12">
               
               <div className="flex flex-col md:flex-row justify-between items-center bg-white px-10 py-6 rounded-[2rem] border border-slate-100 shadow-sm gap-6">
-                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic">
+                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic font-sans">
                   Khám phá <span className="text-[#B59A6D]">{rooms.length}</span> tuyệt tác lưu trú
                 </p>
                 <div className="flex items-center gap-6">
@@ -248,7 +248,7 @@ const RoomList = () => {
                     </div>
                   )}
                   <div className="flex items-center gap-4 border-l border-slate-100 pl-6">
-                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Sắp xếp:</label>
+                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-sans">Sắp xếp:</label>
                      <select 
                         onChange={(e) => {
                           const val = e.target.value;
@@ -272,7 +272,7 @@ const RoomList = () => {
               {rooms.length === 0 ? (
                 <div className="bg-white rounded-[3rem] p-32 text-center border border-slate-100 shadow-premium">
                   <Filter size={48} className="text-[#B59A6D]/20 mx-auto mb-8" />
-                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6">Xin lỗi, không tìm thấy kết quả</h3>
+                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Xin lỗi, không tìm thấy kết quả</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
                     Vui lòng điều chỉnh lại bộ lọc để tìm thấy căn phòng phù hợp nhất dành cho quý khách.
                   </p>
@@ -333,7 +333,7 @@ const RoomList = () => {
                               >
                                 {details.name || 'Luxury Suite'}
                               </h4>
-                              <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black italic">Private Collection</p>
+                              <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black italic font-sans">Private Collection</p>
                             </div>
                             <div className="text-right">
                               {discount && (
@@ -354,8 +354,8 @@ const RoomList = () => {
                                 <Users size={16} strokeWidth={1} />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">{details.capacity || 2} Khách</span>
-                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5">Sức chứa</span>
+                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">{details.capacity || 2} Khách</span>
+                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">Sức chứa</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-3 border-l border-slate-50 pl-4">
@@ -363,8 +363,8 @@ const RoomList = () => {
                                 <Maximize size={16} strokeWidth={1} />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">45 m²</span>
-                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5">Diện tích</span>
+                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">45 m²</span>
+                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">Diện tích</span>
                               </div>
                             </div>
                           </div>
@@ -372,14 +372,14 @@ const RoomList = () => {
                           <div className="flex gap-4">
                             <button 
                               onClick={() => navigate(`/room/${room.id}`)}
-                              className="flex-1 py-3.5 text-[10px] font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-xl"
+                              className="flex-1 py-3.5 text-[10px] font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-xl font-sans"
                             >
                               Khám phá
                             </button>
                             <button 
                               onClick={() => navigate(`/booking/${room.id}`)}
                               disabled={!isAvailable}
-                              className={`flex-[2] py-3.5 text-[10px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-3 rounded-xl shadow-lg shadow-slate-900/10 ${
+                              className={`flex-[2] py-3.5 text-[10px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-3 rounded-xl shadow-lg shadow-slate-900/10 font-sans ${
                                 isAvailable 
                                 ? 'bg-slate-900 text-white hover:bg-[#B59A6D]' 
                                 : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200 shadow-none'

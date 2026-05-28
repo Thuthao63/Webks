@@ -13,23 +13,49 @@
     --text-secondary: #64748B;
     --sidebar-width: 280px;
     --sidebar-collapsed-width: 80px;
+
+    /* Typography tokens */
+    --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+    --base-font-size: 16px;
+    --line-height-base: 1.6;
+    --lead: 1.75;
   }
 
   html {
     scroll-behavior: smooth;
   }
 
+  html { font-size: var(--base-font-size); }
+
   body {
     background-color: var(--base-alabaster);
     color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: var(--line-height-base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Headings use serif for elegance but consistent sizing */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
+    color: var(--primary-900);
+    line-height: 1.05;
+    margin: 0 0 0.5rem 0;
   }
+
+  h1 { font-size: clamp(1.75rem, 4.5vw, 3rem); }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 2.25rem); }
+  h3 { font-size: clamp(1.25rem, 2.8vw, 1.75rem); }
+  h4 { font-size: clamp(1.125rem, 2.2vw, 1.25rem); }
+  h5 { font-size: 1rem; }
+  h6 { font-size: 0.875rem; }
+
+  p, label, input, button, a, li { font-family: var(--font-sans); }
+  p { margin-bottom: 1rem; }
+  .lead { font-size: 1.0625rem; line-height: var(--lead); }
 }
 
 @layer utilities {

@@ -29,9 +29,10 @@ const Room = sequelize.define('Room', {
 // THIẾT LẬP QUAN HỆ (ASSOCIATIONS)
 Room.associate = (models) => {
     // 1. Dây nối trỏ về bảng Loại Phòng (RoomType)
+    // Alias updated to 'roomType' to match controller includes
     Room.belongsTo(models.RoomType, { 
         foreignKey: 'typeId', 
-        as: 'typeDetails' // Đặt tên as: 'typeDetails' để lúc gọi API ở Frontend React sẽ lấy được luôn ảnh và giá
+        as: 'roomType'
     });
 
     // 2. Dây nối trỏ tới bảng Đơn Đặt (Booking)
