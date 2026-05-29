@@ -1,15 +1,33 @@
-import React, { useEffect } from 'react';
-import { Gift, Calendar, ArrowRight, Sparkles, Heart, Coffee, Compass } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Gift, Calendar, ArrowRight, Sparkles, Heart, Coffee, Compass, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import axiosClient from '../../api/axiosClient';
+import toast from 'react-hot-toast';
 
 const Promotions = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handleSubscribe = async () => {
+        if (!email) return toast.error(t('booking.error') || "Vui lòng nhập email");
+        setLoading(true);
+        try {
+            const res = await axiosClient.post('/newsletters/subscribe', { email });
+            toast.success(res.data.message || "Đăng ký thành công!");
+            setEmail('');
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Có lỗi xảy ra");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const offers = [
         {
@@ -130,11 +148,18 @@ const Promotions = () => {
                     <div className="max-w-md mx-auto flex gap-4">
                         <input 
                             type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                             placeholder={t('promotions.email_placeholder')} 
                             className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white outline-none focus:border-amber-500/50 transition-all text-xs font-bold tracking-widest"
                         />
-                        <button className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl">
-                            {t('promotions.submit')}
+                        <button 
+                            onClick={handleSubscribe}
+                            disabled={loading}
+                            className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-2"
+                        >
+                            {loading ? <Loader2 size={16} className="animate-spin" /> : t('promotions.submit')}
                         </button>
                     </div>
                 </div>

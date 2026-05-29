@@ -285,7 +285,9 @@
     "account_number": "Account No:",
     "payment_done": "I have successfully transferred",
     "pay_later": "Pay Later",
-    "ssl_secure": "SSL 256-bit Secure"
+    "ssl_secure": "SSL 256-bit Secure",
+    "deposit_amount": "Deposit Amount (50%):",
+    "deposit_note": "The remaining balance ({amount}) will be paid upon check-in."
   },
   "contact": {
     "success_title": "Sent successfully",

@@ -37,20 +37,27 @@ const Home = () => {
     fetchHomeData();
   }, []);
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email) {
+        return Swal.fire(t('booking.error') || "Lỗi", "Vui lòng nhập email", "error");
+    }
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Đăng ký thành công',
-      text: 'Chào mừng quý khách. Ưu đãi độc quyền sẽ sớm được gửi đến email của bạn.',
-      confirmButtonColor: '#d97706',
-      background: '#fff',
-      color: '#1a1a1a',
-      confirmButtonText: 'Đóng',
-    });
-    setEmail('');
+    try {
+        const res = await axiosClient.post('/newsletters/subscribe', { email });
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          text: res.data.message || 'Cảm ơn quý khách đã đăng ký.',
+          confirmButtonColor: '#d97706',
+          background: '#fff',
+          color: '#1a1a1a',
+          confirmButtonText: 'Đóng',
+        });
+        setEmail('');
+    } catch (err) {
+        Swal.fire(t('booking.error') || "Lỗi", err.response?.data?.message || "Có lỗi xảy ra", "error");
+    }
   };
 
   return (
@@ -257,29 +264,50 @@ const Home = () => {
       </section>
 
       {/* --- 5. NEWSLETTER - EXCLUSIVE MEMBERSHIP --- */}
-      <section className="py-24 md:py-32 bg-white">
-         <div className="max-w-7xl mx-auto px-6">
-            <div className="bg-[#1E293B] rounded-3xl md:rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl flex flex-col items-center">
-               <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] -mr-40 -mt-40"></div>
-               <Mail size={48} className="text-amber-500 mb-8 opacity-50" />
-               <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  {t('home.join')} <span className="text-amber-500">{t('home.elite')}</span>
-               </h2>
-               <p className="text-gray-400 max-w-xl mx-auto text-sm tracking-widest leading-loose mb-12 uppercase font-bold">
-                  {t('home.newsletter')}
-               </p>
-               <form onSubmit={handleSubscribe} className="max-w-md w-full flex gap-4">
-                  <input 
-                     type="email" 
-                     value={email}
-                     onChange={(e) => setEmail(e.target.value)}
-                     placeholder={t('home.email_placeholder')}
-                     className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white outline-none focus:border-amber-500/50 transition-all text-xs font-bold tracking-widest"
-                  />
-                  <button type="submit" className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">
-                     {t('home.subscribe')}
-                  </button>
-               </form>
+      <section className="py-24 md:py-32 bg-paper relative overflow-hidden">
+         {/* Decorative elements */}
+         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-amber-500/5 rounded-full blur-[100px]"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-600/5 rounded-full blur-[120px]"></div>
+         </div>
+         
+         <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="group relative rounded-[3rem] md:rounded-[4rem] overflow-hidden shadow-2xl border border-gray-100/50 bg-white">
+               {/* Background Image with Parallax effect */}
+               <div className="absolute inset-0 z-0">
+                  <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80" alt="Newsletter Background" className="w-full h-full object-cover opacity-[0.15] group-hover:scale-110 transition-transform duration-[3000ms]" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#1E293B] to-slate-900/95 mix-blend-multiply"></div>
+               </div>
+               
+               <div className="relative z-10 p-12 md:p-24 flex flex-col items-center text-center">
+                   <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mb-8 backdrop-blur-md border border-amber-500/20 group-hover:scale-110 transition-transform duration-700">
+                      <Mail size={32} className="text-amber-500" />
+                   </div>
+                   
+                   <h2 className="text-4xl md:text-6xl md:leading-tight font-serif italic text-white mb-6 drop-shadow-md" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      {t('home.join')} <span className="text-amber-400 font-bold not-italic">{t('home.elite')}</span>
+                   </h2>
+                   
+                   <p className="text-slate-300 max-w-2xl mx-auto text-xs md:text-sm tracking-[0.2em] leading-loose mb-12 uppercase font-black">
+                      {t('home.newsletter')}
+                   </p>
+                   
+                   <form onSubmit={handleSubscribe} className="max-w-xl w-full flex flex-col sm:flex-row gap-4">
+                      <div className="relative flex-1 group/input">
+                         <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/input:text-amber-500 transition-colors z-10" />
+                         <input 
+                            type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={t('home.email_placeholder')}
+                            className="w-full bg-white/5 border border-white/20 rounded-2xl md:rounded-full pl-14 pr-6 py-4 md:py-5 text-white outline-none focus:border-amber-500 focus:bg-white/10 transition-all text-xs font-bold tracking-widest placeholder-slate-400 backdrop-blur-sm"
+                         />
+                      </div>
+                      <button type="submit" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-10 py-4 md:py-5 rounded-2xl md:rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2">
+                         {t('home.subscribe')} <ArrowRight size={16} />
+                      </button>
+                   </form>
+               </div>
             </div>
          </div>
       </section>

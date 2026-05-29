@@ -285,7 +285,9 @@
     "account_number": "STK:",
     "payment_done": "Tôi đã chuyển khoản thành công",
     "pay_later": "Thanh toán sau",
-    "ssl_secure": "Bảo mật SSL 256-bit"
+    "ssl_secure": "Bảo mật SSL 256-bit",
+    "deposit_amount": "Số tiền cọc (50%):",
+    "deposit_note": "Số tiền còn lại ({amount}) sẽ được thanh toán khi nhận phòng."
   },
   "contact": {
     "success_title": "Gửi thành công",

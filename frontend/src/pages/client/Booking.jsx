@@ -34,6 +34,8 @@ const Booking = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [days, setDays] = useState(1);
 
+  const depositAmount = totalPrice * 0.5;
+
   const formatCurrency = (value) => {
     if (!value && value !== 0) return '';
     try {
@@ -155,6 +157,22 @@ const Booking = () => {
     } catch (err) {
       setProcessingPayment(false);
       Swal.fire(t('booking.error'), t('booking.payment_failed'), 'error');
+    }
+  };
+
+  const handleVNPay = async () => {
+    setProcessingPayment(true);
+    try {
+      const res = await axiosClient.post('/payments/create_payment_url', {
+        bookingId: pendingBookingId,
+        amount: depositAmount
+      });
+      if (res.data.paymentUrl) {
+        window.location.href = res.data.paymentUrl;
+      }
+    } catch (err) {
+      setProcessingPayment(false);
+      Swal.fire(t('booking.error'), "Lỗi kết nối VNPay", 'error');
     }
   };
 
@@ -346,7 +364,7 @@ const Booking = () => {
             {/* Header */}
             <div className="bg-slate-50 p-8 text-center border-b border-slate-100 relative">
               <h3 className="text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('booking.secure_payment')}</h3>
-              <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">{t('booking.total_amount')} <span className="text-amber-600">{formatCurrency(totalPrice)}</span></p>
+              <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">{t('booking.deposit_amount')} <span className="text-amber-600">{formatCurrency(depositAmount)}</span></p>
             </div>
             
             {/* Body */}
@@ -365,24 +383,35 @@ const Booking = () => {
                     <div className="inline-block p-2 md:p-4 bg-white border-2 border-amber-500 rounded-3xl shadow-lg relative">
                       <div className="absolute -top-3 -right-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">{t('booking.scan_qr')}</div>
                       <img 
-                        src={`https://img.vietqr.io/image/vietcombank-1022103170-compact2.png?amount=${totalPrice}&addInfo=Thanh toan phong ${pendingBookingId}&accountName=UY NAM`} 
+                        src={`https://img.vietqr.io/image/vietcombank-1022103170-compact2.png?amount=${depositAmount}&addInfo=Thanh toan phong ${pendingBookingId}&accountName=UY NAM`} 
                         alt="VietQR" 
                         className="w-48 h-48 md:w-56 md:h-56 object-contain"
                       />
                     </div>
-                    <div className="mt-6 space-y-1">
+                    <div className="mt-6 space-y-1 mb-6">
                       <p className="text-sm font-bold text-slate-900">{t('booking.bank_name')}</p>
                       <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('booking.account_number')} <span className="text-amber-600">1022103170</span></p>
                     </div>
                   </div>
 
-                  <button onClick={() => handleProcessPayment('VietQR')} className="w-full bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-2xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all">
-                    {t('booking.payment_done')}
-                  </button>
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <button onClick={() => handleProcessPayment('VietQR')} className="w-full bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-2xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+                        {t('booking.payment_done')}
+                    </button>
+                    <button onClick={handleVNPay} className="w-full bg-[#005BAA] hover:bg-[#004A8A] text-white p-3 rounded-2xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+                        Thanh toán VNPay
+                    </button>
+                  </div>
                   
                   <button onClick={() => { setShowPayment(false); navigate('/profile'); }} className="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 p-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all">
                     {t('booking.pay_later')}
                   </button>
+
+                  <div className="text-center mt-4">
+                    <p className="text-xs text-rose-500 font-medium italic">
+                      * {t('booking.deposit_note').replace('{amount}', formatCurrency(totalPrice - depositAmount))}
+                    </p>
+                  </div>
                 </>
               )}
             </div>

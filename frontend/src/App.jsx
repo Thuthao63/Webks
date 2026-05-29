@@ -13,6 +13,7 @@ const Home = lazy(() => import('./pages/client/Home'));
 const RoomList = lazy(() => import('./pages/client/RoomList'));
 const RoomDetails = lazy(() => import('./pages/client/RoomDetails'));
 const Booking = lazy(() => import('./pages/client/Booking'));
+const PaymentResult = lazy(() => import('./pages/client/PaymentResult'));
 const Profile = lazy(() => import('./pages/client/Profile'));
 const Services = lazy(() => import('./pages/client/Services'));
 const Contact = lazy(() => import('./pages/client/Contact'));
@@ -98,6 +99,7 @@ const AppContent = () => {
 
             {/* --- 👤 CLIENT SECURE ROUTES (Cần Login) --- */}
             <Route path="/booking/:roomId" element={<AuthGuard><Booking /></AuthGuard>} />
+            <Route path="/payment-result" element={<AuthGuard><PaymentResult /></AuthGuard>} />
             <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
 
             {/* --- 👑 ADMIN SECURE ROUTES (Cần Quyền Admin) --- */}

@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Bed, Globe, Send, } from 'lucide-react';
+import { Mail, Phone, MapPin, Bed, Globe, Send, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import axiosClient from '../api/axiosClient';
+import toast from 'react-hot-toast';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!email) return toast.error(t('booking.error') || "Vui lòng nhập email");
+    setLoading(true);
+    try {
+      const res = await axiosClient.post('/newsletters/subscribe', { email });
+      toast.success(res.data.message || "Đăng ký thành công!");
+      setEmail('');
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <footer className="bg-slate-50 text-slate-900 pt-20 pb-12 border-t border-slate-100 font-sans">
@@ -74,14 +92,21 @@ const Footer = () => {
           <div className="lg:col-span-3 space-y-8">
             <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">{t('footer.email_privilege')}</h4>
             <p className="text-sm text-slate-500 leading-relaxed font-medium">{t('footer.newsletter_desc')}</p>
-            <div className="relative group max-w-md">
+            <div className="relative group max-w-md flex">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('footer.email_placeholder')}
-                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 px-4 text-sm outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 transition-all text-slate-900 placeholder-slate-400 font-medium shadow-sm"
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 px-4 text-sm outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 transition-all text-slate-900 placeholder-slate-400 font-medium shadow-sm pr-12"
               />
-              <button className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white hover:bg-slate-900 transition-luxury shadow-md">
-                <Send size={16} className="-ml-0.5" />
+              <button 
+                onClick={handleSubscribe}
+                disabled={loading}
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white hover:bg-slate-900 transition-luxury shadow-md"
+              >
+                {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} className="-ml-0.5" />}
               </button>
             </div>
           </div>

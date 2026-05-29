@@ -16,6 +16,7 @@ const Contact = require('./models/Contact');
 const Service = require('./models/Service');
 const BookingService = require('./models/BookingService');
 const Discount = require('./models/Discount');
+const Newsletter = require('./models/Newsletter');
 
 // ========================================================
 // BỘ NÃO TRUNG TÂM: ĐỊNH NGHĨA QUAN HỆ TRỰC TIẾP
@@ -62,6 +63,8 @@ const userRoutes = require('./routes/userRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const discountRoutes = require('./routes/discountRoutes');
 const articleRoutes = require('./routes/articleRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const { startCronJobs } = require('./cron/jobs');
 
 app.use('/api/auth', authRoutes);
@@ -73,6 +76,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/discounts', discountRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/newsletters', newsletterRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Bắt đầu chạy các Cron Jobs ngầm (Tự động trả phòng...)
 startCronJobs();
