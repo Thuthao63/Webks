@@ -13,6 +13,7 @@ const ManageBookings = () => {
   const [printingBooking, setPrintingBooking] = useState(null);
 
   const fetchBookings = () => {
+    setLoading(true);
     axiosClient.get('/bookings')
       .then(res => {
         const sorted = res.data.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
@@ -25,15 +26,15 @@ const ManageBookings = () => {
   useEffect(() => { fetchBookings(); }, []);
 
   const luxurySwal = Swal.mixin({
-    background: '#ffffff',
-    color: '#0f172a',
-    backdrop: 'rgba(15,23,42,0.4)',
+    background: '#0a0a0ae6',
+    color: '#fff',
+    backdrop: 'rgba(0,0,0,0.8)',
     customClass: {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
       title: 'font-sans font-bold text-amber-500 text-2xl',
-      htmlContainer: 'text-slate-400 text-sm',
+      htmlContainer: 'text-gray-400 text-sm',
       confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-slate-50 border border-slate-200 text-slate-900 font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+      cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-white/10 transition-colors'
     }
   });
 
@@ -143,7 +144,8 @@ const ManageBookings = () => {
           await axiosClient.put(`/bookings/${id}`, { status: 'completed', totalPrice: finalPrice });
           luxurySwal.fire({ icon: 'success', title: 'Đã hoàn tất lưu trú', timer: 1500, showConfirmButton: false });
           fetchBookings();
-        } catch (err) { console.error(err); luxurySwal.fire('Lỗi', 'Không thể cập nhật hồ sơ', 'error');
+        } catch (err) {
+          luxurySwal.fire('Lỗi', 'Không thể cập nhật hồ sơ', 'error');
         }
       }
       return;
@@ -163,7 +165,8 @@ const ManageBookings = () => {
         await axiosClient.put(`/bookings/${id}`, { status });
         luxurySwal.fire({ icon: 'success', title: 'Thực thi thành công', timer: 1500, showConfirmButton: false });
         fetchBookings();
-      } catch (err) { console.error(err); luxurySwal.fire('Lỗi hệ thống', 'Quá trình cập nhật thất bại', 'error'); 
+      } catch (err) { 
+        luxurySwal.fire('Lỗi hệ thống', 'Quá trình cập nhật thất bại', 'error'); 
       }
     }
   };
@@ -182,7 +185,7 @@ const ManageBookings = () => {
     };
     const s = config[status] || config.pending;
     return (
-      <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-black uppercase tracking-widest ${s.color}`}>
+      <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${s.color}`}>
         {s.icon} {s.text}
       </span>
     );
@@ -191,7 +194,7 @@ const ManageBookings = () => {
   if (loading) return (
     <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-amber-500" size={40} />
-      <p className="text-slate-500 text-xs tracking-widest uppercase font-bold animate-pulse">Đang đồng bộ giao dịch...</p>
+      <p className="text-gray-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang đồng bộ giao dịch...</p>
     </div>
   );
 
@@ -207,12 +210,12 @@ const ManageBookings = () => {
               { label: 'Đang lưu trú', value: bookings.filter(b => b.status === 'confirmed').length, icon: <Bed size={20}/>, color: 'emerald' },
               { label: 'Đang chờ duyệt', value: bookings.filter(b => b.status === 'pending').length, icon: <Clock size={20}/>, color: 'amber' },
             ].map((stat, i) => (
-              <div key={i} className="bg-white border border-slate-100 p-5 rounded-3xl flex items-center justify-between">
+              <div key={i} className="bg-[#0a0a0a] border border-white/5 p-5 rounded-3xl flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">{stat.label}</p>
-                  <p className="text-3xl font-serif italic text-slate-900 leading-none mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{stat.label}</p>
+                  <p className="text-3xl font-serif italic text-white leading-none mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
                 </div>
-                <div className={`w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400`}>
+                <div className={`w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400`}>
                    {stat.icon}
                 </div>
               </div>
@@ -220,10 +223,10 @@ const ManageBookings = () => {
           </div>
 
           {/* Table Container */}
-          <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
             <div className="overflow-x-auto admin-scrollbar">
               <table className="w-full text-left">
-                <thead className="text-[10px] text-slate-400 uppercase font-black tracking-widest font-sans border-b border-slate-100 bg-slate-50/50">
+                <thead className="text-[10px] text-gray-600 uppercase font-bold tracking-[0.2em] border-b border-white/5 bg-white/[0.01]">
                   <tr>
                     <th className="px-8 py-6 whitespace-nowrap">Khách hàng</th>
                     <th className="px-6 py-6 whitespace-nowrap">Không gian</th>
@@ -232,26 +235,26 @@ const ManageBookings = () => {
                     <th className="px-8 py-6 text-right whitespace-nowrap">Thao tác</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 bg-white">
+                <tbody className="divide-y divide-white/5">
                   {bookings.map(booking => (
-                    <tr key={booking.id} className="group hover:bg-slate-50/50 transition-all">
+                    <tr key={booking.id} className="group hover:bg-white/[0.01] transition-all">
                       <td className="px-8 py-5">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-slate-900 font-black text-xs border border-slate-200">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-white font-black text-xs border border-white/10">
                             {(booking.user?.fullName || booking.customer?.fullName || 'U').charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <p className="text-[13px] font-black text-slate-900 group-hover:text-amber-500 transition-colors uppercase tracking-wide">
+                            <p className="text-[13px] font-black text-white group-hover:text-amber-500 transition-colors uppercase tracking-wide">
                               {booking.user?.fullName || booking.customer?.fullName || 'Khách vãng lai'}
                             </p>
-                            <p className="text-xs text-slate-500 font-medium">{booking.user?.email || booking.customer?.email || 'N/A'}</p>
+                            <p className="text-[10px] text-gray-600 font-medium">{booking.user?.email || booking.customer?.email || 'N/A'}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
                           {/* Room Image Thumbnail */}
-                          <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-slate-200 flex-shrink-0 group-hover:border-amber-500/30 transition-colors">
+                          <div className="relative w-16 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 group-hover:border-amber-500/30 transition-colors">
                             <img
                               src={`/Hinh anh/Hinh${((booking.room?.id || 1) % 20) + 1}.png`}
                               alt={`Phong ${booking.room?.roomNumber}`}
@@ -262,18 +265,18 @@ const ManageBookings = () => {
                           </div>
                           {/* Room Info */}
                           <div>
-                            <div className="flex items-center gap-1.5 text-slate-900 font-bold text-[12px] group-hover:text-amber-400 transition-colors">
+                            <div className="flex items-center gap-1.5 text-white font-bold text-[12px] group-hover:text-amber-400 transition-colors">
                               <Bed size={12} className="text-amber-500" />
                               P. {booking.room?.roomNumber || '---'}
                             </div>
-                            <p className="text-sm font-black text-amber-500/80 mt-1 tracking-widest">
-                              {Number(booking.totalPrice || 0).toLocaleString()} <span className="text-sm text-slate-400 uppercase font-bold">VND</span>
+                            <p className="text-[11px] font-black text-amber-500/80 mt-1 tracking-widest">
+                              {Number(booking.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-gray-700 uppercase font-bold">VND</span>
                             </p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-5">
-                        <div className="flex flex-col gap-1 text-xs text-slate-500 font-bold uppercase tracking-widest">
+                        <div className="flex flex-col gap-1 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
                           <span className="flex items-center gap-2">
                             <Calendar size={12} className="text-emerald-500/50"/> 
                             {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}
@@ -300,16 +303,16 @@ const ManageBookings = () => {
                             </>
                           )}
                            {booking.status === 'confirmed' && (
-                            <button onClick={() => updateStatus(booking.id, 'completed', booking)} className="px-4 py-2 rounded-xl bg-amber-500 text-black font-black text-xs uppercase tracking-widest hover:shadow-luxury">
+                            <button onClick={() => updateStatus(booking.id, 'completed', booking)} className="px-4 py-2 rounded-xl bg-amber-500 text-black font-black text-[10px] uppercase tracking-widest hover:shadow-luxury">
                               Trả phòng
                             </button>
                           )}
                           {(booking.status === 'completed') && (
-                            <button onClick={() => handlePrintInvoice(booking)} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 transition-all">
+                            <button onClick={() => handlePrintInvoice(booking)} className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-all">
                               <Printer size={16} />
                             </button>
                           )}
-                          <button className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400">
+                          <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400">
                              <MoreVertical size={16} />
                           </button>
                          </div>
@@ -331,16 +334,16 @@ const ManageBookings = () => {
                <h1 className="text-3xl font-serif italic text-amber-600">Uy Nam Luxury Hotel</h1>
                <div className="text-right">
                  <h2 className="text-2xl font-black uppercase tracking-widest">Hóa Đơn</h2>
-                 <p className="text-xs text-slate-500">#{String(printingBooking.id).substring(0,8).toUpperCase()}</p>
+                 <p className="text-xs text-gray-500">#{String(printingBooking.id).substring(0,8).toUpperCase()}</p>
                </div>
              </div>
              <div className="mb-10 flex justify-between">
                 <div>
-                   <p className="text-xs uppercase font-bold text-slate-400 mb-1">Khách hàng</p>
-                   <p className="font-bold text-slate-300">{printingBooking.user?.fullName || printingBooking.customer?.fullName}</p>
+                   <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Khách hàng</p>
+                   <p className="font-bold text-gray-800">{printingBooking.user?.fullName || printingBooking.customer?.fullName}</p>
                 </div>
                 <div className="text-right">
-                   <p className="text-xs uppercase font-bold text-slate-400 mb-1">Ngày lưu trú</p>
+                   <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Ngày lưu trú</p>
                    <p className="text-sm">{new Date(printingBooking.checkInDate).toLocaleDateString('vi-VN')} - {new Date(printingBooking.checkOutDate).toLocaleDateString('vi-VN')}</p>
                 </div>
              </div>
@@ -360,7 +363,7 @@ const ManageBookings = () => {
              </table>
              <div className="flex justify-end pt-4">
                 <div className="w-1/2">
-                   <div className="flex justify-between py-2 border-b text-slate-500">
+                   <div className="flex justify-between py-2 border-b text-gray-600">
                       <span>Tạm tính</span>
                       <span>{Number(printingBooking.totalPrice).toLocaleString()} đ</span>
                    </div>
@@ -378,8 +381,3 @@ const ManageBookings = () => {
 };
 
 export default ManageBookings;
-
-
-
-
-

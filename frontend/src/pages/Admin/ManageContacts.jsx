@@ -9,6 +9,7 @@ const ManageContacts = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchContacts = () => {
+    setLoading(true);
     axiosClient.get('/contacts')
       .then(res => {
         const sorted = res.data.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
@@ -21,15 +22,15 @@ const ManageContacts = () => {
   useEffect(() => { fetchContacts(); }, []);
 
   const luxurySwal = Swal.mixin({
-    background: '#ffffff',
-    color: '#0f172a',
-    backdrop: 'rgba(15,23,42,0.4)',
+    background: '#0a0a0ae6',
+    color: '#fff',
+    backdrop: 'rgba(0,0,0,0.8)',
     customClass: {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
       title: 'font-serif italic text-amber-500 text-2xl',
-      htmlContainer: 'text-slate-400 text-sm',
+      htmlContainer: 'text-gray-400 text-sm',
       confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-slate-50 border border-slate-200 text-slate-900 font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+      cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-white/10 transition-colors'
     }
   });
 
@@ -47,7 +48,8 @@ const ManageContacts = () => {
         await axiosClient.put(`/contacts/${id}`, { status: 'Resolved' });
         luxurySwal.fire({ icon: 'success', title: 'Thành công', timer: 1500, showConfirmButton: false });
         fetchContacts();
-      } catch (err) { console.error(err); luxurySwal.fire('Thất bại', 'Máy chủ không phản hồi yêu cầu cập nhật.', 'error'); 
+      } catch (err) { 
+        luxurySwal.fire('Thất bại', 'Máy chủ không phản hồi yêu cầu cập nhật.', 'error'); 
       }
     }
   };
@@ -55,7 +57,7 @@ const ManageContacts = () => {
   if (loading) return (
     <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-amber-500" size={40} />
-      <p className="text-slate-500 text-xs tracking-widest uppercase font-bold animate-pulse">Đang đồng bộ hộp thư tin nhắn...</p>
+      <p className="text-gray-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang đồng bộ hộp thư tin nhắn...</p>
     </div>
   );
 
@@ -64,24 +66,24 @@ const ManageContacts = () => {
       <div className="space-y-8 pb-10">
         
         {/* Header Stats Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-100 p-4 rounded-3xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0a0a0a] border border-white/5 p-4 rounded-3xl">
           <div className="flex items-center gap-6 pl-2">
              <div className="flex items-center gap-2">
                 <span className="text-4xl font-serif italic text-amber-500 leading-none drop-shadow-md" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {contacts.filter(c => c.status === 'Pending').length}
                 </span>
                 <div className="flex flex-col">
-                  <span className="text-xs text-amber-500 font-bold uppercase tracking-widest">Tin mới</span>
+                  <span className="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Tin mới</span>
                   <span className="text-[8px] text-rose-400 font-bold uppercase tracking-widest flex items-center gap-1"><Clock size={8} /> Chờ xử lý</span>
                 </div>
              </div>
-             <div className="h-8 w-px bg-slate-50" />
+             <div className="h-8 w-px bg-white/5" />
              <div>
-                <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Tổng lưu trữ</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{contacts.length} hội thoại</p>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Tổng lưu trữ</p>
+                <p className="text-lg font-serif italic text-white leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{contacts.length} hội thoại</p>
              </div>
           </div>
-          <button onClick={fetchContacts} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 rounded-2xl text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all">
+          <button onClick={fetchContacts} className="w-full sm:w-auto px-6 py-3 bg-white/5 border border-white/10 text-gray-400 hover:text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all">
             <RefreshCw size={14} /> Làm mới hộp thư
           </button>
         </div>
@@ -89,25 +91,25 @@ const ManageContacts = () => {
         {/* Message List */}
         <div className="space-y-6">
           {contacts.length > 0 ? contacts.map(contact => (
-            <div key={contact.id} className="group relative bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-xl hover:border-slate-200 transition-all duration-500 flex flex-col lg:flex-row gap-8 overflow-hidden">
+            <div key={contact.id} className="group relative bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-8 shadow-xl hover:border-white/10 transition-all duration-500 flex flex-col lg:flex-row gap-8 overflow-hidden">
                
                {/* Contact Profiling */}
-               <div className="lg:w-1/4 flex flex-col gap-4 border-b lg:border-b-0 lg:border-r border-slate-100 pb-6 lg:pb-0 lg:pr-8">
+               <div className="lg:w-1/4 flex flex-col gap-4 border-b lg:border-b-0 lg:border-r border-white/5 pb-6 lg:pb-0 lg:pr-8">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-amber-500 font-black text-xl group-hover:scale-110 transition-transform duration-500">
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-500 font-black text-xl group-hover:scale-110 transition-transform duration-500">
                       {(contact.name || 'U').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-black text-slate-900 text-lg tracking-tight group-hover:text-amber-500 transition-colors uppercase">{contact.name}</p>
-                      <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mt-0.5">ID #{contact.id.toString().slice(-4)}</p>
+                      <p className="font-black text-white text-lg tracking-tight group-hover:text-amber-500 transition-colors uppercase">{contact.name}</p>
+                      <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mt-0.5">ID #{contact.id.toString().slice(-4)}</p>
                     </div>
                   </div>
                   
                   <div className="mt-auto space-y-2">
-                     <div className="flex items-center gap-3 text-xs text-slate-500 font-bold bg-slate-50 p-2 rounded-xl border border-slate-100 group-hover:border-amber-500/10 transition-colors">
+                     <div className="flex items-center gap-3 text-[10px] text-gray-500 font-bold bg-white/5 p-2 rounded-xl border border-white/5 group-hover:border-amber-500/10 transition-colors">
                         <Phone size={12} className="text-amber-600" /> {contact.phone}
                      </div>
-                     <div className="flex items-center gap-3 text-xs text-slate-500 font-bold bg-slate-50 p-2 rounded-xl border border-slate-100 group-hover:border-emerald-500/10 transition-colors break-all">
+                     <div className="flex items-center gap-3 text-[10px] text-gray-500 font-bold bg-white/5 p-2 rounded-xl border border-white/5 group-hover:border-emerald-500/10 transition-colors break-all">
                         <Mail size={12} className="text-emerald-600" /> {contact.email}
                      </div>
                   </div>
@@ -116,11 +118,11 @@ const ManageContacts = () => {
                {/* Message Body */}
                <div className="lg:w-2/4 flex flex-col gap-4">
                   <div className="flex items-center justify-between">
-                     <p className="text-xs font-black text-slate-900/50 uppercase tracking-wider">Hạng mục hỗ trợ</p>
-                     <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{new Date(contact.createdAt).toLocaleString('vi-VN')}</p>
+                     <p className="text-xs font-black text-white/50 uppercase tracking-[0.2em]">Hạng mục hỗ trợ</p>
+                     <p className="text-[10px] text-gray-700 font-bold uppercase tracking-widest">{new Date(contact.createdAt).toLocaleString('vi-VN')}</p>
                   </div>
-                  {contact.subject && <h4 className="text-lg font-black text-slate-900 group-hover:text-amber-500 transition-colors line-clamp-1">{contact.subject}</h4>}
-                  <div className="relative bg-slate-50/50 border border-slate-100 p-6 rounded-3xl italic text-slate-400 text-sm leading-relaxed group-hover:bg-slate-50 transition-colors flex-1">
+                  {contact.subject && <h4 className="text-lg font-black text-white group-hover:text-amber-500 transition-colors line-clamp-1">{contact.subject}</h4>}
+                  <div className="relative bg-white/[0.01] border border-white/5 p-6 rounded-3xl italic text-gray-400 text-sm leading-relaxed group-hover:bg-white/[0.02] transition-colors flex-1">
                      <Quote size={24} className="text-amber-500/5 absolute -top-2 -left-2" />
                      "{contact.message}"
                   </div>
@@ -130,36 +132,36 @@ const ManageContacts = () => {
                <div className="lg:w-1/4 flex flex-col items-center lg:items-end justify-center gap-6">
                   {contact.status === 'Pending' ? (
                     <div className="flex flex-col items-center lg:items-end gap-6">
-                       <span className="px-4 py-2 bg-amber-500/5 border border-amber-500/20 text-amber-500 text-sm font-black uppercase tracking-widest rounded-full animate-pulse shadow-[0_0_20px_rgba(245,158,11,0.05)]">
+                       <span className="px-4 py-2 bg-amber-500/5 border border-amber-500/20 text-amber-500 text-[9px] font-black uppercase tracking-widest rounded-full animate-pulse shadow-[0_0_20px_rgba(245,158,11,0.05)]">
                           Chờ tiếp nhận
                        </span>
                        <button 
                          onClick={() => updateStatus(contact.id)}
-                         className="flex items-center gap-2 px-6 py-4 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-black border border-emerald-500/20 rounded-2xl transition-all duration-300 text-xs font-black uppercase tracking-widest shadow-lg hover:shadow-emerald-500/20"
+                         className="flex items-center gap-2 px-6 py-4 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-black border border-emerald-500/20 rounded-2xl transition-all duration-300 text-[10px] font-black uppercase tracking-widest shadow-lg hover:shadow-emerald-500/20"
                        >
                           <Check size={16} strokeWidth={3} /> Chốt hồ sơ
                        </button>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center lg:items-end gap-4 opacity-50">
-                       <span className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-black uppercase tracking-widest rounded-full">
+                       <span className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest rounded-full">
                           Đã hoàn mãn
                        </span>
-                       <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                          <CheckCircle size={24} className="text-slate-300" />
+                       <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
+                          <CheckCircle size={24} className="text-gray-800" />
                        </div>
                     </div>
                   )}
-                  <button className="hidden lg:block p-2 text-slate-300 hover:text-slate-900 transition-colors">
+                  <button className="hidden lg:block p-2 text-gray-800 hover:text-white transition-colors">
                      <MoreVertical size={20} />
                   </button>
                </div>
 
             </div>
           )) : (
-            <div className="py-24 flex flex-col items-center justify-center bg-white border border-slate-100 border-dashed rounded-[3rem]">
-              <MessageSquare size={48} className="text-slate-300 mb-4" />
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Hộp thư hiện đang trống trải</p>
+            <div className="py-24 flex flex-col items-center justify-center bg-[#0a0a0a] border border-white/5 border-dashed rounded-[3rem]">
+              <MessageSquare size={48} className="text-gray-800 mb-4" />
+              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em]">Hộp thư hiện đang trống trải</p>
             </div>
           )}
         </div>
@@ -170,8 +172,3 @@ const ManageContacts = () => {
 };
 
 export default ManageContacts;
-
-
-
-
-
