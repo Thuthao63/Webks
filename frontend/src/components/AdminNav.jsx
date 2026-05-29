@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Bed, CalendarCheck, MessageSquare,
   LogOut, Users, Star, Coffee, Sparkles, X, ChevronRight,
-  Settings, ShieldCheck
+  Settings, ShieldCheck, FileText
 } from 'lucide-react';
 import { AuthContext } from "../context/AuthContext";
 
@@ -23,6 +23,7 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
     { name: 'Dịch vụ', path: '/admin/services', icon: <Coffee size={18} /> },
     { name: 'Đơn hàng', path: '/admin/bookings', icon: <CalendarCheck size={18} /> },
     { name: 'Đánh giá', path: '/admin/reviews', icon: <Star size={18} /> },
+    { name: 'Bài viết', path: '/admin/blogs', icon: <FileText size={18} /> },
     { name: 'Giảm giá', path: '/admin/discounts', icon: <Sparkles size={18} /> },
     { name: 'Hộp thư', path: '/admin/contacts', icon: <MessageSquare size={18} /> },
     { name: 'Tài khoản', path: '/admin/users', icon: <Users size={18} /> },

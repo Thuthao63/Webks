@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { ArrowLeft, Star, Maximize, Users, Bed, Loader2, ArrowRight, Check, User, Quote, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 const RoomDetails = () => {
     const { roomId } = useParams();
@@ -11,6 +12,7 @@ const RoomDetails = () => {
     const [reviews, setReviews] = useState([]);
     const [discount, setDiscount] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { t } = useTranslation();
 
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     const [reviewForm, setReviewForm] = useState({ rating: 0, comment: '' });
@@ -18,6 +20,7 @@ const RoomDetails = () => {
     const [submittingReview, setSubmittingReview] = useState(false);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const fetchData = async () => {
             try {
                 const [roomRes, reviewRes, discountRes] = await Promise.all([
@@ -45,8 +48,8 @@ const RoomDetails = () => {
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
-        if (!user) return toast.error("Vui lòng đăng nhập để đánh giá");
-        if (reviewForm.rating === 0) return toast.error("Vui lòng chọn số sao");
+        if (!user) return toast.error(t('room_details.login_required'));
+        if (reviewForm.rating === 0) return toast.error(t('room_details.rating_required'));
         
         setSubmittingReview(true);
         try {
@@ -56,7 +59,7 @@ const RoomDetails = () => {
                 rating: reviewForm.rating,
                 comment: reviewForm.comment
             });
-            toast.success(res.data.message || "Đánh giá thành công!");
+            toast.success(res.data.message || t('room_details.review_success'));
             
             // Xóa form và cập nhật lại danh sách đánh giá
             setReviewForm({ rating: 0, comment: '' });
@@ -65,7 +68,7 @@ const RoomDetails = () => {
             
         } catch (error) {
             console.error("Lỗi gửi đánh giá:", error);
-            toast.error(error.response?.data?.message || "Có lỗi xảy ra khi gửi đánh giá");
+            toast.error(error.response?.data?.message || t('room_details.review_error'));
         } finally {
             setSubmittingReview(false);
         }
@@ -93,8 +96,8 @@ const RoomDetails = () => {
     if (!room) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center flex-col gap-8">
-                <p className="text-slate-900 text-xl font-serif italic font-sans">Không tìm thấy thông tin phòng.</p>
-                <button onClick={() => navigate('/rooms')} className="bg-slate-900 text-white px-10 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-amber-500 transition-luxury shadow-lg font-sans">Quay lại danh mục</button>
+                <p className="text-slate-900 text-xl font-serif italic font-sans">{t('room_details.not_found')}</p>
+                <button onClick={() => navigate('/rooms')} className="bg-slate-900 text-white px-10 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-amber-500 transition-luxury shadow-lg font-sans">{t('room_details.back_to_list')}</button>
             </div>
         );
     }
@@ -108,7 +111,7 @@ const RoomDetails = () => {
                   onClick={() => navigate('/rooms')} 
                   className="group flex items-center gap-4 text-slate-400 hover:text-amber-500 transition-luxury mb-16 text-sm font-black uppercase tracking-[0.1em] font-sans"
                 >
-                    <ArrowLeft size={18} className="group-hover:-translate-x-2 transition-transform" /> Quay lại danh mục
+                    <ArrowLeft size={18} className="group-hover:-translate-x-2 transition-transform" /> {t('room_details.back_to_list')}
                 </button>
 
                 {/* HEADER & HÌNH ẢNH */}
@@ -120,24 +123,24 @@ const RoomDetails = () => {
                                 <Star size={14} fill="currentColor" /> Luxury Collection
                             </div>
                             <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900 leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Phòng <span className="text-amber-500 not-italic">{room.roomNumber}</span>
+                                {t('room_details.room_prefix')} <span className="text-amber-500 not-italic">{room.roomNumber}</span>
                             </h1>
                             <p className="text-slate-500 text-lg leading-relaxed font-medium italic font-sans">
-                                {details.description || 'Trải nghiệm không gian sống tiện nghi với những trang bị tân tiến, thiết kế nội thất sang trọng mang đậm dấu ấn Uy Nam.'}
+                                {details.description || t('room_details.default_desc')}
                             </p>
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-8 p-10 bg-white rounded-[2.5rem] border border-slate-100 shadow-premium">
                             <div className="space-y-2">
-                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Users size={16} className="text-amber-500" /> Khách</span>
-                                <span className="text-xs uppercase font-black text-slate-800 font-sans">{details.capacity || 2} Khách</span>
+                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Users size={16} className="text-amber-500" /> {t('room_details.guests')}</span>
+                                <span className="text-xs uppercase font-black text-slate-800 font-sans">{details.capacity || 2} {t('room_details.guests')}</span>
                             </div>
                             <div className="space-y-2">
-                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Maximize size={16} className="text-amber-500" /> Diện tích</span>
+                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Maximize size={16} className="text-amber-500" /> {t('room_details.area')}</span>
                                 <span className="text-xs uppercase font-black text-slate-800 font-sans">45 m²</span>
                             </div>
                             <div className="space-y-2">
-                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Bed size={16} className="text-amber-500" /> Giường</span>
+                                <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Bed size={16} className="text-amber-500" /> {t('room_details.bed')}</span>
                                 <span className="text-xs uppercase font-black text-slate-800 font-sans">1 King Size</span>
                             </div>
                         </div>
@@ -145,7 +148,7 @@ const RoomDetails = () => {
                         <div className="space-y-10">
                             <div>
                                 <p className="text-xs text-slate-400 uppercase tracking-[0.1em] font-black mb-3 italic flex items-center gap-2 font-sans">
-                                    Mức phí lưu trú tiêu chuẩn
+                                    {t('room_details.standard_fee')}
                                     {discount && <span className="bg-rose-500 text-white px-2 py-0.5 rounded text-[8px] animate-pulse font-sans">-{Math.floor(discount.discountPercent)}% OFF</span>}
                                 </p>
                                 <div className="flex items-baseline gap-4">
@@ -156,22 +159,22 @@ const RoomDetails = () => {
                                     )}
                                     <p className="text-5xl text-amber-500 font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
                                         {(Number(details.price || 0) * (discount ? (1 - discount.discountPercent / 100) : 1)).toLocaleString()}
-                                        <span className="text-xs text-slate-400 not-italic uppercase font-black tracking-widest ml-4 font-sans">VNĐ / ĐÊM</span>
+                                        <span className="text-xs text-slate-400 not-italic uppercase font-black tracking-widest ml-4 font-sans">{t('room_details.currency_per_night')}</span>
                                     </p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => navigate(`/booking/${room.id}`)}
-                                disabled={room.status !== 'Available'}
+                                disabled={room.status === 'Maintenance'}
                                 className={`w-full py-6 font-black uppercase text-sm tracking-[0.1em] transition-luxury flex items-center justify-center gap-6 rounded-2xl shadow-premium font-sans ${
-                                    room.status === 'Available' 
+                                    room.status !== 'Maintenance' 
                                     ? 'bg-slate-900 text-white hover:bg-amber-500 hover:shadow-2xl shadow-slate-900/10 active:scale-95' 
                                     : 'bg-slate-50 text-slate-300 cursor-not-allowed border border-slate-100'
                                 }`}
                             >
-                                {room.status === 'Available' ? (
-                                    <>Xác nhận Đặt phòng <ArrowRight size={18} /></>
-                                ) : 'Hiện phòng đang bận'}
+                                {room.status !== 'Maintenance' ? (
+                                    <>{t('room_details.confirm_booking')} <ArrowRight size={18} /></>
+                                ) : t('room_details.room_maintenance')}
                             </button>
                         </div>
                     </div>
@@ -185,10 +188,10 @@ const RoomDetails = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent"></div>
                         <div className="absolute bottom-12 left-12 right-12 flex flex-wrap gap-4">
                             <span className="bg-white/90 backdrop-blur-md px-6 py-3 text-xs font-black uppercase tracking-widest text-amber-500 rounded-xl border border-white/20 flex items-center gap-3 shadow-xl font-sans">
-                                <ShieldCheck size={16} /> Dịch vụ Butler riêng
+                                <ShieldCheck size={16} /> {t('room_details.private_butler')}
                             </span>
                             <span className="bg-white/90 backdrop-blur-md px-6 py-3 text-xs font-black uppercase tracking-widest text-slate-900 rounded-xl border border-white/20 flex items-center gap-3 shadow-xl font-sans">
-                                <Check size={16} className="text-amber-500" /> Toàn bộ tiện nghi cao cấp
+                                <Check size={16} className="text-amber-500" /> {t('room_details.premium_amenities')}
                             </span>
                         </div>
                     </div>
@@ -198,13 +201,13 @@ const RoomDetails = () => {
                 <section className="bg-white rounded-[4rem] p-16 md:p-24 border border-slate-100 shadow-premium">
                     <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-50 pb-12 mb-16 gap-10">
                         <div className="space-y-6">
-                            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] block font-sans">Đánh giá từ Khách hàng</span>
+                            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] block font-sans">{t('room_details.customer_reviews')}</span>
                             <h3 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Cảm hứng <span className="not-italic text-amber-500">lưu trú</span>
+                                {t('room_details.inspiration')} <span className="not-italic text-amber-500">{t('room_details.stay')}</span>
                             </h3>
                             <p className="text-slate-400 text-xs uppercase tracking-widest font-black italic flex items-center gap-3 font-sans">
                                 <Users size={16} className="text-amber-500" />
-                                {reviews.length > 0 ? `Tổng hợp từ ${reviews.length} đánh giá thực tế` : 'Chưa có đánh giá nào cho phòng này'}
+                                {reviews.length > 0 ? t('room_details.total_reviews').replace('{count}', reviews.length) : t('room_details.no_reviews')}
                             </p>
                         </div>
                         {reviews.length > 0 && (
@@ -214,7 +217,7 @@ const RoomDetails = () => {
                                 </span>
                                 <div className="border-l border-amber-500/20 pl-8 space-y-2">
                                     {renderStars(Math.round(reviews.reduce((a, b) => a + b.rating, 0) / reviews.length))}
-                                    <span className="text-xs uppercase text-slate-400 font-black tracking-widest block">Xếp hạng tuyệt đối</span>
+                                    <span className="text-xs uppercase text-slate-400 font-black tracking-widest block">{t('room_details.absolute_rating')}</span>
                                 </div>
                             </div>
                         )}
@@ -231,7 +234,7 @@ const RoomDetails = () => {
                                             {(review.reviewer?.fullName || 'G').charAt(0).toUpperCase()}
                                         </div>
                                         <div>
-                                            <p className="font-black uppercase tracking-[0.15em] text-sm text-slate-900 font-sans">{review.reviewer?.fullName || 'Khách hàng'}</p>
+                                            <p className="font-black uppercase tracking-[0.15em] text-sm text-slate-900 font-sans">{review.reviewer?.fullName || t('room_details.customer')}</p>
                                             <p className="text-sm text-slate-400 uppercase tracking-widest font-black mt-0.5 italic font-sans">{new Date(review.createdAt).toLocaleDateString('vi-VN')}</p>
                                         </div>
                                     </div>
@@ -247,7 +250,7 @@ const RoomDetails = () => {
                                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl mb-8">
                                     <Star size={40} className="text-amber-500/20" />
                                 </div>
-                                <p className="text-slate-400 uppercase tracking-[0.1em] font-black text-xs italic font-sans">Hãy trở thành người đầu tiên chia sẻ cảm nhận</p>
+                                <p className="text-slate-400 uppercase tracking-[0.1em] font-black text-xs italic font-sans">{t('room_details.be_the_first')}</p>
                             </div>
                         )}
                     </div>
@@ -257,10 +260,10 @@ const RoomDetails = () => {
                         {user ? (
                             <form onSubmit={handleReviewSubmit} className="bg-cream p-10 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-8">
                                 <h4 className="text-2xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                    Chia sẻ trải nghiệm của bạn
+                                    {t('room_details.share_experience')}
                                 </h4>
                                 <div className="space-y-4">
-                                    <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">Đánh giá sao</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('room_details.star_rating')}</label>
                                     <div className="flex items-center gap-2">
                                         {[1, 2, 3, 4, 5].map((star) => (
                                             <Star
@@ -279,11 +282,11 @@ const RoomDetails = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-4">
-                                    <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">Nội dung đánh giá</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('room_details.review_content')}</label>
                                     <textarea
                                         value={reviewForm.comment}
                                         onChange={(e) => setReviewForm(prev => ({ ...prev, comment: e.target.value }))}
-                                        placeholder="Chúng tôi rất mong nghe cảm nhận về trải nghiệm lưu trú của bạn..."
+                                        placeholder={t('room_details.review_placeholder')}
                                         className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 text-sm md:text-base text-slate-700 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all min-h-[120px] resize-y font-sans placeholder:text-slate-400"
                                         required
                                     ></textarea>
@@ -298,20 +301,20 @@ const RoomDetails = () => {
                                             : 'bg-slate-900 text-white hover:bg-amber-500 hover:shadow-amber-500/20'
                                         }`}
                                     >
-                                        {submittingReview ? <Loader2 size={16} className="animate-spin" /> : 'Gửi Đánh Giá'}
+                                        {submittingReview ? <Loader2 size={16} className="animate-spin" /> : t('room_details.submit_review')}
                                     </button>
                                 </div>
                             </form>
                         ) : (
                             <div className="bg-cream p-10 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm text-center">
                                 <p className="text-slate-600 mb-6 italic leading-loose text-base font-medium font-sans">
-                                    Bạn cần đăng nhập để có thể chia sẻ cảm nhận về phòng này.
+                                    {t('room_details.login_to_review')}
                                 </p>
                                 <button 
                                     onClick={() => navigate('/login')}
                                     className="px-10 py-4 mb-4 text-xs font-black uppercase tracking-widest rounded-xl bg-slate-900 text-white hover:bg-amber-500 transition-luxury shadow-lg font-sans"
                                 >
-                                    Đăng nhập ngay
+                                    {t('room_details.login_now')}
                                 </button>
                             </div>
                         )}

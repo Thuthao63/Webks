@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare, User as UserIcon, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,18 +31,18 @@ const Contact = () => {
         background: '#fff',
         color: '#0f172a',
         icon: 'success',
-        title: 'Gửi thành công',
-        text: 'Chúng tôi đã tiếp nhận yêu cầu và sẽ phản hồi trong giây lát.',
+        title: t('contact.success_title'),
+        text: t('contact.success_msg'),
         confirmButtonColor: '#B59A6D',
-        confirmButtonText: 'Đóng',
+        confirmButtonText: t('contact.close'),
         borderRadius: '2rem'
       });
     } catch (error) {
       console.error(error);
       Swal.fire({
         icon: 'error',
-        title: 'Thất bại',
-        text: 'Có lỗi xảy ra. Quý khách vui lòng thử lại sau.',
+        title: t('contact.error_title'),
+        text: t('contact.error_msg'),
         confirmButtonColor: '#0f172a',
       });
     } finally {
@@ -62,12 +64,12 @@ const Contact = () => {
            />
          </div>
          <div className="relative z-20 text-center px-6 mt-20 animate-in fade-in zoom-in duration-1000 max-w-4xl">
-            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] mb-8 block">Dịch vụ Butler 24/7</span>
+            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] mb-8 block">{t('contact.butler_service')}</span>
             <h1 className="text-6xl md:text-[7rem] mb-6 italic text-slate-100 drop-shadow-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Liên kết <span className="text-amber-500 font-bold not-italic">Tận tâm</span>
+              {t('contact.connect')} <span className="text-amber-500 font-bold not-italic">{t('contact.dedicated')}</span>
             </h1>
             <p className="text-slate-200 text-xs md:text-xs uppercase tracking-[0.15em] max-w-xl mx-auto leading-loose bg-black/10 backdrop-blur-md py-4 px-10 rounded-full border border-white/5">
-              Chúng tôi luôn sẵn sàng lắng nghe mọi yêu cầu thượng hạng của quý khách.
+              {t('contact.hero_desc')}
             </p>
          </div>
       </section>
@@ -78,18 +80,18 @@ const Contact = () => {
           {/* INFO & MAP */}
           <div className="space-y-16 animate-in fade-in slide-in-from-left-10 duration-1000">
              <div className="space-y-8">
-                 <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thông tin <br/> liên hệ</h2>
+                 <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.contact_info')} <br/> {t('contact.contact_info_highlight')}</h2>
                  <p className="text-slate-500 leading-relaxed text-base font-medium italic font-sans">
-                   Dù bạn cần giải đáp thắc mắc về không gian, hay muốn gửi yêu cầu đặc biệt cho kỳ nghỉ sắp tới, đội ngũ Chăm sóc khách hàng của Uy Nam luôn túc trực để phục vụ.
+                   {t('contact.contact_desc')}
                  </p>
              </div>
 
              <div className="grid gap-10">
                  {[
-                   { icon: MapPin, title: "Tọa lạc", desc: "123 Võ Nguyên Giáp, Phước Mỹ, Đà Nẵng" },
-                   { icon: Phone, title: "Đường dây nóng", desc: "0123.456.789 (Hỗ trợ 24/7)" },
-                   { icon: Mail, title: "Email đặc quyền", desc: "contact@uynam.com" },
-                   { icon: Clock, title: "Trạng thái", desc: "Hoạt động liên tục cả tuần" }
+                   { icon: MapPin, title: t('contact.location'), desc: t('contact.location_desc') },
+                   { icon: Phone, title: t('contact.hotline'), desc: t('contact.hotline_desc') },
+                   { icon: Mail, title: t('contact.exclusive_email'), desc: "contact@uynam.com" },
+                   { icon: Clock, title: t('contact.status'), desc: t('contact.status_desc') }
                  ].map((item, i) => (
                    <div key={i} className="flex items-center gap-8 group">
                       <div className="w-16 h-16 rounded-2xl bg-white shadow-premium flex items-center justify-center text-amber-500 group-hover:bg-slate-900 group-hover:text-amber-500 transition-luxury shrink-0">
@@ -112,20 +114,20 @@ const Contact = () => {
                   <div className="w-24 h-24 rounded-full border border-amber-500 flex items-center justify-center text-amber-500 mb-10 shadow-lg shadow-amber-500/10">
                      <CheckCircle size={40} strokeWidth={1} />
                   </div>
-                  <h3 className="text-4xl font-serif italic mb-4 text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thư đã được gửi</h3>
-                  <p className="text-slate-500 font-medium italic mb-12 font-sans">Quản gia của chúng tôi sẽ hồi đáp qua email trong vòng 24 giờ.</p>
+                  <h3 className="text-4xl font-serif italic mb-4 text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.mail_sent')}</h3>
+                  <p className="text-slate-500 font-medium italic mb-12 font-sans">{t('contact.mail_sent_desc')}</p>
                   <button 
                     onClick={() => setSuccess(false)} 
                     className="border border-slate-900 text-slate-900 px-10 py-4 text-xs font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-luxury font-sans"
                   >
-                    Gửi thêm yêu cầu
+                    {t('contact.send_another')}
                   </button>
                </div>
              ) : (
                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                   <div className="mb-10 text-center">
-                     <h3 className="text-3xl font-serif italic text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Để lại lời nhắn</h3>
-                     <p className="text-sm text-slate-500 font-sans">Chúng tôi sẽ hồi đáp qua email hoặc điện thoại trong thời gian sớm nhất.</p>
+                     <h3 className="text-3xl font-serif italic text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.leave_message')}</h3>
+                     <p className="text-sm text-slate-500 font-sans">{t('contact.leave_message_desc')}</p>
                   </div>
                   
                   <div className="grid md:grid-cols-2 gap-6">
@@ -137,7 +139,7 @@ const Contact = () => {
                          required type="text"
                          value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
                          className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
-                         placeholder="Họ và tên quý khách"
+                         placeholder={t('contact.placeholder_name')}
                       />
                     </div>
                     <div className="relative group">
@@ -148,7 +150,7 @@ const Contact = () => {
                          required type="tel"
                          value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})}
                          className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
-                         placeholder="Số điện thoại liên lạc"
+                         placeholder={t('contact.placeholder_phone')}
                       />
                     </div>
                   </div>
@@ -161,7 +163,7 @@ const Contact = () => {
                         required type="email"
                         value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
-                        placeholder="Địa chỉ Email"
+                        placeholder={t('contact.placeholder_email')}
                      />
                   </div>
 
@@ -173,7 +175,7 @@ const Contact = () => {
                         required type="text"
                         value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})}
                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
-                        placeholder="Chủ đề quan tâm (VD: Đặt tiệc, Hủy phòng...)"
+                        placeholder={t('contact.placeholder_subject')}
                      />
                   </div>
 
@@ -185,7 +187,7 @@ const Contact = () => {
                         required rows={4}
                         value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})}
                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 resize-none font-sans shadow-sm"
-                        placeholder="Chi tiết lời nhắn của quý khách..."
+                        placeholder={t('contact.placeholder_message')}
                      />
                   </div>
 
@@ -194,7 +196,7 @@ const Contact = () => {
                     type="submit"
                     className="w-full py-5 mt-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-black uppercase text-xs tracking-widest transition-all shadow-md shadow-amber-600/20 hover:shadow-xl hover:shadow-amber-600/30 flex items-center justify-center gap-3 disabled:opacity-50 font-sans active:scale-[0.98]"
                   >
-                     {loading ? 'Đang truyền tin...' : <><Send size={16} className="group-hover:translate-x-1 transition-transform" /> Gửi yêu cầu tư vấn</>}
+                     {loading ? t('contact.sending') : <><Send size={16} className="group-hover:translate-x-1 transition-transform" /> {t('contact.submit_btn')}</>}
                   </button>
                </form>
              )}
@@ -207,6 +209,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
-
-

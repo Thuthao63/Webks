@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Bed, Globe, Send, } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
     <footer className="bg-slate-50 text-slate-900 pt-20 pb-12 border-t border-slate-100 font-sans">
@@ -27,7 +29,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-slate-500 text-[13px] leading-relaxed max-w-sm font-medium italic mt-6">
-              "Nơi mỗi khoảnh khắc đều trở thành một kiệt tác của sự tĩnh lặng và nghệ thuật phục vụ tận tâm."
+              {t('footer.quote')}
             </p>
             <div className="flex gap-3 pt-4">
               {[Globe, Mail, Phone].map((Icon, i) => (
@@ -40,18 +42,18 @@ const Footer = () => {
 
           {/* Quick Explore */}
           <div className="lg:col-span-2 space-y-8">
-            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">Khám phá</h4>
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">{t('footer.explore')}</h4>
             <ul className="space-y-4">
-              <FooterLink to="/about">Câu chuyện</FooterLink>
-              <FooterLink to="/rooms">Phòng & Suite</FooterLink>
-              <FooterLink to="/services">Dịch vụ</FooterLink>
-              <FooterLink to="/contact">Liên hệ</FooterLink>
+              <FooterLink to="/about">{t('footer.story')}</FooterLink>
+              <FooterLink to="/rooms">{t('footer.rooms')}</FooterLink>
+              <FooterLink to="/services">{t('footer.services')}</FooterLink>
+              <FooterLink to="/contact">{t('footer.contact')}</FooterLink>
             </ul>
           </div>
 
           {/* Contact Details */}
           <div className="lg:col-span-3 space-y-8">
-            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">Thông tin</h4>
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">{t('footer.info')}</h4>
             <div className="space-y-5 text-slate-600">
               <div className="flex items-start gap-4 group cursor-pointer">
                 <MapPin size={16} className="text-amber-500 mt-0.5 shrink-0" />
@@ -70,12 +72,12 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className="lg:col-span-3 space-y-8">
-            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">Đặc quyền Email</h4>
-            <p className="text-sm text-slate-500 leading-relaxed font-medium">Đăng ký để nhận thông tin về các gói ưu đãi và sự kiện đặc biệt dành riêng cho bạn.</p>
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">{t('footer.email_privilege')}</h4>
+            <p className="text-sm text-slate-500 leading-relaxed font-medium">{t('footer.newsletter_desc')}</p>
             <div className="relative group max-w-md">
               <input
                 type="email"
-                placeholder="Địa chỉ Email..."
+                placeholder={t('footer.email_placeholder')}
                 className="w-full bg-white border border-slate-200 rounded-xl py-3.5 px-4 text-sm outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 transition-all text-slate-900 placeholder-slate-400 font-medium shadow-sm"
               />
               <button className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white hover:bg-slate-900 transition-luxury shadow-md">
@@ -89,17 +91,17 @@ const Footer = () => {
         <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
             <p className="text-[11px] text-slate-400 uppercase tracking-widest font-black">
-              © {currentYear} UY NAM LUXURY HOTEL
+              © {currentYear} {t('footer.hotel_name')}
             </p>
             <div className="w-1 h-1 bg-amber-500 rounded-full hidden md:block"></div>
             <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold italic">
-              Designed with passion
+              {t('footer.designed_with')}
             </p>
           </div>
 
           <div className="flex gap-8 text-[11px] text-slate-400 uppercase tracking-widest font-black">
-            <Link to="/terms" className="hover:text-amber-500 transition-colors">Quy định</Link>
-            <Link to="/privacy" className="hover:text-amber-500 transition-colors">Bảo mật</Link>
+            <Link to="/terms" className="hover:text-amber-500 transition-colors">{t('footer.terms')}</Link>
+            <Link to="/privacy" className="hover:text-amber-500 transition-colors">{t('footer.privacy')}</Link>
           </div>
         </div>
       </div>

@@ -23,15 +23,15 @@ const Navbar = () => {
         .then(res => {
            const discNotifs = (res.data || []).map((d, index) => ({
                id: `disc-${d.id || index}`,
-               title: '🎉 Ưu đãi khuyến mãi mới!',
-               message: `Giật deal cực đậm! Nhập mã ${d.code} giảm ngay ${Math.floor(d.discountPercent)}% cho phòng khách sạn.`,
+               title: t('nav.promo_title'),
+               message: t('nav.promo_msg').replace('{code}', d.code).replace('{percent}', Math.floor(d.discountPercent)),
                time: new Date(d.createdAt || Date.now()).toLocaleDateString('vi-VN'),
                read: false
            })).reverse(); // Đảo ngược để ưu đãi mới nhất lên đầu
            
            setNotifications([
                ...discNotifs,
-               { id: 'welcome', title: 'Uy Nam xin chào!', message: 'Chào mừng bạn đến với hệ thống đặt phòng thượng lưu.', time: 'Hệ thống', read: true }
+               { id: 'welcome', title: t('nav.welcome_title'), message: t('nav.welcome_msg'), time: t('nav.system'), read: true }
            ]);
         })
         .catch(err => console.error("Lỗi lấy thông báo/khuyến mãi:", err));
@@ -68,6 +68,7 @@ const Navbar = () => {
     { name: t('nav.home'), path: '/' },
     { name: t('nav.about'), path: '/about' },
     { name: t('nav.rooms'), path: '/rooms' },
+    { name: t('nav.blog'), path: '/blog' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.contact'), path: '/contact' },
   ];
@@ -157,7 +158,7 @@ const Navbar = () => {
                       <div className="fixed inset-0 z-[-1]" onClick={() => setIsNotifMenuOpen(false)}></div>
                       <div className="absolute top-12 right-12 w-80 bg-white/95 backdrop-blur-3xl border border-slate-200/60 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden animate-in fade-in zoom-in-95 duration-500 z-50">
                         <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-800 font-sans">Thông báo</h3>
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-800 font-sans">{t('nav.notifications')}</h3>
                         </div>
                         <div className="max-h-80 overflow-y-auto">
                             {notifications.length > 0 ? notifications.map(notif => (
@@ -169,11 +170,11 @@ const Navbar = () => {
                                     <p className="text-sm text-slate-500 leading-relaxed font-sans">{notif.message}</p>
                                 </div>
                             )) : (
-                                <div className="p-8 text-center text-slate-400 text-xs">Chưa có thông báo nào.</div>
+                                <div className="p-8 text-center text-slate-400 text-xs">{t('nav.no_notifications')}</div>
                             )}
                         </div>
                         <div className="p-4 text-center border-t border-slate-100 bg-slate-50">
-                            <button className="text-xs text-slate-500 font-black uppercase tracking-widest hover:text-amber-500">Xem tất cả thông báo</button>
+                            <button className="text-xs text-slate-500 font-black uppercase tracking-widest hover:text-amber-500">{t('nav.view_all_notifications')}</button>
                         </div>
                       </div>
                     </>
@@ -190,7 +191,7 @@ const Navbar = () => {
                       {user.fullName?.charAt(0).toUpperCase()}
                     </div>
                     <div className="hidden lg:flex flex-col items-start leading-none gap-1">
-                      <span className="text-xs text-amber-500 font-bold uppercase tracking-widest opacity-70">Tài khoản</span>
+                      <span className="text-xs text-amber-500 font-bold uppercase tracking-widest opacity-70">{t('nav.account')}</span>
                       <span className="text-[13px] text-white font-semibold">{user.fullName}</span>
                     </div>
                     <ChevronDown size={14} className={`text-amber-500 transition-transform duration-500 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
@@ -207,7 +208,7 @@ const Navbar = () => {
                           <Star className="absolute top-6 right-6 text-amber-500 opacity-10 group-hover/header:opacity-40 group-hover/header:rotate-12 transition-all duration-700" size={48} strokeWidth={1} />
                           
                           <div className="relative z-10">
-                            <span className="text-sm text-amber-500 uppercase font-black tracking-[0.1em] mb-4 block">Thành viên đặc quyền</span>
+                            <span className="text-sm text-amber-500 uppercase font-black tracking-[0.1em] mb-4 block">{t('nav.elite_member')}</span>
                             <h4 className="text-slate-900 font-serif text-2xl italic leading-none mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</h4>
                             <p className="text-sm text-slate-500 tracking-wider font-medium flex items-center gap-2">
                               <span className="w-1 h-1 bg-amber-500 rounded-full"></span>
@@ -227,8 +228,8 @@ const Navbar = () => {
                                   <Settings size={18} />
                                 </div>
                                 <div>
-                                  <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">Quản trị hệ thống</p>
-                                  <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">Toàn quyền kiểm soát</p>
+                                  <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">{t('nav.admin_system')}</p>
+                                  <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.full_control')}</p>
                                 </div>
                               </div>
                               <div className="w-1.5 h-1.5 bg-amber-500 rounded-full opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
@@ -244,8 +245,8 @@ const Navbar = () => {
                                 <User size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
                               </div>
                               <div>
-                                <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">Hồ sơ cá nhân</p>
-                                <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">Cài đặt của khách</p>
+                                <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">{t('nav.personal_profile')}</p>
+                                <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.guest_settings')}</p>
                               </div>
                             </div>
                           </button>
@@ -257,7 +258,7 @@ const Navbar = () => {
                             className="w-full flex items-center justify-center gap-3 py-4 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white rounded-2xl transition-all duration-500 text-xs font-black uppercase tracking-widest relative group/logout overflow-hidden shadow-sm"
                           >
                             <LogOut size={16} className="relative z-10" />
-                            <span className="relative z-10">Đăng xuất ngay</span>
+                            <span className="relative z-10">{t('nav.logout_now')}</span>
                           </button>
                         </div>
                       </div>
@@ -272,7 +273,7 @@ const Navbar = () => {
               >
                 <div className="absolute inset-0 bg-amber-500 group-hover:bg-white transition-colors duration-700"></div>
                 <span className="relative z-10 text-slate-900 text-[12px] font-bold uppercase tracking-wider group-hover:text-amber-500 transition-colors duration-700">
-                  Truy cập
+                  {t('nav.login_access')}
                 </span>
                 <div className="absolute -inset-1 bg-amber-500/30 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </Link>
@@ -301,8 +302,8 @@ const Navbar = () => {
           }`}>
           <div className="space-y-12 mt-10">
             <div className="space-y-2 border-b border-white/10 pb-6">
-              <p className="text-amber-500 text-[12px] uppercase font-bold tracking-widest">Danh mục</p>
-              <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>Menu</h4>
+              <p className="text-amber-500 text-[12px] uppercase font-bold tracking-widest">{t('nav.category')}</p>
+              <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>{t('nav.menu')}</h4>
             </div>
 
             <div className="flex flex-col gap-8">
@@ -327,7 +328,7 @@ const Navbar = () => {
           </div>
 
           <div className="space-y-6 pt-10 border-t border-white/5">
-            <p className="text-xs text-gray-500 tracking-widest uppercase font-bold">Liên hệ đặt phòng</p>
+            <p className="text-xs text-gray-500 tracking-widest uppercase font-bold">{t('nav.booking_contact')}</p>
             <p className="text-white font-serif italic text-xl">0123.456.789</p>
           </div>
         </div>

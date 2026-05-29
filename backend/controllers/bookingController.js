@@ -1,7 +1,10 @@
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
+const RoomType = require('../models/RoomType');
 const User = require('../models/User');
 const BookingService = require('../models/BookingService');
+const { sendInvoiceEmail } = require('../utils/emailService');
+const { Op } = require('sequelize');
 
 // 1. Khách hàng đặt phòng (Khớp với router.post('/') )
 const createBooking = async (req, res) => {
@@ -11,6 +14,22 @@ const createBooking = async (req, res) => {
         // Thảo lưu ý: Nếu chưa làm Login thì tạm thời gán userId = 1 
         // Nếu đã có Login thì lấy từ req.user.id
         const userId = req.user ? req.user.id : 1;
+
+        // Kiểm tra xem phòng có bị trùng lịch không
+        const conflictingBooking = await Booking.findOne({
+            where: {
+                roomId,
+                status: { [Op.in]: ['pending', 'confirmed'] },
+                [Op.and]: [
+                    { checkInDate: { [Op.lt]: new Date(checkOutDate) } },
+                    { checkOutDate: { [Op.gt]: new Date(checkInDate) } }
+                ]
+            }
+        });
+
+        if (conflictingBooking) {
+            return res.status(400).json({ message: "Phòng đã được đặt trong khoảng thời gian này. Vui lòng chọn ngày khác." });
+        }
 
         const newBooking = await Booking.create({
             roomId,
@@ -73,9 +92,16 @@ const updateBookingStatus = async (req, res) => {
         const { id } = req.params;
         const { status, checkOutDate, totalPrice } = req.body;
         
-        const booking = await Booking.findByPk(id);
+        const booking = await Booking.findByPk(id, {
+            include: [
+                { model: User, as: 'user' },
+                { model: Room, as: 'room', include: [{ model: RoomType, as: 'roomType' }] }
+            ]
+        });
         if (!booking) return res.status(404).json({ message: "Đơn hàng không tồn tại" });
         
+        const oldStatus = booking.status;
+
         if (status) booking.status = status;
         if (checkOutDate) booking.checkOutDate = checkOutDate;
         if (totalPrice) booking.totalPrice = totalPrice;
@@ -85,12 +111,18 @@ const updateBookingStatus = async (req, res) => {
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn
         if (status === 'confirmed') {
             await Room.update({ status: 'Occupied' }, { where: { id: booking.roomId } });
+            
+            // Nếu từ pending -> confirmed (mới thanh toán xong), thì gửi email
+            if (oldStatus !== 'confirmed' && booking.user && booking.user.email) {
+                sendInvoiceEmail(booking.user.email, booking).catch(err => console.error("Lỗi gửi email ngầm", err));
+            }
         } else if (status === 'completed' || status === 'cancelled') {
             await Room.update({ status: 'Available' }, { where: { id: booking.roomId } });
         }
 
         res.status(200).json({ message: "Cập nhật thành công" });
     } catch (error) {
+        console.error("Lỗi updateBookingStatus:", error);
         res.status(500).json({ message: "Lỗi cập nhật trạng thái" });
     }
 };

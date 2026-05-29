@@ -294,9 +294,8 @@ const RoomList = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   {rooms.map((room) => {
                     const details = room.roomType || {}; 
-                    const isAvailable = room.status === 'Available';
-                    
                     // Tìm khuyến mãi cho hạng phòng này
+                    const isAvailable = room.status !== 'Maintenance';
                     const discount = activeDiscounts.find(d => d.roomTypeId === details.id);
                     const originalPrice = Number(details.price || 0);
                     const discountedPrice = discount 

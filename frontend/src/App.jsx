@@ -21,6 +21,8 @@ const About = lazy(() => import('./pages/client/About'));
 const FAQ = lazy(() => import('./pages/client/FAQ'));
 const Terms = lazy(() => import('./pages/client/Terms'));
 const Privacy = lazy(() => import('./pages/client/Privacy'));
+const Blog = lazy(() => import('./pages/client/Blog'));
+const BlogDetail = lazy(() => import('./pages/client/BlogDetail'));
 const NotFound = lazy(() => import('./pages/client/NotFound'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
@@ -37,6 +39,7 @@ const ManageUsers = lazy(() => import('./pages/Admin/ManageUsers'));
 const ManageReviews = lazy(() => import('./pages/Admin/ManageReviews'));
 const ManageServices = lazy(() => import('./pages/Admin/ManageServices'));
 const ManageDiscounts = lazy(() => import('./pages/Admin/ManageDiscounts'));
+const ManageBlogs = lazy(() => import('./pages/Admin/ManageBlogs'));
 
 // --- 🛡️ HÀM KIỂM TRA QUYỀN TRUY CẬP ---
 const AuthGuard = ({ children, requireAdmin = false }) => {
@@ -81,6 +84,8 @@ const AppContent = () => {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/rooms" element={<RoomList />} />
             <Route path="/room/:roomId" element={<RoomDetails />} />
             <Route path="/login" element={<Login />} />
@@ -104,6 +109,7 @@ const AppContent = () => {
             <Route path="/admin/reviews" element={<AuthGuard requireAdmin={true}><ManageReviews /></AuthGuard>} />
             <Route path="/admin/services" element={<AuthGuard requireAdmin={true}><ManageServices /></AuthGuard>} />
             <Route path="/admin/discounts" element={<AuthGuard requireAdmin={true}><ManageDiscounts /></AuthGuard>} />
+            <Route path="/admin/blogs" element={<AuthGuard requireAdmin={true}><ManageBlogs /></AuthGuard>} />
 
             {/* --- 404 FALLBACK --- */}
             <Route path="/404" element={<NotFound />} />

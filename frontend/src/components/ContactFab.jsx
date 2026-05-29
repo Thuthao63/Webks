@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { X, Send, Phone, Mail, UserCheck, MessageSquare } from 'lucide-react';
 import axiosClient from '../api/axiosClient';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 const ContactFab = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,8 +23,8 @@ const ContactFab = () => {
         background: '#0a0a0ae6',
         color: '#fff',
         icon: 'success',
-        title: 'Đã tiếp nhận yêu cầu',
-        text: 'Đội ngũ quản gia sẽ phản hồi quý khách sớm nhất qua Email/SĐT.',
+        title: t('contact_fab.success_title'),
+        text: t('contact_fab.success_msg'),
         showConfirmButton: false,
         timer: 3000,
         customClass: {
@@ -35,8 +37,8 @@ const ContactFab = () => {
       console.error(err);
       Swal.fire({
         icon: 'error',
-        title: 'Thất bại',
-        text: 'Hiện tại hệ thống chối bỏ kết nối. Vui lòng thử lại sau.',
+        title: t('contact_fab.error_title'),
+        text: t('contact_fab.error_msg'),
         background: '#0a0a0ae6',
         color: '#fff',
       });
@@ -50,7 +52,7 @@ const ContactFab = () => {
       {/* --- NÚT BẤM DẠNG CONCIERGE --- */}
       <button
         onClick={() => setIsOpen(true)}
-        aria-label="Mở trợ lý"
+        aria-label={t('contact_fab.open_assistant')}
         className="fixed bottom-8 right-8 z-50 rounded-full p-3 bg-[#0a0a0a] text-amber-500 shadow-soft hover:translate-y-[-2px] transition-transform"
       >
         <MessageSquare size={24} />
@@ -68,34 +70,34 @@ const ContactFab = () => {
               </button>
 
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-semibold text-slate-900 mb-1">Gửi lời nhắn</h3>
-                <p className="text-sm text-slate-500">Quý khách vui lòng để lại thông tin</p>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-1">{t('contact_fab.send_message')}</h3>
+                <p className="text-sm text-slate-500">{t('contact_fab.leave_info')}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">Quý danh</label>
-                    <input name="name" type="text" placeholder="Nguyễn Văn A" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">{t('contact_fab.your_name')}</label>
+                    <input name="name" type="text" placeholder={t('contact_fab.placeholder_name')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">Số điện thoại</label>
-                    <input name="phone" type="tel" placeholder="090..." className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">{t('contact_fab.phone')}</label>
+                    <input name="phone" type="tel" placeholder={t('contact_fab.placeholder_phone')} className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">Địa chỉ Email</label>
-                  <input name="email" type="email" placeholder="email@gmail.com" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">{t('contact_fab.email_address')}</label>
+                  <input name="email" type="email" placeholder={t('contact_fab.placeholder_email')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">Nội dung tư vấn</label>
-                  <textarea name="message" rows="4" placeholder="Quý khách cần hỗ trợ điều gì?" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500 resize-none"></textarea>
+                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">{t('contact_fab.consult_content')}</label>
+                  <textarea name="message" rows="4" placeholder={t('contact_fab.placeholder_message')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500 resize-none"></textarea>
                 </div>
 
                 <button disabled={loading} type="submit" className="w-full bg-amber-500 text-white py-3 rounded-md font-semibold">
-                  {loading ? 'Đang kết nối...' : 'Gửi cho Quản Gia'}
+                  {loading ? t('contact_fab.connecting') : t('contact_fab.send_to_butler')}
                 </button>
               </form>
 

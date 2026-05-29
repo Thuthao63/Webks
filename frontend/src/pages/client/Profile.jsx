@@ -7,6 +7,7 @@ import {
     Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Sparkles, MapPin, Camera, ChevronRight, Package
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
     const { user, updateUserContext, logout } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const Profile = () => {
     const [myBookings, setMyBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('dashboard');
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!user) {
@@ -36,27 +38,27 @@ const Profile = () => {
 
     const handleEditProfile = async () => {
         const { value: formValues } = await Swal.fire({
-            title: 'Cập nhật danh tính',
+            title: t('profile.swal.update_identity'),
             html: `
                 <div class="flex flex-col gap-5 text-left mt-6 pb-2">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Họ và tên quý khách</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.full_name_label')}</label>
                         <input id="swal-edit-name" type="text" value="${user?.fullName || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Số liên lạc</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.contact_num_label')}</label>
                         <input id="swal-edit-phone" type="text" value="${user?.phone || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Địa chỉ thường trú</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.address_label')}</label>
                         <input id="swal-edit-address" type="text" value="${user?.address || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                 </div>
             `,
             background: '#ffffff',
             showCancelButton: true,
-            confirmButtonText: 'Lưu thay đổi',
-            cancelButtonText: 'Quay lại',
+            confirmButtonText: t('profile.swal.save_changes'),
+            cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
                 title: 'font-serif italic text-slate-900 text-3xl',
@@ -74,36 +76,36 @@ const Profile = () => {
 
         if (formValues) {
             try {
-                Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+                Swal.fire({ title: t('profile.swal.processing'), didOpen: () => Swal.showLoading() });
                 const res = await axiosClient.put(`/auth/${user.id}`, formValues);
                 updateUserContext(res.data.user);
-                Swal.fire({ icon: 'success', title: 'Hoàn tất', text: 'Thông tin của bạn đã được đồng bộ.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+                Swal.fire({ icon: 'success', title: t('profile.swal.complete'), text: t('profile.swal.info_synced'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
             } catch (err) {
                 console.error(err);
-                Swal.fire({ icon: 'error', title: 'Thất bại', text: 'Không thể cập nhật thông tin lúc này.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
+                Swal.fire({ icon: 'error', title: t('profile.swal.failed'), text: t('profile.swal.update_failed'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
             }
         }
     };
 
     const handleChangePassword = async () => {
         const { value: formValues } = await Swal.fire({
-            title: 'Đổi mật khẩu',
+            title: t('profile.swal.change_password'),
             html: `
                 <div class="flex flex-col gap-5 text-left mt-6 pb-2">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Mật khẩu cũ</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.old_password')}</label>
                         <input id="swal-old-password" type="password" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Mật khẩu mới</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.new_password')}</label>
                         <input id="swal-new-password" type="password" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                 </div>
             `,
             background: '#ffffff',
             showCancelButton: true,
-            confirmButtonText: 'Xác nhận đổi',
-            cancelButtonText: 'Quay lại',
+            confirmButtonText: t('profile.swal.confirm_change'),
+            cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
                 title: 'font-serif italic text-slate-900 text-3xl',
@@ -123,41 +125,41 @@ const Profile = () => {
 
         if (formValues) {
             try {
-                Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+                Swal.fire({ title: t('profile.swal.processing'), didOpen: () => Swal.showLoading() });
                 await axiosClient.put(`/auth/${user.id}/password`, formValues);
-                Swal.fire({ icon: 'success', title: 'Thành công', text: 'Mật khẩu đã được thay đổi.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+                Swal.fire({ icon: 'success', title: t('profile.swal.success'), text: t('profile.swal.password_changed'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
             } catch (err) {
                 console.error(err);
-                Swal.fire({ icon: 'error', title: 'Thất bại', text: err.response?.data?.message || 'Không thể đổi mật khẩu lúc này.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
+                Swal.fire({ icon: 'error', title: t('profile.swal.failed'), text: err.response?.data?.message || t('profile.swal.update_failed'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
             }
         }
     };
 
     const handleNotificationSettings = async () => {
         const { value: formValues } = await Swal.fire({
-            title: 'Tùy chọn Thông báo',
+            title: t('profile.swal.notif_options'),
             html: `
                 <div class="flex flex-col gap-4 text-left mt-6 pb-2">
                     <label class="flex items-center gap-3 p-4 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
                         <input type="checkbox" id="email-notif" class="w-5 h-5 accent-amber-500" checked>
                         <div>
-                            <p class="text-sm font-bold text-slate-900 font-sans">Nhận Email Khuyến mãi</p>
-                            <p class="text-[10px] text-slate-500 mt-0.5">Ưu đãi độc quyền và tin tức từ Uy Nam.</p>
+                            <p class="text-sm font-bold text-slate-900 font-sans">${t('profile.swal.receive_promo_email')}</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">${t('profile.swal.promo_email_desc')}</p>
                         </div>
                     </label>
                     <label class="flex items-center gap-3 p-4 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
                         <input type="checkbox" id="sms-notif" class="w-5 h-5 accent-amber-500" checked>
                         <div>
-                            <p class="text-sm font-bold text-slate-900 font-sans">Tin nhắn SMS (Cập nhật phòng)</p>
-                            <p class="text-[10px] text-slate-500 mt-0.5">Thông báo trạng thái nhận/trả phòng.</p>
+                            <p class="text-sm font-bold text-slate-900 font-sans">${t('profile.swal.sms_notif')}</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">${t('profile.swal.sms_notif_desc')}</p>
                         </div>
                     </label>
                 </div>
             `,
             background: '#ffffff',
             showCancelButton: true,
-            confirmButtonText: 'Lưu thay đổi',
-            cancelButtonText: 'Quay lại',
+            confirmButtonText: t('profile.swal.save_changes'),
+            cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
                 title: 'font-serif italic text-slate-900 text-3xl',
@@ -173,17 +175,17 @@ const Profile = () => {
         });
 
         if (formValues) {
-            Swal.fire({ icon: 'success', title: 'Thành công', text: 'Tùy chọn thông báo đã được lưu cục bộ.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+            Swal.fire({ icon: 'success', title: t('profile.swal.success'), text: t('profile.swal.saved'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
         }
     };
 
     const handleLanguageSettings = async () => {
         const { value: formValues } = await Swal.fire({
-            title: 'Ngôn ngữ & Tiền tệ',
+            title: t('profile.swal.lang_currency'),
             html: `
                 <div class="flex flex-col gap-5 text-left mt-6 pb-2">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Ngôn ngữ hiển thị</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.display_lang')}</label>
                         <select id="lang-select" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                             <option value="vi">Tiếng Việt</option>
                             <option value="en">English (US)</option>
@@ -191,7 +193,7 @@ const Profile = () => {
                         </select>
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Đơn vị tiền tệ</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">${t('profile.swal.currency_unit')}</label>
                         <select id="currency-select" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                             <option value="vnd">VND - Việt Nam Đồng</option>
                             <option value="usd">USD - US Dollar</option>
@@ -201,8 +203,8 @@ const Profile = () => {
             `,
             background: '#ffffff',
             showCancelButton: true,
-            confirmButtonText: 'Cập nhật',
-            cancelButtonText: 'Quay lại',
+            confirmButtonText: t('profile.swal.update'),
+            cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
                 title: 'font-serif italic text-slate-900 text-3xl',
@@ -212,20 +214,20 @@ const Profile = () => {
         });
 
         if (formValues) {
-            Swal.fire({ icon: 'success', title: 'Đã lưu', text: 'Cài đặt vùng đã được áp dụng.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+            Swal.fire({ icon: 'success', title: t('profile.swal.saved'), text: t('profile.swal.settings_applied'), confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
         }
     };
 
     const handleLogout = () => {
         Swal.fire({
-            title: 'Hành trình kết thúc?',
-            text: "Cảm ơn quý khách đã đồng hành cùng Uy Nam Luxury.",
+            title: t('profile.swal.end_journey'),
+            text: t('profile.swal.thank_you'),
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#0f172a',
             cancelButtonColor: '#f8fafc',
-            confirmButtonText: 'Xác nhận đi',
-            cancelButtonText: 'Ở lại cùng chúng tôi',
+            confirmButtonText: t('profile.swal.confirm_leave'),
+            cancelButtonText: t('profile.swal.stay_with_us'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-xl',
                 title: 'font-serif italic text-2xl text-slate-900',
@@ -242,10 +244,10 @@ const Profile = () => {
 
     const renderStatusBadge = (status) => {
         const configs = {
-            'pending': { color: 'text-amber-600 bg-amber-50 border-amber-100', text: 'Đang chờ', icon: Clock },
-            'confirmed': { color: 'text-emerald-600 bg-emerald-50 border-emerald-100', text: 'Đã duyệt', icon: CheckCircle },
-            'cancelled': { color: 'text-rose-600 bg-rose-50 border-rose-100', text: 'Đã hủy', icon: XCircle },
-            'completed': { color: 'text-blue-600 bg-blue-50 border-blue-100', text: 'Đã xong', icon: Award }
+            'pending': { color: 'text-amber-600 bg-amber-50 border-amber-100', text: t('profile.status_pending'), icon: Clock },
+            'confirmed': { color: 'text-emerald-600 bg-emerald-50 border-emerald-100', text: t('profile.status_confirmed'), icon: CheckCircle },
+            'cancelled': { color: 'text-rose-600 bg-rose-50 border-rose-100', text: t('profile.status_cancelled'), icon: XCircle },
+            'completed': { color: 'text-blue-600 bg-blue-50 border-blue-100', text: t('profile.status_completed'), icon: Award }
         };
         const config = configs[status] || configs['pending'];
         const Icon = config.icon;
@@ -318,10 +320,10 @@ const Profile = () => {
             <div className="max-w-3xl mx-auto px-6 mt-16 border-b border-slate-200 relative z-30">
                 <div className="flex justify-between md:justify-center md:gap-16 overflow-x-auto no-scrollbar">
                     {[
-                        { id: 'dashboard', label: 'Tổng quan', icon: LayoutDashboard },
-                        { id: 'bookings', label: 'Chuyến đi', icon: History },
-                        { id: 'settings', label: 'Cài đặt', icon: Settings },
-                        { id: 'membership', label: 'Đặc quyền', icon: Award },
+                        { id: 'dashboard', label: t('profile.overview'), icon: LayoutDashboard },
+                        { id: 'bookings', label: t('profile.trips'), icon: History },
+                        { id: 'settings', label: t('profile.settings'), icon: Settings },
+                        { id: 'membership', label: t('profile.privileges'), icon: Award },
                     ].map((tab) => {
                         const Icon = tab.icon;
                         const isActive = activeTab === tab.id;
@@ -354,9 +356,9 @@ const Profile = () => {
                         {/* WIDE STATS GRID */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[
-                                { label: 'Yêu dấu', value: myBookings.length, icon: Heart },
-                                { label: 'Dự định', value: myBookings.filter(b => b.status === 'confirmed').length, icon: Calendar },
-                                { label: 'Điểm tích lũy', value: '12,450', icon: Award }
+                                { label: t('profile.beloved'), value: myBookings.length, icon: Heart },
+                                { label: t('profile.planned'), value: myBookings.filter(b => b.status === 'confirmed').length, icon: Calendar },
+                                { label: t('profile.points'), value: '12,450', icon: Award }
                             ].map((stat, i) => (
                                 <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all group flex items-center gap-6">
                                     <div className={`w-12 h-12 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center shrink-0 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500`}>
@@ -373,9 +375,9 @@ const Profile = () => {
                         {/* WIDE LATEST ACTIVITY CARD */}
                         <div className="bg-white rounded-[2.5rem] p-12 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden">
                             <div className="flex justify-between items-center mb-10 pb-8 border-b border-slate-50">
-                                <h3 className="text-3xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Kỳ nghỉ mới nhất</h3>
+                                <h3 className="text-3xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.latest_trip')}</h3>
                                 <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
-                                    Xem lịch sử <ArrowUpRight size={14} />
+                                    {t('profile.view_history')} <ArrowUpRight size={14} />
                                 </button>
                             </div>
 
@@ -407,11 +409,11 @@ const Profile = () => {
                                         </p>
                                         <div className="flex flex-wrap gap-8 pt-6 border-t border-slate-50">
                                             <div>
-                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Nhận phòng</p>
+                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">{t('profile.check_in_label')}</p>
                                                 <div className="flex items-center gap-2 text-sm font-bold text-slate-900"><Calendar size={16} className="text-amber-500" /> {new Date(myBookings[0].checkInDate).toLocaleDateString('vi-VN')}</div>
                                             </div>
                                             <div>
-                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Tổng chi phí</p>
+                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">{t('profile.total_cost')}</p>
                                                 <div className="flex items-center gap-2 text-sm font-bold text-slate-900"><CreditCard size={16} className="text-amber-500" /> {Number(myBookings[0].totalPrice).toLocaleString()} đ</div>
                                             </div>
                                         </div>
@@ -420,7 +422,7 @@ const Profile = () => {
                             ) : (
                                 <div className="text-center py-20 bg-slate-50/50 rounded-[2rem] border border-dashed border-slate-200">
                                     <Package size={48} className="mx-auto text-slate-300 mb-4" strokeWidth={1} />
-                                    <p className="text-slate-500 font-serif italic text-xl">Chưa có hành trình nào được ghi lại.</p>
+                                    <p className="text-slate-500 font-serif italic text-xl">{t('profile.no_trips')}</p>
                                 </div>
                             )}
                         </div>
@@ -432,10 +434,10 @@ const Profile = () => {
                     <div className="space-y-8 max-w-4xl mx-auto">
                         <div className="flex justify-between items-end border-b border-slate-200 pb-8 mb-8">
                             <div>
-                                <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Lịch sử lưu trú</h3>
-                                <p className="text-xs text-slate-500 mt-3 font-medium">Khám phá lại những khoảnh khắc tuyệt vời của bạn tại Uy Nam.</p>
+                                <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.stay_history')}</h3>
+                                <p className="text-xs text-slate-500 mt-3 font-medium">{t('profile.discover_moments')}</p>
                             </div>
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-4 py-2 rounded-full font-sans shadow-sm">{myBookings.length} Chuyến đi</span>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-4 py-2 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
                         </div>
 
                         <div className="grid gap-6">
@@ -449,7 +451,7 @@ const Profile = () => {
                                         <div className="text-center md:text-left space-y-2">
                                             <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> ĐÀ NẴNG</p>
                                             <h4 className="text-xl font-bold text-slate-900 font-sans group-hover:text-amber-600 transition-colors">Phòng {booking.room?.roomNumber}</h4>
-                                            <p className="text-xs text-slate-500 font-medium font-sans">Ngày nhận: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
+                                            <p className="text-xs text-slate-500 font-medium font-sans">{t('profile.check_in_label')}: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
                                         </div>
                                         <div className="flex flex-col items-center md:items-end gap-3">
                                             <span className="text-base font-bold text-slate-900">{Number(booking.totalPrice).toLocaleString()}đ</span>
@@ -461,7 +463,7 @@ const Profile = () => {
                             {myBookings.length === 0 && (
                                 <div className="text-center py-24 bg-white border border-dashed border-slate-200 rounded-[3rem]">
                                     <Package size={48} className="mx-auto text-slate-300 mb-6" strokeWidth={1} />
-                                    <p className="text-slate-500 font-serif italic text-2xl">Hành trình mới đang chờ đợi bạn...</p>
+                                    <p className="text-slate-500 font-serif italic text-2xl">{t('profile.new_journeys')}</p>
                                 </div>
                             )}
                         </div>
@@ -472,19 +474,19 @@ const Profile = () => {
                 {activeTab === 'settings' && (
                     <div className="max-w-4xl mx-auto bg-white rounded-[3rem] border border-slate-100 p-12 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
                         <div className="border-b border-slate-100 pb-10 mb-10 text-center">
-                            <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thiết lập Tài khoản</h3>
-                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-4 font-sans">Quản lý định danh và bảo mật</p>
+                            <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.account_settings')}</h3>
+                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-4 font-sans">{t('profile.manage_identity')}</p>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-16">
                             <div className="space-y-10">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">Thông tin Cơ bản</h4>
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">{t('profile.basic_info')}</h4>
                                 <div className="space-y-8">
                                     {[
-                                        { label: 'Họ và tên', value: user?.fullName },
-                                        { label: 'Số liên lạc', value: user?.phone || 'Chưa cung cấp' },
-                                        { label: 'Địa chỉ Email', value: user?.email },
-                                        { label: 'Thường trú', value: user?.address || 'Chưa cung cấp' }
+                                        { label: t('profile.full_name'), value: user?.fullName },
+                                        { label: t('profile.contact_num'), value: user?.phone || t('profile.not_provided') },
+                                        { label: t('profile.email'), value: user?.email },
+                                        { label: t('profile.address'), value: user?.address || t('profile.not_provided') }
                                     ].map((item, i) => (
                                         <div key={i}>
                                             <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 font-sans mb-1.5">{item.label}</p>
@@ -496,19 +498,19 @@ const Profile = () => {
                                     onClick={handleEditProfile}
                                     className="w-full py-4 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-md font-sans"
                                 >
-                                    Sửa đổi thông tin
+                                    {t('profile.edit_info')}
                                 </button>
                             </div>
                             
                             <div className="space-y-10">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">Tùy chọn Mở rộng</h4>
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">{t('profile.advanced_options')}</h4>
                                 <div className="space-y-6">
                                     <div onClick={handleChangePassword} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm"><Shield size={16} /></div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">Mật khẩu & Bảo mật</p>
-                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Cập nhật mật khẩu định kỳ</p>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.password_security')}</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.update_password_desc')}</p>
                                             </div>
                                         </div>
                                         <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
@@ -518,8 +520,8 @@ const Profile = () => {
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-500 shadow-sm"><Bell size={16} /></div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">Tùy chọn Thông báo</p>
-                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Cài đặt Email & SMS</p>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.notification_options')}</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.email_sms_settings')}</p>
                                             </div>
                                         </div>
                                         <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
@@ -531,8 +533,8 @@ const Profile = () => {
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">Ngôn ngữ & Tiền tệ</p>
-                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Tiếng Việt • VND</p>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.language_currency')}</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.vietnamese_vnd')}</p>
                                             </div>
                                         </div>
                                         <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
@@ -560,7 +562,7 @@ const Profile = () => {
                                         <Sparkles size={24} className="animate-pulse" />
                                     </div>
                                     <div className="relative z-10 text-white">
-                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-2 font-sans">Member Identity</p>
+                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-2 font-sans">{t('profile.member_identity')}</p>
                                         <p className="text-3xl font-serif leading-none tracking-widest drop-shadow-md text-amber-50">{user?.fullName}</p>
                                         
                                         <div className="w-full h-[1px] bg-gradient-to-r from-amber-500/50 to-transparent my-8"></div>
@@ -568,10 +570,10 @@ const Profile = () => {
                                         <div className="flex justify-between items-end">
                                             <div>
                                                 <p className="text-[11px] font-bold uppercase tracking-widest text-amber-500 font-sans mb-1">Platinum Elite</p>
-                                                <p className="text-[9px] text-slate-400 font-medium">Valid Thru 12/2030</p>
+                                                <p className="text-[9px] text-slate-400 font-medium">{t('profile.valid_thru')}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-[9px] uppercase font-bold opacity-60 font-sans mb-1 text-slate-400">Total Points</p>
+                                                <p className="text-[9px] uppercase font-bold opacity-60 font-sans mb-1 text-slate-400">{t('profile.total_points')}</p>
                                                 <p className="text-xl font-serif text-white">12,450</p>
                                             </div>
                                         </div>
@@ -583,9 +585,9 @@ const Profile = () => {
                         {/* PERKS LIST */}
                         <div className="grid md:grid-cols-3 gap-6">
                             {[
-                                { icon: Sparkles, title: "Ưu tiên nâng hạng", desc: "Tự động lên hạng phòng cao hơn khi có sẵn trống." },
-                                { icon: Clock, title: "Linh hoạt thời gian", desc: "Nhận phòng sớm và Trả phòng trễ không tính phí." },
-                                { icon: Award, title: "Tích lũy X2 Điểm", desc: "Hệ số nhân đôi cho mọi giao dịch dịch vụ tại khách sạn." }
+                                { icon: Sparkles, title: t('profile.priority_upgrade'), desc: t('profile.priority_upgrade_desc') },
+                                { icon: Clock, title: t('profile.flexible_time'), desc: t('profile.flexible_time_desc') },
+                                { icon: Award, title: t('profile.double_points'), desc: t('profile.double_points_desc') }
                             ].map((perk, i) => (
                                 <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 text-center hover:shadow-lg transition-all">
                                     <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-amber-600 mx-auto mb-6 shadow-sm">
