@@ -15,8 +15,8 @@ const BookingBar = () => {
 
     const handleSearch = () => {
         const queryParams = new URLSearchParams();
-        if (startDate) queryParams.append('checkIn', startDate.toISOString());
-        if (endDate) queryParams.append('checkOut', endDate.toISOString());
+        if (startDate) queryParams.append('checkInDate', startDate.toISOString().split('T')[0]);
+        if (endDate) queryParams.append('checkOutDate', endDate.toISOString().split('T')[0]);
         queryParams.append('capacity', guests);
         
         navigate(`/rooms?${queryParams.toString()}`);

@@ -162,4 +162,32 @@ const updateUser = async (req, res) => {
     }
 };
 
-module.exports = { register, verifyOTP, login, updateUser };
+// --- 5. HÀM ĐỔI MẬT KHẨU ---
+const changePassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oldPassword, newPassword } = req.body;
+
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ message: "Người dùng không tồn tại." });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Mật khẩu cũ không chính xác." });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        await User.update({ password: hashedPassword }, { where: { id } });
+
+        res.status(200).json({ message: "Đổi mật khẩu thành công." });
+    } catch (error) {
+        console.error("Lỗi đổi mật khẩu:", error);
+        res.status(500).json({ message: "Lỗi server khi đổi mật khẩu." });
+    }
+};
+
+module.exports = { register, verifyOTP, login, updateUser, changePassword };

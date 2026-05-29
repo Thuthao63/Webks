@@ -69,7 +69,7 @@ const ContactFab = () => {
 
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-semibold text-slate-900 mb-1">Gửi lời nhắn</h3>
-                <p className="text-sm text-slate-500">Thượng khách vui lòng để lại thông tin</p>
+                <p className="text-sm text-slate-500">Quý khách vui lòng để lại thông tin</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">

@@ -123,14 +123,14 @@ const RoomDetails = () => {
                                 Phòng <span className="text-amber-500 not-italic">{room.roomNumber}</span>
                             </h1>
                             <p className="text-slate-500 text-lg leading-relaxed font-medium italic font-sans">
-                                {details.description || 'Trải nghiệm không gian sống thượng lưu với những trang bị tân tiến, thiết kế nội thất sang trọng mang đậm dấu ấn Uy Nam.'}
+                                {details.description || 'Trải nghiệm không gian sống tiện nghi với những trang bị tân tiến, thiết kế nội thất sang trọng mang đậm dấu ấn Uy Nam.'}
                             </p>
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-8 p-10 bg-white rounded-[2.5rem] border border-slate-100 shadow-premium">
                             <div className="space-y-2">
                                 <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Users size={16} className="text-amber-500" /> Khách</span>
-                                <span className="text-xs uppercase font-black text-slate-800 font-sans">{details.capacity || 2} Thượng khách</span>
+                                <span className="text-xs uppercase font-black text-slate-800 font-sans">{details.capacity || 2} Khách</span>
                             </div>
                             <div className="space-y-2">
                                 <span className="text-xs uppercase tracking-widest font-black text-slate-400 flex items-center gap-3 font-sans"><Maximize size={16} className="text-amber-500" /> Diện tích</span>
@@ -198,7 +198,7 @@ const RoomDetails = () => {
                 <section className="bg-white rounded-[4rem] p-16 md:p-24 border border-slate-100 shadow-premium">
                     <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-50 pb-12 mb-16 gap-10">
                         <div className="space-y-6">
-                            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] block font-sans">Lời nhắn từ Thượng khách</span>
+                            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] block font-sans">Đánh giá từ Khách hàng</span>
                             <h3 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
                                 Cảm hứng <span className="not-italic text-amber-500">lưu trú</span>
                             </h3>
@@ -231,7 +231,7 @@ const RoomDetails = () => {
                                             {(review.reviewer?.fullName || 'G').charAt(0).toUpperCase()}
                                         </div>
                                         <div>
-                                            <p className="font-black uppercase tracking-[0.15em] text-sm text-slate-900 font-sans">{review.reviewer?.fullName || 'Thượng khách'}</p>
+                                            <p className="font-black uppercase tracking-[0.15em] text-sm text-slate-900 font-sans">{review.reviewer?.fullName || 'Khách hàng'}</p>
                                             <p className="text-sm text-slate-400 uppercase tracking-widest font-black mt-0.5 italic font-sans">{new Date(review.createdAt).toLocaleDateString('vi-VN')}</p>
                                         </div>
                                     </div>

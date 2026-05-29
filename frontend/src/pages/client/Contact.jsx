@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare, User as UserIcon, HelpCircle } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -97,7 +97,14 @@ const Contact = () => {
                       </div>
                       <div>
                          <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1 font-sans">{item.title}</h4>
-                         <p className="text-slate-900          {/* CONTACT FORM */}
+                         <p className="text-slate-900 font-bold text-sm tracking-wide font-sans">{item.desc}</p>
+                      </div>
+                   </div>
+                 ))}
+             </div>
+          </div>
+
+          {/* CONTACT FORM */}
           <div className="bg-white p-12 md:p-16 lg:p-24 rounded-[3rem] shadow-soft relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-1000">
              
              {success ? (
@@ -115,58 +122,69 @@ const Contact = () => {
                   </button>
                </div>
              ) : (
-               <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
-                  <div className="mb-14">
-                     <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Để lại lời nhắn</h3>
+               <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div className="mb-10 text-center">
+                     <h3 className="text-3xl font-serif italic text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Để lại lời nhắn</h3>
+                     <p className="text-sm text-slate-500 font-sans">Chúng tôi sẽ hồi đáp qua email hoặc điện thoại trong thời gian sớm nhất.</p>
                   </div>
                   
-                  <div className="grid md:grid-cols-2 gap-10 md:gap-8">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <div className="relative group">
-                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Thanh danh</label>
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                        <UserIcon size={18} />
+                      </div>
                       <input 
                          required type="text"
                          value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
-                         className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
-                         placeholder="Họ và tên của quý khách"
+                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
+                         placeholder="Họ và tên quý khách"
                       />
                     </div>
                     <div className="relative group">
-                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Số điện thoại</label>
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                        <Phone size={18} />
+                      </div>
                       <input 
                          required type="tel"
                          value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                         className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
-                         placeholder="Nhập số điện thoại"
+                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
+                         placeholder="Số điện thoại liên lạc"
                       />
                     </div>
                   </div>
 
                   <div className="relative group">
-                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Địa chỉ Email</label>
+                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                       <Mail size={18} />
+                     </div>
                      <input 
                         required type="email"
                         value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
-                        placeholder="email@example.com"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
+                        placeholder="Địa chỉ Email"
                      />
                   </div>
 
                   <div className="relative group">
-                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Chủ đề quan tâm</label>
+                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                       <HelpCircle size={18} />
+                     </div>
                      <input 
                         required type="text"
                         value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
-                        placeholder="Yêu cầu về dịch vụ..."
+                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 font-sans shadow-sm"
+                        placeholder="Chủ đề quan tâm (VD: Đặt tiệc, Hủy phòng...)"
                      />
                   </div>
 
                   <div className="relative group">
-                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Chi tiết yêu cầu</label>
+                     <div className="absolute top-4 left-0 pl-4 flex items-start pointer-events-none text-slate-400 group-focus-within:text-amber-500 transition-colors">
+                       <MessageSquare size={18} />
+                     </div>
                      <textarea 
-                        required rows={3}
+                        required rows={4}
                         value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 resize-none font-sans group-hover:border-slate-300"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition-all text-sm font-bold text-slate-900 placeholder-slate-400 resize-none font-sans shadow-sm"
                         placeholder="Chi tiết lời nhắn của quý khách..."
                      />
                   </div>
@@ -174,9 +192,9 @@ const Contact = () => {
                   <button 
                     disabled={loading}
                     type="submit"
-                    className="w-full py-5 mt-10 border border-slate-900 bg-transparent text-slate-900 hover:bg-slate-900 hover:text-white font-black uppercase text-xs tracking-widest transition-luxury flex items-center justify-center gap-4 disabled:opacity-50 font-sans"
+                    className="w-full py-5 mt-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-black uppercase text-xs tracking-widest transition-all shadow-md shadow-amber-600/20 hover:shadow-xl hover:shadow-amber-600/30 flex items-center justify-center gap-3 disabled:opacity-50 font-sans active:scale-[0.98]"
                   >
-                     {loading ? 'Đang truyền tin...' : <><Send size={16} className="group-hover:translate-x-2 transition-transform" /> Gửi tư vấn</>}
+                     {loading ? 'Đang truyền tin...' : <><Send size={16} className="group-hover:translate-x-1 transition-transform" /> Gửi yêu cầu tư vấn</>}
                   </button>
                </form>
              )}

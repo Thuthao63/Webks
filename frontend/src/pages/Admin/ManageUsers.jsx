@@ -21,15 +21,15 @@ const ManageUsers = () => {
   useEffect(() => { fetchUsers(); }, []);
 
   const luxurySwal = Swal.mixin({
-    background: '#0a0a0ae6',
-    color: '#fff',
-    backdrop: 'rgba(0,0,0,0.8)',
+    background: '#ffffff',
+    color: '#0f172a',
+    backdrop: 'rgba(15,23,42,0.4)',
     customClass: {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
       title: 'font-serif italic text-amber-500 text-2xl',
-      htmlContainer: 'text-gray-400 text-sm',
+      htmlContainer: 'text-slate-400 text-sm',
       confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-white/10 transition-colors'
+      cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
     }
   });
 
@@ -71,7 +71,7 @@ const ManageUsers = () => {
   if (loading) return (
     <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-amber-500" size={40} />
-      <p className="text-gray-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang liệt kê hồ sơ...</p>
+      <p className="text-slate-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang liệt kê hồ sơ...</p>
     </div>
   );
 
@@ -80,11 +80,11 @@ const ManageUsers = () => {
       <div className="space-y-8 pb-10">
         
         {/* User Stats/Filter Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0a0a0a] border border-white/5 p-4 rounded-3xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-100 p-4 rounded-3xl">
           <div className="flex items-center gap-6 pl-2">
              <div className="flex -space-x-3">
                 {users.slice(0, 5).map((u, i) => (
-                  <div key={i} className="w-9 h-9 rounded-full border-2 border-black bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-[10px] font-black uppercase text-white">
+                  <div key={i} className="w-9 h-9 rounded-full border-2 border-black bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-[10px] font-black uppercase text-slate-900">
                     {u.fullName?.charAt(0)}
                   </div>
                 ))}
@@ -95,22 +95,22 @@ const ManageUsers = () => {
                 )}
              </div>
              <div>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Tổng hồ sơ định danh</p>
-                <p className="text-lg font-serif italic text-white leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{users.length} tài khoản người dùng</p>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tổng hồ sơ định danh</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{users.length} tài khoản người dùng</p>
              </div>
           </div>
           
-          <button onClick={fetchUsers} className="w-full sm:w-auto px-6 py-3 bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 rounded-2xl transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+          <button onClick={fetchUsers} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-2xl transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest">
             <RefreshCw size={14} className="hover:animate-spin" />
             Làm mới danh sách
           </button>
         </div>
 
         {/* Table Container */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div className="overflow-x-auto admin-scrollbar">
             <table className="w-full text-left">
-              <thead className="text-[10px] text-gray-600 uppercase font-bold tracking-[0.2em] border-b border-white/5 bg-white/[0.01]">
+              <thead className="text-[10px] text-slate-500 uppercase font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                 <tr>
                   <th className="px-8 py-6">Nhân vật & Liên hệ</th>
                   <th className="px-6 py-6">Bộ phận / Chức vụ</th>
@@ -120,29 +120,29 @@ const ManageUsers = () => {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {users.map(userItem => (
-                  <tr key={userItem.id} className="group hover:bg-white/[0.01] transition-all">
+                  <tr key={userItem.id} className="group hover:bg-slate-50/50 font-sans transition-all">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 group-hover:text-amber-500 transition-all font-black text-lg">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-amber-500 transition-all font-black text-lg">
                           {(userItem.fullName || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                             <span className="font-black text-white group-hover:text-amber-500 transition-colors uppercase tracking-wide">
+                             <span className="font-black text-slate-900 group-hover:text-amber-500 transition-colors uppercase tracking-wide">
                                {userItem.fullName}
                              </span>
                              {currentUser?.id === userItem.id && <span className="text-[8px] bg-amber-500/10 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full uppercase font-black tracking-widest">Bạn</span>}
                           </div>
-                          <div className="flex items-center gap-3 mt-1 text-[10px] text-gray-600 font-medium">
+                          <div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500 font-medium">
                              <span className="flex items-center gap-1"><Mail size={10}/> {userItem.email}</span>
-                             {userItem.phone && <span className="flex items-center gap-1 border-l border-white/5 pl-3"><Phone size={10}/> {userItem.phone}</span>}
+                             {userItem.phone && <span className="flex items-center gap-1 border-l border-slate-100 pl-3"><Phone size={10}/> {userItem.phone}</span>}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
                        <select 
-                          className={`bg-white/5 border border-white/5 rounded-xl px-3 py-1.5 text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer hover:bg-white/10 transition-all ${userItem.role === 'Admin' ? 'text-rose-400' : userItem.role === 'Receptionist' ? 'text-amber-400' : 'text-emerald-400'}`}
+                          className={`bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer hover:bg-slate-100 transition-all ${userItem.role === 'Admin' ? 'text-rose-400' : userItem.role === 'Receptionist' ? 'text-amber-400' : 'text-emerald-400'}`}
                           value={userItem.role}
                           onChange={(e) => handleChangeRole(userItem.id, e.target.value, userItem.role)}
                           disabled={currentUser?.id === userItem.id}
@@ -167,18 +167,18 @@ const ManageUsers = () => {
                       <div className="flex items-center justify-end gap-2 opacity-30 group-hover:opacity-100 transition-opacity">
                          <button 
                             disabled={currentUser?.id === userItem.id}
-                            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-all"
+                            className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 transition-all"
                          >
                             <Shield size={16} />
                          </button>
                          <button 
                             onClick={() => handleDeleteUser(userItem)}
                             disabled={currentUser?.id === userItem.id}
-                            className={`p-2.5 rounded-xl border transition-all ${currentUser?.id === userItem.id ? 'opacity-20 bg-white/5 border-white/5 text-gray-500' : 'bg-rose-500/5 text-rose-400 border-rose-500/20 hover:bg-rose-500 hover:text-black'}`}
+                            className={`p-2.5 rounded-xl border transition-all ${currentUser?.id === userItem.id ? 'opacity-20 bg-slate-50 border-slate-100 text-slate-500' : 'bg-rose-500/5 text-rose-400 border-rose-500/20 hover:bg-rose-500 hover:text-black'}`}
                          >
                             <Trash2 size={16} />
                          </button>
-                         <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400">
+                         <button className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400">
                              <MoreVertical size={16} />
                          </button>
                       </div>

@@ -24,7 +24,9 @@ const RoomList = () => {
     minPrice: Number(searchParams.get('minPrice')) || 0,
     maxPrice: Number(searchParams.get('maxPrice')) || 20000000,
     capacity: searchParams.get('capacity') || '',
-    status: searchParams.get('status') || ''
+    status: searchParams.get('status') || '',
+    checkInDate: searchParams.get('checkInDate') || '',
+    checkOutDate: searchParams.get('checkOutDate') || ''
   });
 
   // Đồng bộ URL params vào state khi URL thay đổi (VD: từ trang chủ chuyển sang)
@@ -34,7 +36,9 @@ const RoomList = () => {
       minPrice: Number(searchParams.get('minPrice')) || 0,
       maxPrice: Number(searchParams.get('maxPrice')) || 20000000,
       capacity: searchParams.get('capacity') || '',
-      status: searchParams.get('status') || ''
+      status: searchParams.get('status') || '',
+      checkInDate: searchParams.get('checkInDate') || '',
+      checkOutDate: searchParams.get('checkOutDate') || ''
     });
   }, [searchParams]);
 
@@ -63,6 +67,8 @@ const RoomList = () => {
       if (currentFilters.maxPrice < 20000000) params.append('maxPrice', currentFilters.maxPrice);
       if (currentFilters.capacity) params.append('capacity', currentFilters.capacity);
       if (currentFilters.status) params.append('status', currentFilters.status);
+      if (currentFilters.checkInDate) params.append('checkInDate', currentFilters.checkInDate);
+      if (currentFilters.checkOutDate) params.append('checkOutDate', currentFilters.checkOutDate);
 
       const res = await axiosClient.get(`/rooms?${params.toString()}`);
       setRooms(res.data);
@@ -84,6 +90,8 @@ const RoomList = () => {
       if (filters.maxPrice < 20000000) newParams.maxPrice = filters.maxPrice.toString();
       if (filters.capacity) newParams.capacity = filters.capacity;
       if (filters.status) newParams.status = filters.status;
+      if (filters.checkInDate) newParams.checkInDate = filters.checkInDate;
+      if (filters.checkOutDate) newParams.checkOutDate = filters.checkOutDate;
       
       // Chỉ cập nhật URL nếu nó thực sự thay đổi để tránh vòng lặp
       const currentParamsString = searchParams.toString();
@@ -237,7 +245,7 @@ const RoomList = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center bg-white px-10 py-6 rounded-[2rem] border border-slate-100 shadow-sm gap-6">
                 <p className="text-sm font-black text-slate-500 uppercase tracking-widest italic font-sans">
-                  Khám phá <span className="text-amber-500">{rooms.length}</span> tuyệt tác lưu trú
+                  Khám phá <span className="text-amber-500">{rooms.length}</span> phòng nghỉ cao cấp
                 </p>
                 <div className="flex items-center gap-6">
                   {filtering && (

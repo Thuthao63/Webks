@@ -85,16 +85,16 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center">
 
           {/* LOGO */}
-          <Link to="/" className="flex items-center gap-4 group">
-            <div className="relative">
-              <div className="w-12 h-12 border border-amber-500/30 rounded-full flex items-center justify-center group-hover:border-amber-500 transition-all duration-1000 group-hover:rotate-[360deg]">
-                <Bed size={24} className="text-amber-500 group-hover:scale-110 transition-transform duration-500" />
+          <Link to="/" className="flex items-center gap-5 group">
+            <div className="relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-all duration-500 group-hover:-translate-y-0.5">
+              <div className="absolute inset-[1.5px] bg-slate-950 rounded-[6.5px] flex items-center justify-center overflow-hidden">
+                 <span className="text-amber-500 font-serif text-xl tracking-tighter" style={{ fontFamily: "'Playfair Display', serif" }}>UN</span>
+                 <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/10 to-transparent"></div>
               </div>
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full blur-[2px] animate-pulse"></div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-serif tracking-tight text-white uppercase leading-none italic" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
-              <span className="text-xs tracking-wider text-amber-500 uppercase font-bold mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
+            <div className="flex flex-col justify-center">
+              <span className="text-2xl font-serif tracking-widest text-white uppercase leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+              <span className="text-[9px] tracking-[0.3em] text-amber-500 uppercase font-black mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
             </div>
           </Link>
 
@@ -104,6 +104,11 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
+                onClick={() => {
+                  if (location.pathname === link.path) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
                 className={`text-[13px] uppercase tracking-wider font-semibold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-amber-500' : 'text-gray-300 hover:text-white'
                   }`}
               >
@@ -305,7 +310,12 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (location.pathname === link.path) {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
                   className={`text-xl font-bold uppercase tracking-widest transition-all duration-500 ${location.pathname === link.path ? 'text-amber-500 translate-x-4' : 'text-gray-400 hover:text-white'
                     }`}
                   style={{ transitionDelay: `${idx * 50}ms` }}

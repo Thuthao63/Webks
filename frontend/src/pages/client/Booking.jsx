@@ -17,7 +17,14 @@ const Booking = () => {
   const navigate = useNavigate();
   const [room, setRoom] = useState(null);
   const [activeDiscounts, setActiveDiscounts] = useState([]);
+  const [availableServices, setAvailableServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Payment States
+  const [showPayment, setShowPayment] = useState(false);
+  const [pendingBookingId, setPendingBookingId] = useState(null);
+  const [processingPayment, setProcessingPayment] = useState(false);
 
   // Quản lý ngày bằng đối tượng Date để DatePicker hoạt động mượt mà
   const [startDate, setStartDate] = useState(new Date());
@@ -37,12 +44,14 @@ const Booking = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [roomRes, discountRes] = await Promise.all([
+        const [roomRes, discountRes, serviceRes] = await Promise.all([
           axiosClient.get(`/rooms/${roomId}`),
-          axiosClient.get('/discounts/active')
+          axiosClient.get('/discounts/active'),
+          axiosClient.get('/services')
         ]);
         setRoom(roomRes.data);
         setActiveDiscounts(discountRes.data || []);
+        setAvailableServices(serviceRes.data || []);
       } catch (err) {
         console.error(err);
         Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Không tìm thấy thông tin phòng!' });
@@ -67,13 +76,29 @@ const Booking = () => {
         const activeDiscount = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
         const discountFactor = activeDiscount ? (1 - Number(activeDiscount.discountPercent) / 100) : 1;
         
-        setTotalPrice(Math.round(diffDays * price * discountFactor));
+        const roomTotal = Math.round(diffDays * price * discountFactor);
+        
+        // Tính tổng tiền dịch vụ cộng thêm
+        const servicesTotal = selectedServices.reduce((sum, serviceId) => {
+            const service = availableServices.find(s => s.id === serviceId);
+            return sum + (service ? Number(service.price) : 0);
+        }, 0);
+        
+        setTotalPrice(roomTotal + servicesTotal);
       } else {
         setDays(0);
         setTotalPrice(0);
       }
     }
-  }, [startDate, endDate, room, activeDiscounts]);
+  }, [startDate, endDate, room, activeDiscounts, selectedServices, availableServices]);
+
+  const toggleService = (serviceId) => {
+    setSelectedServices(prev => 
+      prev.includes(serviceId) 
+        ? prev.filter(id => id !== serviceId)
+        : [...prev, serviceId]
+    );
+  };
 
   const handleBooking = async () => {
     if (totalPrice <= 0) {
@@ -81,23 +106,51 @@ const Booking = () => {
     }
 
     try {
-      Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
-      await axiosClient.post('/bookings', {
+      Swal.fire({ title: 'Đang chuẩn bị Hóa đơn...', didOpen: () => Swal.showLoading() });
+      const res = await axiosClient.post('/bookings', {
         roomId: roomId,
         checkInDate: startDate.toISOString().split('T')[0],
         checkOutDate: endDate.toISOString().split('T')[0],
-        totalPrice: totalPrice
+        totalPrice: totalPrice,
+        serviceIds: selectedServices
       });
+      
+      Swal.close();
+      
+      // Mở Modal Thanh toán
+      setPendingBookingId(res.data.id);
+      setShowPayment(true);
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Thành công!',
-        text: 'Cảm ơn Thảo, đơn đặt phòng đã được ghi nhận.',
-        confirmButtonColor: '#d97706'
-      }).then(() => navigate('/profile'));
     } catch (err) {
       console.error(err);
       Swal.fire('Lỗi', 'Đặt phòng thất bại, Thảo kiểm tra lại nhé!', 'error');
+    }
+  };
+
+  const handleProcessPayment = async (method) => {
+    setProcessingPayment(true);
+    
+    // Giả lập thời gian kết nối với Cổng thanh toán (VNPay/MoMo/Bank)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    try {
+      // Gọi API cập nhật trạng thái đơn hàng thành confirmed
+      await axiosClient.put(`/bookings/${pendingBookingId}`, { status: 'confirmed' });
+      
+      setShowPayment(false);
+      setProcessingPayment(false);
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Thanh toán thành công!',
+        html: `Đã xác nhận giao dịch qua <b>${method}</b>.<br/>Cảm ơn quý khách, phòng đã được giữ.`,
+        confirmButtonColor: '#d97706',
+        borderRadius: '2rem'
+      }).then(() => navigate('/profile'));
+      
+    } catch (err) {
+      setProcessingPayment(false);
+      Swal.fire('Lỗi', 'Thanh toán thất bại', 'error');
     }
   };
 
@@ -130,7 +183,7 @@ const Booking = () => {
           <div className="lg:col-span-7 space-y-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-amber-600 uppercase tracking-wider text-sm font-semibold">
-                <Star size={14} fill="currentColor" /> Hạng phòng thượng lưu
+                <Star size={14} fill="currentColor" /> Hạng phòng cao cấp
               </div>
               <h1 className="text-2xl md:text-4xl font-serif italic text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
                 Phòng <span className="text-amber-600 not-italic">{room?.roomNumber}</span>
@@ -151,6 +204,36 @@ const Booking = () => {
 
             <div className="p-10 bg-white border border-gray-100 rounded-3xl shadow-sm">
               <p className="text-gray-600 leading-loose italic font-sans">"{room?.roomType?.description || 'Tận hưởng không gian sang trọng và tiện nghi bậc nhất.'}"</p>
+            </div>
+
+            {/* DỊCH VỤ ĐI KÈM */}
+            <div className="p-10 bg-white border border-gray-100 rounded-3xl shadow-sm">
+              <h3 className="text-xl font-serif italic text-gray-900 mb-6">Dịch vụ Nâng tầm Trải nghiệm</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {availableServices.map(service => (
+                  <div 
+                    key={service.id} 
+                    onClick={() => toggleService(service.id)}
+                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-4 ${
+                      selectedServices.includes(service.id) 
+                        ? 'border-amber-500 bg-amber-50/50' 
+                        : 'border-gray-100 hover:border-amber-300'
+                    }`}
+                  >
+                    <div className={`mt-1 w-5 h-5 rounded flex items-center justify-center border ${selectedServices.includes(service.id) ? 'bg-amber-500 border-amber-500 text-white' : 'border-gray-300'}`}>
+                      {selectedServices.includes(service.id) && <CheckCircle2 size={14} />}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-900">{service.name}</h4>
+                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">{service.description}</p>
+                      <p className="text-sm font-bold text-amber-600 mt-2">+{formatCurrency(service.price)}</p>
+                    </div>
+                  </div>
+                ))}
+                {availableServices.length === 0 && (
+                  <p className="text-sm text-gray-400 italic">Hiện không có dịch vụ nào khả dụng.</p>
+                )}
+              </div>
             </div>
           </div>
 
@@ -211,6 +294,17 @@ const Booking = () => {
                       <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
                     </div>
                   )}
+                  {selectedServices.length > 0 && (
+                    <div className="flex justify-between items-start text-xs uppercase tracking-widest text-amber-600 font-bold font-sans">
+                      <span className="flex flex-col gap-1">Dịch vụ đi kèm</span>
+                      <span className="text-right">
+                        +{formatCurrency(selectedServices.reduce((sum, id) => {
+                          const s = availableServices.find(x => x.id === id);
+                          return sum + (s ? Number(s.price) : 0);
+                        }, 0))}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-end pt-3">
                     <div>
                       <div className="text-xs font-black uppercase text-amber-600 tracking-wider">Tổng giá trị</div>
@@ -239,6 +333,65 @@ const Booking = () => {
           </div>
         </div>
       </div>
+
+      {/* VIRTUAL PAYMENT GATEWAY MODAL */}
+      {showPayment && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => !processingPayment && setShowPayment(false)}></div>
+          <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="bg-slate-50 p-8 text-center border-b border-slate-100 relative">
+              <h3 className="text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thanh toán an toàn</h3>
+              <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">Tổng số tiền: <span className="text-amber-600">{formatCurrency(totalPrice)}</span></p>
+            </div>
+            
+            {/* Body */}
+            <div className="p-8 space-y-4">
+              {processingPayment ? (
+                <div className="py-12 flex flex-col items-center justify-center space-y-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 border-4 border-amber-500/20 rounded-full"></div>
+                    <div className="absolute inset-0 border-4 border-amber-500 rounded-full border-t-transparent animate-spin"></div>
+                  </div>
+                  <p className="text-sm font-bold text-slate-600 animate-pulse uppercase tracking-widest">Đang kết nối ngân hàng...</p>
+                </div>
+              ) : (
+                <>
+                  <div className="text-center">
+                    <div className="inline-block p-2 md:p-4 bg-white border-2 border-amber-500 rounded-3xl shadow-lg relative">
+                      <div className="absolute -top-3 -right-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">Quét mã</div>
+                      <img 
+                        src={`https://img.vietqr.io/image/vietcombank-1022103170-compact2.png?amount=${totalPrice}&addInfo=Thanh toan phong ${pendingBookingId}&accountName=UY NAM`} 
+                        alt="VietQR" 
+                        className="w-48 h-48 md:w-56 md:h-56 object-contain"
+                      />
+                    </div>
+                    <div className="mt-6 space-y-1">
+                      <p className="text-sm font-bold text-slate-900">Ngân hàng: Vietcombank</p>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">STK: <span className="text-amber-600">1022103170</span></p>
+                    </div>
+                  </div>
+
+                  <button onClick={() => handleProcessPayment('VietQR')} className="w-full bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-2xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all">
+                    Tôi đã chuyển khoản thành công
+                  </button>
+                  
+                  <button onClick={() => { setShowPayment(false); navigate('/profile'); }} className="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 p-4 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all">
+                    Thanh toán sau
+                  </button>
+                </>
+              )}
+            </div>
+            
+            <div className="bg-slate-50 p-4 text-center border-t border-slate-100">
+               <p className="text-[10px] text-slate-400 flex items-center justify-center gap-2">
+                 <CheckCircle2 size={12} className="text-emerald-500" />
+                 Bảo mật SSL 256-bit
+               </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

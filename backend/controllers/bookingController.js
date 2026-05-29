@@ -1,11 +1,12 @@
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
 const User = require('../models/User');
+const BookingService = require('../models/BookingService');
 
 // 1. Khách hàng đặt phòng (Khớp với router.post('/') )
 const createBooking = async (req, res) => {
     try {
-        const { roomId, checkInDate, checkOutDate, totalPrice } = req.body;
+        const { roomId, checkInDate, checkOutDate, totalPrice, serviceIds } = req.body;
 
         // Thảo lưu ý: Nếu chưa làm Login thì tạm thời gán userId = 1 
         // Nếu đã có Login thì lấy từ req.user.id
@@ -19,6 +20,16 @@ const createBooking = async (req, res) => {
             totalPrice,
             status: 'pending' // Chờ duyệt
         });
+
+        // Nếu có dịch vụ đi kèm, lưu vào bảng BookingService
+        if (serviceIds && Array.isArray(serviceIds) && serviceIds.length > 0) {
+            const bookingServices = serviceIds.map(serviceId => ({
+                bookingId: newBooking.id,
+                serviceId: serviceId,
+                quantity: 1
+            }));
+            await BookingService.bulkCreate(bookingServices);
+        }
 
         res.status(201).json(newBooking);
     } catch (error) {

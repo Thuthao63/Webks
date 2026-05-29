@@ -31,7 +31,7 @@ const Gallery = () => {
                 <div className="text-center mb-20 space-y-4">
                     <span className="text-amber-600 text-sm font-black uppercase tracking-[0.15em] block">Visual Journey</span>
                     <h1 className="text-5xl md:text-7xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        Thư viện <span className="text-amber-600 not-italic font-bold">Tuyệt tác</span>
+                        Thư viện <span className="text-amber-600 not-italic font-bold">Hình Ảnh</span>
                     </h1>
                 </div>
 

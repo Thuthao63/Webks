@@ -1,16 +1,35 @@
 const { Op } = require('sequelize');
 const Room = require('../models/Room');
 const RoomType = require('../models/RoomType');
+const Booking = require('../models/Booking');
 
 // 1. Lấy tất cả phòng (Có hỗ trợ lọc)
 const getAllRooms = async (req, res) => {
     try {
-        const { typeId, minPrice, maxPrice, capacity, status } = req.query;
+        const { typeId, minPrice, maxPrice, capacity, status, checkInDate, checkOutDate } = req.query;
         
         // Điều kiện lọc cho bảng Rooms
         let whereCondition = {};
         if (status) whereCondition.status = status;
         if (typeId) whereCondition.typeId = typeId;
+
+        // Nếu có khoảng thời gian, tìm các phòng đang bị đặt và loại trừ chúng
+        if (checkInDate && checkOutDate) {
+            const bookedRooms = await Booking.findAll({
+                attributes: ['roomId'],
+                where: {
+                    status: { [Op.in]: ['pending', 'confirmed'] }, // Chỉ các đơn còn hiệu lực mới chặn phòng
+                    [Op.and]: [
+                        { checkInDate: { [Op.lt]: new Date(checkOutDate) } },
+                        { checkOutDate: { [Op.gt]: new Date(checkInDate) } }
+                    ]
+                }
+            });
+            const bookedRoomIds = bookedRooms.map(b => b.roomId);
+            if (bookedRoomIds.length > 0) {
+                whereCondition.id = { [Op.notIn]: bookedRoomIds };
+            }
+        }
 
         // Điều kiện lọc cho bảng RoomType (giá, sức chứa)
         let typeWhereCondition = {};

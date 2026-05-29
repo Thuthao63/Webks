@@ -3,10 +3,8 @@ import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import {
-    User, Package, Calendar, CreditCard, ChevronRight, Clock,
-    CheckCircle, XCircle, MapPin, Edit2, LogOut, Shield,
-    Star, Award, Bell, Settings, Heart, History, LayoutDashboard,
-    ArrowUpRight, Sparkles
+    User, Calendar, CreditCard, Clock, CheckCircle, XCircle, Edit2, LogOut, Shield,
+    Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Sparkles, MapPin, Camera, ChevronRight, Package
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,18 +38,18 @@ const Profile = () => {
         const { value: formValues } = await Swal.fire({
             title: 'Cập nhật danh tính',
             html: `
-                <div class="flex flex-col gap-6 text-left mt-8 pb-4">
-                    <div class="space-y-2">
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest pl-1">Họ và tên quý khách</label>
-                        <input id="swal-edit-name" type="text" value="${user?.fullName || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-6 py-4 rounded-2xl outline-none focus:border-amber-500 transition-all font-medium text-sm">
+                <div class="flex flex-col gap-5 text-left mt-6 pb-2">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Họ và tên quý khách</label>
+                        <input id="swal-edit-name" type="text" value="${user?.fullName || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest pl-1">Số liên lạc</label>
-                        <input id="swal-edit-phone" type="text" value="${user?.phone || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-6 py-4 rounded-2xl outline-none focus:border-amber-500 transition-all font-medium text-sm">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Số liên lạc</label>
+                        <input id="swal-edit-phone" type="text" value="${user?.phone || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-sm text-slate-400 font-black uppercase tracking-widest pl-1">Địa chỉ thường trú</label>
-                        <input id="swal-edit-address" type="text" value="${user?.address || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-6 py-4 rounded-2xl outline-none focus:border-amber-500 transition-all font-medium text-sm">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Địa chỉ thường trú</label>
+                        <input id="swal-edit-address" type="text" value="${user?.address || ''}" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
                     </div>
                 </div>
             `,
@@ -60,10 +58,10 @@ const Profile = () => {
             confirmButtonText: 'Lưu thay đổi',
             cancelButtonText: 'Quay lại',
             customClass: {
-                popup: 'rounded-[3rem] border border-slate-100 shadow-[0_50px_100px_rgba(0,0,0,0.1)] p-12',
-                title: 'font-sans font-bold text-slate-900 text-3xl',
-                confirmButton: 'bg-slate-900 text-white px-10 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-amber-500 transition-all shadow-xl shadow-slate-900/10',
-                cancelButton: 'bg-slate-50 text-slate-400 px-10 py-4 rounded-xl font-bold uppercase text-xs tracking-widest border border-slate-100 hover:bg-slate-100 transition-colors'
+                popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
+                title: 'font-serif italic text-slate-900 text-3xl',
+                confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
+                cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
             },
             preConfirm: () => {
                 return {
@@ -79,11 +77,142 @@ const Profile = () => {
                 Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
                 const res = await axiosClient.put(`/auth/${user.id}`, formValues);
                 updateUserContext(res.data.user);
-                Swal.fire({ icon: 'success', title: 'Hoàn tất', text: 'Thông tin của bạn đã được đồng bộ.', confirmButtonColor: '#B59A6D' });
+                Swal.fire({ icon: 'success', title: 'Hoàn tất', text: 'Thông tin của bạn đã được đồng bộ.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
             } catch (err) {
                 console.error(err);
-                Swal.fire({ icon: 'error', title: 'Thất bại', text: 'Không thể cập nhật thông tin lúc này.', confirmButtonColor: '#slate-900' });
+                Swal.fire({ icon: 'error', title: 'Thất bại', text: 'Không thể cập nhật thông tin lúc này.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
             }
+        }
+    };
+
+    const handleChangePassword = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Đổi mật khẩu',
+            html: `
+                <div class="flex flex-col gap-5 text-left mt-6 pb-2">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Mật khẩu cũ</label>
+                        <input id="swal-old-password" type="password" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Mật khẩu mới</label>
+                        <input id="swal-new-password" type="password" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
+                    </div>
+                </div>
+            `,
+            background: '#ffffff',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận đổi',
+            cancelButtonText: 'Quay lại',
+            customClass: {
+                popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
+                title: 'font-serif italic text-slate-900 text-3xl',
+                confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
+                cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
+            },
+            preConfirm: () => {
+                const oldPassword = document.getElementById('swal-old-password').value;
+                const newPassword = document.getElementById('swal-new-password').value;
+                if (!oldPassword || !newPassword) {
+                    Swal.showValidationMessage('Vui lòng nhập đầy đủ thông tin');
+                    return false;
+                }
+                return { oldPassword, newPassword };
+            }
+        });
+
+        if (formValues) {
+            try {
+                Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+                await axiosClient.put(`/auth/${user.id}/password`, formValues);
+                Swal.fire({ icon: 'success', title: 'Thành công', text: 'Mật khẩu đã được thay đổi.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: 'Thất bại', text: err.response?.data?.message || 'Không thể đổi mật khẩu lúc này.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100' } });
+            }
+        }
+    };
+
+    const handleNotificationSettings = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Tùy chọn Thông báo',
+            html: `
+                <div class="flex flex-col gap-4 text-left mt-6 pb-2">
+                    <label class="flex items-center gap-3 p-4 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                        <input type="checkbox" id="email-notif" class="w-5 h-5 accent-amber-500" checked>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 font-sans">Nhận Email Khuyến mãi</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Ưu đãi độc quyền và tin tức từ Uy Nam.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-center gap-3 p-4 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                        <input type="checkbox" id="sms-notif" class="w-5 h-5 accent-amber-500" checked>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 font-sans">Tin nhắn SMS (Cập nhật phòng)</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Thông báo trạng thái nhận/trả phòng.</p>
+                        </div>
+                    </label>
+                </div>
+            `,
+            background: '#ffffff',
+            showCancelButton: true,
+            confirmButtonText: 'Lưu thay đổi',
+            cancelButtonText: 'Quay lại',
+            customClass: {
+                popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
+                title: 'font-serif italic text-slate-900 text-3xl',
+                confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
+                cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
+            },
+            preConfirm: () => {
+                return {
+                    email: document.getElementById('email-notif').checked,
+                    sms: document.getElementById('sms-notif').checked
+                };
+            }
+        });
+
+        if (formValues) {
+            Swal.fire({ icon: 'success', title: 'Thành công', text: 'Tùy chọn thông báo đã được lưu cục bộ.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
+        }
+    };
+
+    const handleLanguageSettings = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Ngôn ngữ & Tiền tệ',
+            html: `
+                <div class="flex flex-col gap-5 text-left mt-6 pb-2">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Ngôn ngữ hiển thị</label>
+                        <select id="lang-select" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
+                            <option value="vi">Tiếng Việt</option>
+                            <option value="en">English (US)</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1 block font-sans">Đơn vị tiền tệ</label>
+                        <select id="currency-select" class="w-full bg-slate-50 border border-slate-200 text-slate-900 px-5 py-3.5 rounded-xl outline-none focus:border-amber-500 transition-all font-bold text-sm shadow-sm font-sans">
+                            <option value="vnd">VND - Việt Nam Đồng</option>
+                            <option value="usd">USD - US Dollar</option>
+                        </select>
+                    </div>
+                </div>
+            `,
+            background: '#ffffff',
+            showCancelButton: true,
+            confirmButtonText: 'Cập nhật',
+            cancelButtonText: 'Quay lại',
+            customClass: {
+                popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
+                title: 'font-serif italic text-slate-900 text-3xl',
+                confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
+                cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
+            }
+        });
+
+        if (formValues) {
+            Swal.fire({ icon: 'success', title: 'Đã lưu', text: 'Cài đặt vùng đã được áp dụng.', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem] border border-slate-100', title: 'font-serif text-2xl italic', confirmButton: 'bg-slate-900 text-white rounded-xl px-8 py-3 font-sans' } });
         }
     };
 
@@ -93,10 +222,16 @@ const Profile = () => {
             text: "Cảm ơn quý khách đã đồng hành cùng Uy Nam Luxury.",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#B59A6D',
-            cancelButtonColor: '#slate-900',
+            confirmButtonColor: '#0f172a',
+            cancelButtonColor: '#f8fafc',
             confirmButtonText: 'Xác nhận đi',
-            cancelButtonText: 'Ở lại cùng chúng tôi'
+            cancelButtonText: 'Ở lại cùng chúng tôi',
+            customClass: {
+                popup: 'rounded-[2rem] border border-slate-100 shadow-xl',
+                title: 'font-serif italic text-2xl text-slate-900',
+                confirmButton: 'rounded-xl px-8 py-3 font-sans text-[11px] uppercase tracking-widest font-bold shadow-md bg-slate-900 text-white hover:bg-rose-600 transition-colors',
+                cancelButton: 'rounded-xl px-8 py-3 font-sans text-[11px] uppercase tracking-widest font-bold bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 shadow-sm'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 logout();
@@ -115,309 +250,357 @@ const Profile = () => {
         const config = configs[status] || configs['pending'];
         const Icon = config.icon;
         return (
-            <span className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] font-black uppercase tracking-widest ${config.color}`}>
-                <Icon size={10} /> {config.text}
+            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-bold uppercase tracking-widest font-sans ${config.color}`}>
+                <Icon size={12} /> {config.text}
             </span>
         );
     };
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-cream flex items-center justify-center">
-                <div className="w-16 h-16 border-2 border-amber-500/20 border-t-amber-500 rounded-full animate-spin"></div>
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="w-12 h-12 border-2 border-slate-300 border-t-slate-900 rounded-full animate-spin"></div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-cream text-slate-900 font-sans pb-32">
+        <div className="min-h-screen bg-[#FDFCFB] text-slate-900 font-sans pb-32">
             
-            {/* HERO BANNER - MINIMAL */}
-            <div className="relative h-[40vh] w-full overflow-hidden bg-slate-900">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cream z-10"></div>
-                <img
-                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=2000"
-                    className="w-full h-full object-cover opacity-60 contrast-110 scale-105"
-                    alt="Cover"
-                />
-                <div className="absolute top-0 left-0 w-full h-full bg-amber-500/5 z-5"></div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 -mt-32 relative z-20">
-                <div className="flex flex-col lg:flex-row gap-12">
-                    
-                    {/* LEFT PANEL: PROFILE SUMMARY */}
-                    <div className="lg:w-1/3 space-y-8">
-                        <div className="bg-white/80 backdrop-blur-2xl p-10 rounded-[3rem] border border-white shadow-premium text-center">
-                            <div className="relative inline-block group mb-8">
-                                <div className="w-40 h-40 rounded-[2.5rem] bg-gradient-to-br from-amber-500 to-[#D4C3A3] p-1 shadow-2xl overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                                    <div className="w-full h-full bg-white rounded-[2.3rem] flex items-center justify-center text-amber-500">
-                                        <User size={64} strokeWidth={1} />
-                                    </div>
-                                </div>
-                                <button 
-                                    onClick={handleEditProfile}
-                                    className="absolute -bottom-2 -right-2 bg-slate-900 text-white p-3 rounded-2xl shadow-xl hover:bg-amber-500 transition-colors"
-                                >
-                                    <Edit2 size={16} />
-                                </button>
-                            </div>
-                            
-                            <h1 className="text-4xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                {user?.fullName}
-                            </h1>
-                            <p className="text-xs text-slate-400 uppercase font-bold tracking-widest mb-8 italic">Private Collection • Since 2024</p>
-                            
-                            <div className="flex justify-center gap-3">
-                                <span className="bg-amber-500/10 text-amber-500 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-widest border border-amber-500/20 flex items-center gap-2">
-                                    <Sparkles size={10} /> Platinum Elite
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* MINI NAVIGATION */}
-                        <div className="bg-white/60 p-4 rounded-[2.5rem] border border-white/50 shadow-sm space-y-1">
-                            {[
-                                { id: 'dashboard', label: 'Tổng quan', icon: LayoutDashboard },
-                                { id: 'bookings', label: 'Chuyến đi', icon: History },
-                                { id: 'settings', label: 'Cài đặt', icon: Settings },
-                                { id: 'membership', label: 'Đặc quyền', icon: Award },
-                            ].map((tab) => {
-                                const Icon = tab.icon;
-                                const isActive = activeTab === tab.id;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => setActiveTab(tab.id)}
-                                        className={`w-full flex items-center gap-5 px-8 py-5 rounded-3xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${isActive
-                                            ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10 scale-[1.02]'
-                                            : 'text-slate-400 hover:bg-white hover:text-slate-900'
-                                            }`}
-                                    >
-                                        <Icon size={16} strokeWidth={2} />
-                                        {tab.label}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* RIGHT PANEL: CONTENT */}
-                    <div className="lg:w-2/3 animate-in fade-in slide-in-from-right-4 duration-700">
-                        
-                        {activeTab === 'dashboard' && (
-                            <div className="space-y-12">
-                                {/* STATS - MINIMALIST */}
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                    {[
-                                        { label: 'Yêu dấu', value: myBookings.length, icon: Heart, color: 'text-rose-500 bg-rose-50' },
-                                        { label: 'Dự định', value: myBookings.filter(b => b.status === 'confirmed').length, icon: Calendar, color: 'text-amber-500 bg-amber-50' },
-                                        { label: 'Tích lũy', value: '12,4k', icon: Award, color: 'text-blue-500 bg-blue-50' }
-                                    ].map((stat, i) => (
-                                        <div key={i} className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-xl transition-luxury group">
-                                            <div className="flex items-center gap-6">
-                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${stat.color} group-hover:scale-110 transition-transform`}>
-                                                    <stat.icon size={20} strokeWidth={1.5} />
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs font-black uppercase text-slate-400 tracking-widest mb-1">{stat.label}</p>
-                                                    <p className="text-3xl font-serif italic text-slate-900 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* LATEST ACTIVITY */}
-                                <div className="bg-white rounded-[4rem] p-12 border border-slate-100 shadow-premium relative overflow-hidden">
-                                    <div className="flex justify-between items-center mb-10 border-b border-slate-50 pb-8">
-                                        <h3 className="text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Kỳ nghỉ mới nhất</h3>
-                                        <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-amber-500 hover:text-slate-900 transition-colors">
-                                            Xem tất cả <ArrowUpRight size={14} />
-                                        </button>
-                                    </div>
-
-                                    {myBookings.length > 0 ? (
-                                        <div className="flex flex-col md:flex-row gap-10 items-center">
-                                            <div className="w-full md:w-56 h-40 rounded-[2rem] overflow-hidden shadow-xl border border-slate-50 relative group">
-                                                <img
-                                                    src={`/Hinh anh/Hinh${(myBookings[0].roomId % 20) + 1}.png`}
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                                                    alt="Recent"
-                                                />
-                                            </div>
-                                            <div className="flex-1 space-y-4">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <h4 className="text-xl font-bold text-slate-900 mb-1">Luxury Suite #{myBookings[0].room?.roomNumber}</h4>
-                                                        <p className="text-sm text-slate-400 uppercase tracking-widest font-black italic">Collection de Uy Nam • Signature Stay</p>
-                                                    </div>
-                                                    {renderStatusBadge(myBookings[0].status)}
-                                                </div>
-                                                <div className="flex gap-8 text-sm text-slate-500 font-medium pt-2">
-                                                    <div className="flex items-center gap-2"><Calendar size={14} className="text-amber-500" /> {new Date(myBookings[0].checkInDate).toLocaleDateString('vi-VN')}</div>
-                                                    <div className="flex items-center gap-2"><CreditCard size={14} className="text-amber-500" /> {Number(myBookings[0].totalPrice).toLocaleString()} đ</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="text-center py-10">
-                                            <p className="text-slate-300 italic font-medium text-sm">Chưa có hành trình nào được ghi lại.</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'bookings' && (
-                            <div className="space-y-10">
-                                <div className="flex justify-between items-end border-b border-slate-100 pb-10">
-                                    <h3 className="text-4xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>Lịch sử lưu trú</h3>
-                                    <span className="text-xs text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-xl">{myBookings.length} yêu cầu</span>
-                                </div>
-
-                                <div className="grid gap-6">
-                                    {myBookings.map((booking) => (
-                                        <div key={booking.id} className="group bg-white border border-slate-100 p-6 rounded-[2.5rem] hover:shadow-2xl transition-luxury flex flex-col md:flex-row gap-8 items-center">
-                                            <div className="w-full md:w-32 h-24 rounded-2xl overflow-hidden border border-slate-50 shrink-0">
-                                                <img src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} className="w-full h-full object-cover" alt="Room" />
-                                            </div>
-                                            <div className="flex-1 flex flex-col md:flex-row justify-between items-center gap-6 w-full">
-                                                <div className="text-center md:text-left">
-                                                    <h4 className="text-lg font-bold text-slate-900">Phòng {booking.room?.roomNumber}</h4>
-                                                    <p className="text-xs text-slate-400 font-medium italic">Ngày nhận: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
-                                                </div>
-                                                <div className="flex items-center gap-6">
-                                                    <span className="text-sm font-black text-amber-500">{Number(booking.totalPrice).toLocaleString()}đ</span>
-                                                    {renderStatusBadge(booking.status)}
-                                                    <button onClick={() => navigate(`/room/${booking.roomId}`)} className="p-3 bg-slate-50 text-slate-400 hover:bg-amber-500 hover:text-white rounded-xl transition-all">
-                                                        <ArrowUpRight size={16} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {myBookings.length === 0 && (
-                                        <div className="text-center py-20 bg-white border border-dashed border-slate-200 rounded-[3rem]">
-                                            <p className="text-slate-400 font-serif italic text-xl">Hành trình mới đang chờ đợi bạn...</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'settings' && (
-                            <div className="space-y-12">
-                                <div className="border-b border-slate-100 pb-10">
-                                    <h3 className="text-4xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>Thiết lập</h3>
-                                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-2">Quản lý nhận diện cá nhân của quý khách</p>
-                                </div>
-
-                                <div className="bg-white p-12 rounded-[4rem] border border-slate-100 shadow-premium grid md:grid-cols-2 gap-16 relative overflow-hidden">
-                                    <div className="space-y-10 relative z-10">
-                                        {[
-                                            { label: 'Định danh', value: user?.fullName },
-                                            { label: 'Liên lạc', value: user?.phone || 'Chưa cung cấp' },
-                                            { label: 'Email', value: user?.email },
-                                            { label: 'Thường trú', value: user?.address || 'Chưa cung cấp' }
-                                        ].map((item, i) => (
-                                            <div key={i} className="space-y-1">
-                                                <p className="text-sm uppercase tracking-widest font-black text-slate-400">{item.label}</p>
-                                                <p className="text-base font-bold text-slate-800">{item.value}</p>
-                                            </div>
-                                        ))}
-                                        <button 
-                                            onClick={handleEditProfile}
-                                            className="w-full py-5 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-amber-500 transition-luxury shadow-xl shadow-slate-900/10"
-                                        >
-                                            Chỉnh sửa hồ sơ
-                                        </button>
-                                    </div>
-                                    
-                                    <div className="space-y-10 relative z-10 border-l border-slate-50 pl-16 hidden md:block">
-                                        <div className="space-y-4">
-                                            <h5 className="text-sm font-black uppercase tracking-widest flex items-center gap-3"><Shield size={16} className="text-rose-500" /> Bảo mật</h5>
-                                            <button className="w-full py-4 bg-slate-50 text-slate-600 rounded-xl text-sm font-black uppercase tracking-widest border border-slate-100 hover:bg-white transition-all">Đổi mật khẩu</button>
-                                        </div>
-                                        <div className="space-y-4">
-                                            <h5 className="text-sm font-black uppercase tracking-widest flex items-center gap-3"><Bell size={16} className="text-blue-500" /> Thông báo</h5>
-                                            <button className="w-full py-4 bg-slate-50 text-slate-600 rounded-xl text-sm font-black uppercase tracking-widest border border-slate-100 hover:bg-white transition-all">Quản lý kênh</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'membership' && (
-                            <div className="space-y-12">
-                                <div className="border-b border-slate-100 pb-10">
-                                    <h3 className="text-4xl font-serif italic text-amber-500" style={{ fontFamily: "'Playfair Display', serif" }}>Thẻ Tài khoản Elite</h3>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-12 items-center">
-                                    {/* FROSTED GOLD CARD */}
-                                    <div className="relative group perspective-1000">
-                                        <div className="w-full h-80 rounded-[3rem] bg-gradient-to-br from-amber-500 via-[#D4C3A3] to-amber-500 p-0.5 shadow-[0_30px_70px_rgba(181,154,109,0.3)]">
-                                            <div className="w-full h-full bg-white/10 backdrop-blur-xl rounded-[2.9rem] p-10 flex flex-col justify-between overflow-hidden relative border border-white/20">
-                                                <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 blur-[60px] -mr-32 -mt-32"></div>
-                                                <div className="flex justify-between items-start relative z-10 text-white">
-                                                    <span className="text-2xl font-serif italic">Uy Nam</span>
-                                                    <Sparkles size={24} className="animate-pulse" />
-                                                </div>
-                                                <div className="relative z-10 text-white">
-                                                    <p className="text-xs uppercase font-black tracking-[0.15em] opacity-60 mb-2">Member Identity</p>
-                                                    <p className="text-2xl font-serif leading-none tracking-widest">{user?.fullName}</p>
-                                                    <div className="flex justify-between items-end mt-12">
-                                                        <p className="text-sm font-black uppercase tracking-widest opacity-80">Platinum Elite</p>
-                                                        <div className="text-right">
-                                                            <p className="text-[8px] uppercase font-black opacity-50">Points Value</p>
-                                                            <p className="text-lg font-serif">12,450 XP</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-10 bg-white p-10 rounded-[4rem] border border-slate-100">
-                                        <div className="space-y-4">
-                                            <h4 className="text-2xl font-serif italic text-slate-800" style={{ fontFamily: "'Playfair Display', serif" }}>Đặc quyền hạng Elite</h4>
-                                            <p className="text-slate-400 text-xs leading-relaxed italic">Nâng tầm trải nghiệm lưu trú của bạn với những đặc quyền dành cho khách hàng thân thiết nhất.</p>
-                                        </div>
-                                        <div className="space-y-6">
-                                            {[
-                                                { icon: Sparkles, title: "Ưu tiên nâng hạng phòng" },
-                                                { icon: Clock, title: "Linh hoạt trả phòng trễ" },
-                                                { icon: Award, title: "Tích lũy 50% điểm thưởng" }
-                                            ].map((perk, i) => (
-                                                <div key={i} className="flex items-center gap-5">
-                                                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500">
-                                                        <perk.icon size={16} />
-                                                    </div>
-                                                    <span className="text-sm font-black uppercase tracking-widest text-slate-600">{perk.title}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+            {/* PANORAMIC HERO HEADER */}
+            <div className="relative h-[45vh] w-full overflow-hidden bg-white">
+                {/* Background Image */}
+                <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105" 
+                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=2500')" }}
+                ></div>
+                {/* Soft Gradient Overlay for text readability at the bottom */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-transparent to-[#FDFCFB]"></div>
+                
+                {/* Top Right Quick Actions (Log out / Edit) on Header */}
+                <div className="absolute top-8 right-8 flex gap-4 z-20">
+                    <button onClick={handleEditProfile} className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-md border border-white/80 flex items-center justify-center text-slate-700 hover:bg-white hover:text-slate-900 transition-all shadow-sm">
+                        <Edit2 size={16} />
+                    </button>
+                    <button onClick={handleLogout} className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-md border border-white/80 flex items-center justify-center text-slate-700 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm">
+                        <LogOut size={16} className="-ml-0.5" />
+                    </button>
                 </div>
             </div>
 
-            {/* EXIT BUTTON */}
-            <div className="max-w-7xl mx-auto px-6 mt-16 text-center">
-                <button 
-                    onClick={handleLogout}
-                    className="group inline-flex items-center gap-3 text-slate-300 hover:text-rose-500 transition-all text-xs font-black uppercase tracking-[0.15em]"
-                >
-                    <LogOut size={16} className="group-hover:-translate-x-2 transition-transform" /> Rời khỏi khu vực đặc quyền
-                </button>
+            {/* PROFILE INFO - CENTERED OVERLAPPING THE HERO */}
+            <div className="max-w-5xl mx-auto px-6 relative z-20 -mt-24 text-center flex flex-col items-center">
+                <div className="relative group">
+                    <div className="w-36 h-36 rounded-full bg-white p-2 shadow-xl overflow-hidden relative">
+                        <div className="w-full h-full rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-300">
+                            <User size={50} strokeWidth={1} />
+                        </div>
+                    </div>
+                    <button className="absolute bottom-1 right-1 w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-amber-600 transition-colors border-2 border-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100">
+                        <Camera size={16} />
+                    </button>
+                </div>
+                
+                <h1 className="text-4xl md:text-5xl font-serif italic text-slate-900 mt-6 mb-2 drop-shadow-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {user?.fullName}
+                </h1>
+                
+                <div className="flex items-center justify-center gap-4 mt-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest font-sans">Member Since 2024</span>
+                    <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    <span className="flex items-center gap-1.5 text-amber-600 font-bold uppercase tracking-widest text-[10px]">
+                        <Sparkles size={12} /> Platinum Elite
+                    </span>
+                </div>
+            </div>
+
+            {/* HORIZONTAL NAVIGATION BAR */}
+            <div className="max-w-3xl mx-auto px-6 mt-16 border-b border-slate-200 relative z-30">
+                <div className="flex justify-between md:justify-center md:gap-16 overflow-x-auto no-scrollbar">
+                    {[
+                        { id: 'dashboard', label: 'Tổng quan', icon: LayoutDashboard },
+                        { id: 'bookings', label: 'Chuyến đi', icon: History },
+                        { id: 'settings', label: 'Cài đặt', icon: Settings },
+                        { id: 'membership', label: 'Đặc quyền', icon: Award },
+                    ].map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = activeTab === tab.id;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex items-center gap-2.5 pb-5 border-b-2 transition-all duration-300 whitespace-nowrap px-2 ${
+                                    isActive 
+                                    ? 'border-slate-900 text-slate-900' 
+                                    : 'border-transparent text-slate-400 hover:text-slate-700'
+                                }`}
+                            >
+                                <Icon size={16} strokeWidth={isActive ? 2 : 1.5} />
+                                <span className={`text-[11px] font-bold uppercase tracking-widest font-sans ${isActive ? 'opacity-100' : 'opacity-80'}`}>
+                                    {tab.label}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* MAIN CONTENT AREA - WIDE LAYOUT */}
+            <div className="max-w-5xl mx-auto px-6 mt-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                
+                {/* ----------------- DASHBOARD TAB ----------------- */}
+                {activeTab === 'dashboard' && (
+                    <div className="space-y-12">
+                        {/* WIDE STATS GRID */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {[
+                                { label: 'Yêu dấu', value: myBookings.length, icon: Heart },
+                                { label: 'Dự định', value: myBookings.filter(b => b.status === 'confirmed').length, icon: Calendar },
+                                { label: 'Điểm tích lũy', value: '12,450', icon: Award }
+                            ].map((stat, i) => (
+                                <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all group flex items-center gap-6">
+                                    <div className={`w-12 h-12 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center shrink-0 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500`}>
+                                        <stat.icon size={20} strokeWidth={1} />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1.5">{stat.label}</p>
+                                        <p className="text-3xl font-serif italic text-slate-900 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* WIDE LATEST ACTIVITY CARD */}
+                        <div className="bg-white rounded-[2.5rem] p-12 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden">
+                            <div className="flex justify-between items-center mb-10 pb-8 border-b border-slate-50">
+                                <h3 className="text-3xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Kỳ nghỉ mới nhất</h3>
+                                <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
+                                    Xem lịch sử <ArrowUpRight size={14} />
+                                </button>
+                            </div>
+
+                            {myBookings.length > 0 ? (
+                                <div className="flex flex-col lg:flex-row gap-12 items-center">
+                                    <div className="w-full lg:w-[400px] h-[250px] rounded-[2rem] overflow-hidden shadow-lg relative group shrink-0">
+                                        <img
+                                            src={`/Hinh anh/Hinh${(myBookings[0].roomId % 20) + 1}.png`}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                                            alt="Recent"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                        <div className="absolute bottom-6 left-6 text-white">
+                                            <p className="text-2xl font-serif italic drop-shadow-md">Uy Nam Retreat</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 space-y-6 w-full">
+                                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                                            <div>
+                                                <h4 className="text-2xl font-bold text-slate-900 mb-2 font-sans">Luxury Suite #{myBookings[0].room?.roomNumber}</h4>
+                                                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold font-sans flex items-center gap-2">
+                                                    <MapPin size={12} className="text-amber-500" /> Đà Nẵng, Việt Nam
+                                                </p>
+                                            </div>
+                                            {renderStatusBadge(myBookings[0].status)}
+                                        </div>
+                                        <p className="text-sm text-slate-500 leading-relaxed font-medium font-sans max-w-lg">
+                                            Một trải nghiệm nghỉ dưỡng hoàn hảo được thiết kế riêng. Không gian riêng tư tuyệt đối hòa quyện cùng thiên nhiên.
+                                        </p>
+                                        <div className="flex flex-wrap gap-8 pt-6 border-t border-slate-50">
+                                            <div>
+                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Nhận phòng</p>
+                                                <div className="flex items-center gap-2 text-sm font-bold text-slate-900"><Calendar size={16} className="text-amber-500" /> {new Date(myBookings[0].checkInDate).toLocaleDateString('vi-VN')}</div>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Tổng chi phí</p>
+                                                <div className="flex items-center gap-2 text-sm font-bold text-slate-900"><CreditCard size={16} className="text-amber-500" /> {Number(myBookings[0].totalPrice).toLocaleString()} đ</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center py-20 bg-slate-50/50 rounded-[2rem] border border-dashed border-slate-200">
+                                    <Package size={48} className="mx-auto text-slate-300 mb-4" strokeWidth={1} />
+                                    <p className="text-slate-500 font-serif italic text-xl">Chưa có hành trình nào được ghi lại.</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ----------------- BOOKINGS TAB ----------------- */}
+                {activeTab === 'bookings' && (
+                    <div className="space-y-8 max-w-4xl mx-auto">
+                        <div className="flex justify-between items-end border-b border-slate-200 pb-8 mb-8">
+                            <div>
+                                <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Lịch sử lưu trú</h3>
+                                <p className="text-xs text-slate-500 mt-3 font-medium">Khám phá lại những khoảnh khắc tuyệt vời của bạn tại Uy Nam.</p>
+                            </div>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-4 py-2 rounded-full font-sans shadow-sm">{myBookings.length} Chuyến đi</span>
+                        </div>
+
+                        <div className="grid gap-6">
+                            {myBookings.map((booking) => (
+                                <div key={booking.id} className="group bg-white border border-slate-100 p-6 rounded-[2rem] hover:shadow-lg transition-all duration-500 flex flex-col md:flex-row gap-8 items-center cursor-pointer" onClick={() => navigate(`/room/${booking.roomId}`)}>
+                                    <div className="w-full md:w-48 h-32 rounded-[1.5rem] overflow-hidden relative shrink-0">
+                                        <img src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Room" />
+                                        <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors"></div>
+                                    </div>
+                                    <div className="flex-1 flex flex-col md:flex-row justify-between items-center gap-6 w-full">
+                                        <div className="text-center md:text-left space-y-2">
+                                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> ĐÀ NẴNG</p>
+                                            <h4 className="text-xl font-bold text-slate-900 font-sans group-hover:text-amber-600 transition-colors">Phòng {booking.room?.roomNumber}</h4>
+                                            <p className="text-xs text-slate-500 font-medium font-sans">Ngày nhận: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
+                                        </div>
+                                        <div className="flex flex-col items-center md:items-end gap-3">
+                                            <span className="text-base font-bold text-slate-900">{Number(booking.totalPrice).toLocaleString()}đ</span>
+                                            {renderStatusBadge(booking.status)}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {myBookings.length === 0 && (
+                                <div className="text-center py-24 bg-white border border-dashed border-slate-200 rounded-[3rem]">
+                                    <Package size={48} className="mx-auto text-slate-300 mb-6" strokeWidth={1} />
+                                    <p className="text-slate-500 font-serif italic text-2xl">Hành trình mới đang chờ đợi bạn...</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ----------------- SETTINGS TAB ----------------- */}
+                {activeTab === 'settings' && (
+                    <div className="max-w-4xl mx-auto bg-white rounded-[3rem] border border-slate-100 p-12 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
+                        <div className="border-b border-slate-100 pb-10 mb-10 text-center">
+                            <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thiết lập Tài khoản</h3>
+                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-4 font-sans">Quản lý định danh và bảo mật</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-16">
+                            <div className="space-y-10">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">Thông tin Cơ bản</h4>
+                                <div className="space-y-8">
+                                    {[
+                                        { label: 'Họ và tên', value: user?.fullName },
+                                        { label: 'Số liên lạc', value: user?.phone || 'Chưa cung cấp' },
+                                        { label: 'Địa chỉ Email', value: user?.email },
+                                        { label: 'Thường trú', value: user?.address || 'Chưa cung cấp' }
+                                    ].map((item, i) => (
+                                        <div key={i}>
+                                            <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 font-sans mb-1.5">{item.label}</p>
+                                            <p className="text-sm font-bold text-slate-900 font-sans">{item.value}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button 
+                                    onClick={handleEditProfile}
+                                    className="w-full py-4 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-md font-sans"
+                                >
+                                    Sửa đổi thông tin
+                                </button>
+                            </div>
+                            
+                            <div className="space-y-10">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">Tùy chọn Mở rộng</h4>
+                                <div className="space-y-6">
+                                    <div onClick={handleChangePassword} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm"><Shield size={16} /></div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">Mật khẩu & Bảo mật</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Cập nhật mật khẩu định kỳ</p>
+                                            </div>
+                                        </div>
+                                        <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
+                                    </div>
+                                    
+                                    <div onClick={handleNotificationSettings} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-500 shadow-sm"><Bell size={16} /></div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">Tùy chọn Thông báo</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Cài đặt Email & SMS</p>
+                                            </div>
+                                        </div>
+                                        <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
+                                    </div>
+
+                                    <div onClick={handleLanguageSettings} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-emerald-500 shadow-sm">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-900 font-sans">Ngôn ngữ & Tiền tệ</p>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Tiếng Việt • VND</p>
+                                            </div>
+                                        </div>
+                                        <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-900 transition-colors" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ----------------- MEMBERSHIP TAB ----------------- */}
+                {activeTab === 'membership' && (
+                    <div className="max-w-4xl mx-auto space-y-16">
+                        
+                        {/* THE ELITE CARD - CENTERED MASSIVE */}
+                        <div className="relative group perspective-1000 max-w-2xl mx-auto">
+                            <div className="w-full h-80 md:h-[22rem] rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-[#1e293b] p-0.5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] transform transition-transform duration-700 hover:rotate-x-2">
+                                <div className="w-full h-full rounded-[2.4rem] p-10 flex flex-col justify-between overflow-hidden relative">
+                                    {/* Gold Accents */}
+                                    <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/20 blur-[60px] rounded-full pointer-events-none"></div>
+                                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-200/10 blur-[60px] rounded-full pointer-events-none"></div>
+                                    
+                                    <div className="flex justify-between items-start relative z-10 text-amber-500">
+                                        <span className="text-3xl font-serif italic">Uy Nam</span>
+                                        <Sparkles size={24} className="animate-pulse" />
+                                    </div>
+                                    <div className="relative z-10 text-white">
+                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-2 font-sans">Member Identity</p>
+                                        <p className="text-3xl font-serif leading-none tracking-widest drop-shadow-md text-amber-50">{user?.fullName}</p>
+                                        
+                                        <div className="w-full h-[1px] bg-gradient-to-r from-amber-500/50 to-transparent my-8"></div>
+                                        
+                                        <div className="flex justify-between items-end">
+                                            <div>
+                                                <p className="text-[11px] font-bold uppercase tracking-widest text-amber-500 font-sans mb-1">Platinum Elite</p>
+                                                <p className="text-[9px] text-slate-400 font-medium">Valid Thru 12/2030</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-[9px] uppercase font-bold opacity-60 font-sans mb-1 text-slate-400">Total Points</p>
+                                                <p className="text-xl font-serif text-white">12,450</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* PERKS LIST */}
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {[
+                                { icon: Sparkles, title: "Ưu tiên nâng hạng", desc: "Tự động lên hạng phòng cao hơn khi có sẵn trống." },
+                                { icon: Clock, title: "Linh hoạt thời gian", desc: "Nhận phòng sớm và Trả phòng trễ không tính phí." },
+                                { icon: Award, title: "Tích lũy X2 Điểm", desc: "Hệ số nhân đôi cho mọi giao dịch dịch vụ tại khách sạn." }
+                            ].map((perk, i) => (
+                                <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 text-center hover:shadow-lg transition-all">
+                                    <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-amber-600 mx-auto mb-6 shadow-sm">
+                                        <perk.icon size={20} />
+                                    </div>
+                                    <h4 className="text-sm font-bold text-slate-900 mb-3 font-sans">{perk.title}</h4>
+                                    <p className="text-[11px] text-slate-500 leading-relaxed font-medium">{perk.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 export default Profile;
-

@@ -4,6 +4,7 @@ import { ArrowRight, Star, ChevronRight, MapPin, ShieldCheck, Zap, Mail, Loader2
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import BookingBar from '../../components/BookingBar';
 
 
 const Home = () => {
@@ -41,13 +42,13 @@ const Home = () => {
     if (!email) return;
 
     Swal.fire({
-      title: 'Đăng ký thành công',
-      text: 'Chào mừng Thượng khách. Ưu đãi độc quyền sẽ sớm được gửi đến email của bạn.',
       icon: 'success',
+      title: 'Đăng ký thành công',
+      text: 'Chào mừng quý khách. Ưu đãi độc quyền sẽ sớm được gửi đến email của bạn.',
+      confirmButtonColor: '#d97706',
       background: '#fff',
       color: '#1a1a1a',
       confirmButtonText: 'Đóng',
-      confirmButtonColor: '#d97706',
     });
     setEmail('');
   };
@@ -99,8 +100,10 @@ const Home = () => {
         </div>
       </section>
 
+      <BookingBar />
+
       {/* --- 2. THE STORY --- */}
-      <section id="explore" className="py-24 px-6 md:py-32 bg-white my-24 md:my-32">
+      <section id="explore" className="py-24 px-6 md:py-32 bg-white my-12 md:my-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="relative order-2 md:order-1">
@@ -155,7 +158,7 @@ const Home = () => {
            {[
              { title: 'Infinity Pool', icon: '🏊‍♂️', desc: 'Hồ bơi vô cực hướng biển' },
              { title: 'Fine Dining', icon: '🍽️', desc: 'Ẩm thực chuẩn sao Michelin' },
-             { title: 'Royal Spa', icon: '🕯️', desc: 'Liệu trình thư giãn đế vương' },
+             { title: 'Royal Spa', icon: '🕯️', desc: 'Liệu trình thư giãn cao cấp' },
              { title: 'Private Beach', icon: '🏖️', desc: 'Bãi biển biệt lập tuyệt mật' },
            ].map((item, i) => (
              <div key={i} className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all group">
@@ -286,7 +289,7 @@ const Home = () => {
         <section className="py-24 md:py-32 bg-paper">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 md:mb-24 space-y-4">
-              <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em] block">Cảm nhận từ Thượng khách</span>
+              <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em] block">Cảm nhận từ khách hàng</span>
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Ký ức <span className="not-italic text-amber-600">tuyệt vời</span></h3>
             </div>
 
