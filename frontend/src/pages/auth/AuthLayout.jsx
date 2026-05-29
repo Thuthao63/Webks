@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Bed } from 'lucide-react';
@@ -67,7 +68,7 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-amber-500/30 mb-4 bg-white/5 backdrop-blur-sm">
               <Bed className="text-amber-500 w-7 h-7" />
             </div>
-            <p className="text-amber-500/60 text-[10px] uppercase tracking-widest font-bold">Uy Nam Luxury Hotel</p>
+            <p className="text-amber-500/60 text-xs uppercase tracking-widest font-bold">Uy Nam Luxury Hotel</p>
           </div>
 
           <div className="mb-10 text-center lg:text-left">
@@ -96,7 +97,7 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
 
           {/* Footer branding or contact */}
           <div className="mt-12 pt-8 border-t border-white/5 flex flex-col items-center lg:items-start">
-            <p className="text-[10px] uppercase tracking-widest text-gray-600 font-bold">
+            <p className="text-xs uppercase tracking-widest text-gray-600 font-bold">
               &copy; 2026 Uy Nam Luxury Hotel. All rights reserved.
             </p>
           </div>
@@ -107,3 +108,5 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
 };
 
 export default AuthLayout;
+
+

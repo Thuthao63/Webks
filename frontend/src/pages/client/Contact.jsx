@@ -49,12 +49,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-[#F9F8F6] text-slate-900 selection:bg-slate-200 font-sans min-h-screen">
+    <div className="bg-cream text-slate-900 selection:bg-slate-200 font-sans min-h-screen">
       
       {/* 1. HERO BANNER */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
          <div className="absolute inset-0">
-           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-[#F9F8F6] z-10"></div>
+           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-cream z-10"></div>
            <img 
              src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80" 
              alt="Contact Us" 
@@ -62,11 +62,11 @@ const Contact = () => {
            />
          </div>
          <div className="relative z-20 text-center px-6 mt-20 animate-in fade-in zoom-in duration-1000 max-w-4xl">
-            <span className="text-[#B59A6D] text-[11px] font-black uppercase tracking-[0.5em] mb-8 block">Dịch vụ Butler 24/7</span>
+            <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] mb-8 block">Dịch vụ Butler 24/7</span>
             <h1 className="text-6xl md:text-[7rem] mb-6 italic text-slate-100 drop-shadow-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Liên kết <span className="text-[#B59A6D] font-bold not-italic">Tận tâm</span>
+              Liên kết <span className="text-amber-500 font-bold not-italic">Tận tâm</span>
             </h1>
-            <p className="text-slate-200 text-[10px] md:text-xs uppercase tracking-[0.5em] max-w-xl mx-auto leading-loose bg-black/10 backdrop-blur-md py-4 px-10 rounded-full border border-white/5">
+            <p className="text-slate-200 text-xs md:text-xs uppercase tracking-[0.15em] max-w-xl mx-auto leading-loose bg-black/10 backdrop-blur-md py-4 px-10 rounded-full border border-white/5">
               Chúng tôi luôn sẵn sàng lắng nghe mọi yêu cầu thượng hạng của quý khách.
             </p>
          </div>
@@ -92,100 +92,91 @@ const Contact = () => {
                    { icon: Clock, title: "Trạng thái", desc: "Hoạt động liên tục cả tuần" }
                  ].map((item, i) => (
                    <div key={i} className="flex items-center gap-8 group">
-                      <div className="w-16 h-16 rounded-2xl bg-white shadow-premium flex items-center justify-center text-[#B59A6D] group-hover:bg-slate-900 group-hover:text-[#B59A6D] transition-luxury shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-white shadow-premium flex items-center justify-center text-amber-500 group-hover:bg-slate-900 group-hover:text-amber-500 transition-luxury shrink-0">
                          <item.icon size={28} strokeWidth={1} />
                       </div>
                       <div>
-                         <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-1 font-sans">{item.title}</h4>
-                         <p className="text-slate-900 font-bold text-sm tracking-wide font-sans">{item.desc}</p>
-                      </div>
-                   </div>
-                 ))}
-             </div>
-          </div>
-
-          {/* CONTACT FORM */}
-          <div className="bg-white p-12 md:p-20 rounded-[4rem] border border-slate-100 shadow-premium relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-1000">
-             <div className="absolute top-0 right-0 w-96 h-96 bg-[#B59A6D]/5 rounded-full blur-[100px] -mr-40 -mt-40"></div>
+                         <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1 font-sans">{item.title}</h4>
+                         <p className="text-slate-900          {/* CONTACT FORM */}
+          <div className="bg-white p-12 md:p-16 lg:p-24 rounded-[3rem] shadow-soft relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-1000">
              
              {success ? (
                <div className="h-full flex flex-col items-center justify-center text-center py-20 animate-in fade-in zoom-in duration-700">
-                  <div className="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center text-emerald-500 mb-10 shadow-xl">
-                     <CheckCircle size={48} />
+                  <div className="w-24 h-24 rounded-full border border-amber-500 flex items-center justify-center text-amber-500 mb-10 shadow-lg shadow-amber-500/10">
+                     <CheckCircle size={40} strokeWidth={1} />
                   </div>
-                  <h3 className="text-4xl font-serif italic mb-6 text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thư Đã Được Gửi!</h3>
-                  <p className="text-slate-500 font-medium italic mb-12 font-sans">Xin cảm ơn sự tin tưởng của quý khách. Bộ phận lễ tân sẽ sớm liên lạc lại.</p>
+                  <h3 className="text-4xl font-serif italic mb-4 text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Thư đã được gửi</h3>
+                  <p className="text-slate-500 font-medium italic mb-12 font-sans">Quản gia của chúng tôi sẽ hồi đáp qua email trong vòng 24 giờ.</p>
                   <button 
                     onClick={() => setSuccess(false)} 
-                    className="bg-slate-900 text-white px-12 py-5 text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-[#B59A6D] transition-luxury shadow-lg font-sans"
+                    className="border border-slate-900 text-slate-900 px-10 py-4 text-xs font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-luxury font-sans"
                   >
                     Gửi thêm yêu cầu
                   </button>
                </div>
              ) : (
-               <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                  <div className="flex items-center gap-4 mb-12">
-                     <MessageSquare className="text-[#B59A6D]" size={32} strokeWidth={1} />
-                     <h3 className="text-3xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Gửi tin nhắn</h3>
+               <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
+                  <div className="mb-14">
+                     <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>Để lại lời nhắn</h3>
                   </div>
                   
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-4 font-sans">Thanh danh</label>
+                  <div className="grid md:grid-cols-2 gap-10 md:gap-8">
+                    <div className="relative group">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Thanh danh</label>
                       <input 
                          required type="text"
                          value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
-                         className="w-full bg-[#F9F8F6] border border-slate-100 rounded-2xl px-8 py-5 focus:outline-none focus:border-[#B59A6D]/50 focus:bg-white transition-luxury text-[13px] font-bold text-slate-900 placeholder-slate-300 font-sans"
+                         className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
                          placeholder="Họ và tên của quý khách"
                       />
                     </div>
-                    <div className="space-y-3">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-4 font-sans">Số điện thoại</label>
+                    <div className="relative group">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Số điện thoại</label>
                       <input 
                          required type="tel"
                          value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                         className="w-full bg-[#F9F8F6] border border-slate-100 rounded-2xl px-8 py-5 focus:outline-none focus:border-[#B59A6D]/50 focus:bg-white transition-luxury text-[13px] font-bold text-slate-900 placeholder-slate-300 font-sans"
-                         placeholder="09..."
+                         className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
+                         placeholder="Nhập số điện thoại"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                     <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-4 font-sans">Địa chỉ Email</label>
+                  <div className="relative group">
+                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Địa chỉ Email</label>
                      <input 
                         required type="email"
                         value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full bg-[#F9F8F6] border border-slate-100 rounded-2xl px-8 py-5 focus:outline-none focus:border-[#B59A6D]/50 focus:bg-white transition-luxury text-[13px] font-bold text-slate-900 placeholder-slate-300 font-sans"
+                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
                         placeholder="email@example.com"
                      />
                   </div>
 
-                  <div className="space-y-3">
-                     <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-4 font-sans">Chủ đề quan tâm</label>
+                  <div className="relative group">
+                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Chủ đề quan tâm</label>
                      <input 
                         required type="text"
                         value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                        className="w-full bg-[#F9F8F6] border border-slate-100 rounded-2xl px-8 py-5 focus:outline-none focus:border-[#B59A6D]/50 focus:bg-white transition-luxury text-[13px] font-bold text-slate-900 placeholder-slate-300 font-sans"
-                        placeholder="Quý khách cần hỗ trợ về..."
+                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 font-sans group-hover:border-slate-300"
+                        placeholder="Yêu cầu về dịch vụ..."
                      />
                   </div>
 
-                  <div className="space-y-3">
-                     <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-4 font-sans">Chi tiết yêu cầu</label>
+                  <div className="relative group">
+                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 font-sans block mb-2">Chi tiết yêu cầu</label>
                      <textarea 
-                        required rows={5}
+                        required rows={3}
                         value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        className="w-full bg-[#F9F8F6] border border-slate-100 rounded-2xl px-8 py-5 focus:outline-none focus:border-[#B59A6D]/50 focus:bg-white transition-luxury text-[13px] font-bold text-slate-900 placeholder-slate-300 resize-none font-sans"
-                        placeholder="Nội dung lời nhắn..."
+                        className="w-full bg-transparent border-b border-slate-200 py-3 focus:outline-none focus:border-amber-500 transition-luxury text-sm font-bold text-slate-900 placeholder-slate-300 resize-none font-sans group-hover:border-slate-300"
+                        placeholder="Chi tiết lời nhắn của quý khách..."
                      />
                   </div>
 
                   <button 
                     disabled={loading}
                     type="submit"
-                    className="w-full py-6 mt-6 bg-slate-900 hover:bg-[#B59A6D] text-white font-black uppercase text-[11px] tracking-[0.5em] rounded-2xl shadow-xl shadow-slate-900/10 transition-luxury flex items-center justify-center gap-6 disabled:opacity-50 font-sans"
+                    className="w-full py-5 mt-10 border border-slate-900 bg-transparent text-slate-900 hover:bg-slate-900 hover:text-white font-black uppercase text-xs tracking-widest transition-luxury flex items-center justify-center gap-4 disabled:opacity-50 font-sans"
                   >
-                     {loading ? 'Đang truyền tin...' : <><Send size={18} className="group-hover:rotate-12 transition-transform" /> Gửi Tư vấn</>}
+                     {loading ? 'Đang truyền tin...' : <><Send size={16} className="group-hover:translate-x-2 transition-transform" /> Gửi tư vấn</>}
                   </button>
                </form>
              )}
@@ -198,4 +189,6 @@ const Contact = () => {
 };
 
 export default Contact;
+
+
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
@@ -67,7 +68,7 @@ const Login = () => {
           transition={{ delay: 0.4 }}
           className="space-y-1.5"
         >
-          <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
           <div className="relative group">
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
             <input
@@ -90,8 +91,8 @@ const Login = () => {
           className="space-y-1.5"
         >
           <div className="flex justify-between items-center px-1">
-            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold">Mật khẩu</label>
-            <Link to="/forgot-password" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
+            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold">Mật khẩu</label>
+            <Link to="/forgot-password" className="text-xs uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
               Quên mật khẩu?
             </Link>
           </div>
@@ -137,7 +138,7 @@ const Login = () => {
         transition={{ delay: 0.8 }}
         className="text-center mt-10"
       >
-        <p className="text-gray-500 text-[11px] uppercase tracking-wider">
+        <p className="text-gray-500 text-sm uppercase tracking-wider">
           Nếu chưa có tài khoản?
           <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase text-[12px]">Đăng ký</Link>
         </p>
@@ -147,3 +148,4 @@ const Login = () => {
 };
 
 export default Login;
+

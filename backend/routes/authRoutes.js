@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { verifyToken } = require('../middleware/authMiddleware');
 
 // Import các Controller
 const authController = require('../controllers/authController');
@@ -10,7 +11,7 @@ const authController = require('../controllers/authController');
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/verify', authController.verifyOTP);
-router.put('/:id', authController.updateUser);
+router.put('/:id', verifyToken, authController.updateUser);
 
 // ==========================================
 // 2. ROUTES CHO LIÊN HỆ (CONTACT)

@@ -6,7 +6,7 @@ const Privacy = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] pt-44 pb-24 px-6">
+    <div className="min-h-screen bg-paper pt-44 pb-24 px-6">
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-5xl md:text-7xl font-serif italic text-slate-900 mb-8"
@@ -49,3 +49,4 @@ const Privacy = () => {
 };
 
 export default Privacy;
+

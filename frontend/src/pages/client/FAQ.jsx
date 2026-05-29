@@ -45,11 +45,11 @@ const FAQ = () => {
                         </div>
                     </div>
                     <div className="space-y-4">
-                        <span className="text-amber-500 text-[10px] font-black uppercase tracking-[0.5em] block">Hỗ trợ khách hàng</span>
+                        <span className="text-amber-500 text-xs font-black uppercase tracking-[0.15em] block">Hỗ trợ khách hàng</span>
                         <h1 className="text-5xl md:text-7xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
                             Câu hỏi <span className="text-amber-500 not-italic">thường gặp</span>
                         </h1>
-                        <p className="text-gray-500 text-xs uppercase tracking-[0.3em] max-w-lg mx-auto leading-relaxed">
+                        <p className="text-gray-500 text-xs uppercase tracking-widest max-w-lg mx-auto leading-relaxed">
                             Mọi thông tin bạn cần để chuẩn bị cho kỳ nghỉ thượng lưu hoàn hảo tại Uy Nam Luxury.
                         </p>
                     </div>
@@ -99,28 +99,28 @@ const FAQ = () => {
                     
                     <div className="space-y-4 relative z-10">
                         <h3 className="text-3xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>Vẫn còn thắc mắc?</h3>
-                        <p className="text-gray-500 text-[10px] uppercase tracking-widest font-bold">Đội ngũ đại sứ dịch vụ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+                        <p className="text-gray-500 text-xs uppercase tracking-widest font-bold">Đội ngũ đại sứ dịch vụ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-6 relative z-10">
                         <div className="p-6 bg-white/5 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all flex flex-col items-center gap-4">
                             <Phone className="text-amber-500" size={24} strokeWidth={1} />
                             <div className="space-y-1">
-                                <p className="text-[9px] text-gray-500 uppercase font-black tracking-widest">Điện thoại</p>
+                                <p className="text-sm text-gray-500 uppercase font-black tracking-widest">Điện thoại</p>
                                 <p className="text-sm font-bold">0123.456.789</p>
                             </div>
                         </div>
                         <div className="p-6 bg-white/5 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all flex flex-col items-center gap-4">
                             <Mail className="text-amber-500" size={24} strokeWidth={1} />
                             <div className="space-y-1">
-                                <p className="text-[9px] text-gray-500 uppercase font-black tracking-widest">Email</p>
+                                <p className="text-sm text-gray-500 uppercase font-black tracking-widest">Email</p>
                                 <p className="text-sm font-bold">contact@uynam.com</p>
                             </div>
                         </div>
                         <div className="p-6 bg-white/5 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all flex flex-col items-center gap-4">
                             <MessageSquare className="text-amber-500" size={24} strokeWidth={1} />
                             <div className="space-y-1">
-                                <p className="text-[9px] text-gray-500 uppercase font-black tracking-widest">Trực tuyến</p>
+                                <p className="text-sm text-gray-500 uppercase font-black tracking-widest">Trực tuyến</p>
                                 <p className="text-sm font-bold">Live Chat 24/7</p>
                             </div>
                         </div>
@@ -128,7 +128,7 @@ const FAQ = () => {
 
                     <button 
                         onClick={() => navigate('/contact')}
-                        className="relative z-10 px-12 py-5 bg-white text-black text-[11px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-amber-500 transition-all flex items-center gap-3 mx-auto"
+                        className="relative z-10 px-12 py-5 bg-white text-black text-sm font-black uppercase tracking-wider rounded-full hover:bg-amber-500 transition-all flex items-center gap-3 mx-auto"
                     >
                         Gửi yêu cầu hỗ trợ <ArrowRight size={16} />
                     </button>
@@ -140,3 +140,5 @@ const FAQ = () => {
 };
 
 export default FAQ;
+
+

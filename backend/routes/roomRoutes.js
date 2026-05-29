@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const roomController = require('../controllers/roomController');
+const { verifyToken, isAdmin } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 
@@ -21,14 +22,15 @@ const upload = multer({ storage: storage });
 
 // Lấy danh sách
 router.get('/', roomController.getAllRooms);
+router.get('/featured', roomController.getFeaturedRooms);
 router.get('/types', roomController.getAllRoomTypes);
 router.get('/:id', roomController.getRoomById);
 
 // Xóa phòng
-router.delete('/:id', roomController.deleteRoom);
+router.delete('/:id', verifyToken, isAdmin, roomController.deleteRoom);
 
 // THÊM/SỬA PHÒNG KÈM THEO UPLOAD ẢNH (Từ trang Admin)
-router.post('/', upload.single('image'), roomController.createFullRoomInfo);
-router.put('/all-info/:id', upload.single('image'), roomController.updateFullRoomInfo);
+router.post('/', verifyToken, isAdmin, upload.single('image'), roomController.createFullRoomInfo);
+router.put('/all-info/:id', verifyToken, isAdmin, upload.single('image'), roomController.updateFullRoomInfo);
 
 module.exports = router;

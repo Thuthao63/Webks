@@ -16,4 +16,12 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = { verifyToken };
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'Admin') {
+        next();
+    } else {
+        res.status(403).json({ message: 'Yêu cầu quyền Quản trị viên (Admin)!' });
+    }
+};
+
+module.exports = { verifyToken, isAdmin };

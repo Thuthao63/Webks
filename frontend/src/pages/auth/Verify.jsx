@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
@@ -141,7 +142,7 @@ const Verify = () => {
             </button>
 
             <div className="text-center space-y-4">
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold">
+                <p className="text-gray-500 text-xs uppercase tracking-wider font-bold">
                     Không nhận được mã? 
                     <button 
                         type="button" 
@@ -152,7 +153,7 @@ const Verify = () => {
                         {resending ? <RefreshCw className="animate-spin" size={12} /> : "Gửi lại ngay"}
                     </button>
                 </p>
-                <Link to="/register" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[10px] uppercase tracking-wider font-bold">
+                <Link to="/register" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-wider font-bold">
                     <ArrowLeft size={14} /> Thay đổi Email
                 </Link>
             </div>
@@ -163,3 +164,4 @@ const Verify = () => {
 };
 
 export default Verify;
+

@@ -29,7 +29,7 @@ const Booking = () => {
     if (!value && value !== 0) return '';
     try {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(Number(value));
-    } catch (e) {
+    } catch {
       return `${Number(value).toLocaleString()} đ`;
     }
   };
@@ -44,6 +44,7 @@ const Booking = () => {
         setRoom(roomRes.data);
         setActiveDiscounts(discountRes.data || []);
       } catch (err) {
+        console.error(err);
         Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Không tìm thấy thông tin phòng!' });
       } finally {
         setLoading(false);
@@ -72,7 +73,7 @@ const Booking = () => {
         setTotalPrice(0);
       }
     }
-  }, [startDate, endDate, room]);
+  }, [startDate, endDate, room, activeDiscounts]);
 
   const handleBooking = async () => {
     if (totalPrice <= 0) {
@@ -95,18 +96,19 @@ const Booking = () => {
         confirmButtonColor: '#d97706'
       }).then(() => navigate('/profile'));
     } catch (err) {
+      console.error(err);
       Swal.fire('Lỗi', 'Đặt phòng thất bại, Thảo kiểm tra lại nhé!', 'error');
     }
   };
 
   if (loading) return (
-    <div className="h-screen bg-[#FDFBF7] flex items-center justify-center">
+    <div className="h-screen bg-paper flex items-center justify-center">
       <Loader2 className="animate-spin text-amber-600" size={48} />
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-gray-900 pt-32 pb-20 px-6 font-sans">
+    <div className="min-h-screen bg-paper text-gray-900 pt-32 pb-20 px-6 font-sans">
       {/* CSS CUSTOM CHO DATEPICKER SANG TRỌNG - GIAO DIỆN SÁNG */}
       <style>{`
         .react-datepicker { background-color: #fff; border: 1px solid #eee; color: #1a1a1a; font-family: inherit; border-radius: 1rem; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
@@ -119,7 +121,7 @@ const Booking = () => {
       `}</style>
 
       <div className="max-w-6xl mx-auto">
-        <button onClick={() => navigate(-1)} className="group flex items-center gap-3 text-gray-400 hover:text-gray-900 transition-all mb-10 text-[10px] font-bold uppercase tracking-[0.3em]">
+        <button onClick={() => navigate(-1)} className="group flex items-center gap-3 text-gray-400 hover:text-gray-900 transition-all mb-10 text-xs font-bold uppercase tracking-widest">
           <ArrowLeft size={16} /> Quay lại
         </button>
 
@@ -159,7 +161,7 @@ const Booking = () => {
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-4 font-sans">Ngày nhận & trả phòng</label>
+                  <label className="text-xs uppercase tracking-widest text-gray-400 font-bold ml-4 font-sans">Ngày nhận & trả phòng</label>
                   <div className="relative grid grid-cols-2 gap-4">
                     <div className="relative group">
                       <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 z-10" size={16} />
@@ -195,16 +197,16 @@ const Booking = () => {
                 </div>
 
                 <div className="pt-6 border-t border-gray-50 space-y-3">
-                  <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">
+                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">
                     <span>Thời gian</span>
                     <span className="text-gray-900">{days} đêm</span>
                   </div>
-                  <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">
+                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">
                     <span>Đơn giá</span>
                     <span className="text-gray-900">{formatCurrency(room?.roomType?.price || 0)} / đêm</span>
                   </div>
                   {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
-                    <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-rose-500 font-bold font-sans">
+                    <div className="flex justify-between items-center text-xs uppercase tracking-widest text-rose-500 font-bold font-sans">
                       <span>Ưu đãi áp dụng</span>
                       <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
                     </div>
@@ -242,3 +244,4 @@ const Booking = () => {
 };
 
 export default Booking;
+

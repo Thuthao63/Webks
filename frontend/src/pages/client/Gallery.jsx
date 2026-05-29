@@ -24,12 +24,12 @@ const Gallery = () => {
     const filteredImages = filter === 'All' ? images : images.filter(img => img.category === filter);
 
     return (
-        <div className="bg-[#FDFBF7] min-h-screen pt-44 pb-32 px-6">
+        <div className="bg-paper min-h-screen pt-44 pb-32 px-6">
             <div className="max-w-7xl mx-auto">
                 
                 {/* Header */}
                 <div className="text-center mb-20 space-y-4">
-                    <span className="text-amber-600 text-[11px] font-black uppercase tracking-[0.5em] block">Visual Journey</span>
+                    <span className="text-amber-600 text-sm font-black uppercase tracking-[0.15em] block">Visual Journey</span>
                     <h1 className="text-5xl md:text-7xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Thư viện <span className="text-amber-600 not-italic font-bold">Tuyệt tác</span>
                     </h1>
@@ -41,7 +41,7 @@ const Gallery = () => {
                         <button
                             key={cat}
                             onClick={() => setFilter(cat)}
-                            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                            className={`px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
                                 filter === cat 
                                 ? 'bg-[#1E293B] text-white shadow-xl' 
                                 : 'bg-white text-gray-500 border border-gray-100 hover:border-amber-600 hover:text-amber-600'
@@ -66,7 +66,7 @@ const Gallery = () => {
                                 className="w-full h-auto object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
-                                <span className="text-amber-500 text-[9px] font-black uppercase tracking-widest mb-2">{img.category}</span>
+                                <span className="text-amber-500 text-sm font-black uppercase tracking-widest mb-2">{img.category}</span>
                                 <h3 className="text-xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>{img.title}</h3>
                                 <div className="mt-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
                                     <Maximize2 size={16} />
@@ -94,7 +94,7 @@ const Gallery = () => {
                             className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)]"
                         />
                         <div className="absolute -bottom-16 left-0 w-full text-center">
-                            <span className="text-amber-500 text-[11px] font-black uppercase tracking-widest block mb-2">{selectedImage.category}</span>
+                            <span className="text-amber-500 text-sm font-black uppercase tracking-widest block mb-2">{selectedImage.category}</span>
                             <h2 className="text-3xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>{selectedImage.title}</h2>
                         </div>
                     </div>
@@ -105,3 +105,5 @@ const Gallery = () => {
 };
 
 export default Gallery;
+
+

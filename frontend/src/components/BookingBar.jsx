@@ -50,7 +50,7 @@ const BookingBar = () => {
                 <div className="relative group px-4 py-2 hover:bg-black/5 rounded-2xl transition-all duration-300">
                     <div className="flex items-center gap-3 mb-1">
                         <Calendar size={14} className="text-amber-600" />
-                        <span className="text-[10px] uppercase tracking-widest font-black text-gray-500">Ngày nhận</span>
+                        <span className="text-xs uppercase tracking-widest font-black text-gray-500">Ngày nhận</span>
                     </div>
                     <DatePicker
                         selected={startDate}
@@ -69,7 +69,7 @@ const BookingBar = () => {
                 <div className="relative group px-4 py-2 hover:bg-black/5 rounded-2xl transition-all duration-300 border-l border-gray-100 hidden md:block">
                     <div className="flex items-center gap-3 mb-1">
                         <Calendar size={14} className="text-amber-600" />
-                        <span className="text-[10px] uppercase tracking-widest font-black text-gray-500">Ngày trả</span>
+                        <span className="text-xs uppercase tracking-widest font-black text-gray-500">Ngày trả</span>
                     </div>
                     <DatePicker
                         selected={endDate}
@@ -88,7 +88,7 @@ const BookingBar = () => {
                 <div className="relative group px-4 py-2 hover:bg-black/5 rounded-2xl transition-all duration-300 border-l border-gray-100 hidden md:block">
                     <div className="flex items-center gap-3 mb-1">
                         <Users size={14} className="text-amber-600" />
-                        <span className="text-[10px] uppercase tracking-widest font-black text-gray-500">Khách hàng</span>
+                        <span className="text-xs uppercase tracking-widest font-black text-gray-500">Khách hàng</span>
                     </div>
                     <select 
                         value={guests}
@@ -106,7 +106,7 @@ const BookingBar = () => {
                     onClick={handleSearch}
                     className="bg-amber-600 hover:bg-gray-900 text-white h-full py-4 md:py-0 rounded-2xl flex items-center justify-center gap-3 transition-all duration-500 shadow-xl shadow-amber-600/20 group/btn"
                 >
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Tìm phòng ngay</span>
+                    <span className="text-sm font-black uppercase tracking-wider">Tìm phòng ngay</span>
                     <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                 </button>
             </div>
@@ -115,3 +115,5 @@ const BookingBar = () => {
 };
 
 export default BookingBar;
+
+

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { 
@@ -8,6 +9,7 @@ import {
 import { Slider, ConfigProvider } from 'antd';
 
 const RoomList = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   
@@ -92,7 +94,7 @@ const RoomList = () => {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, fetchRooms, setSearchParams]);
+  }, [filters, fetchRooms, searchParams, setSearchParams]);
 
   const handlePriceChange = (value) => {
     setFilters(prev => ({ ...prev, minPrice: value[0], maxPrice: value[1] }));
@@ -110,8 +112,8 @@ const RoomList = () => {
 
   if (loading && rooms.length === 0) {
     return (
-      <div className="h-screen bg-[#F9F8F6] flex items-center justify-center">
-        <Loader2 className="animate-spin text-[#B59A6D]" size={40} />
+      <div className="h-screen bg-cream flex items-center justify-center">
+        <Loader2 className="animate-spin text-amber-500" size={40} />
       </div>
     );
   }
@@ -125,15 +127,13 @@ const RoomList = () => {
         },
       }}
     >
-      <div className="min-h-screen bg-[#F9F8F6] pt-44 pb-32 px-6 md:px-12 font-sans">
+      <div className="min-h-screen bg-cream pt-44 pb-32 px-6 md:px-12 font-sans">
         <div className="max-w-7xl mx-auto">
           
           {/* Header Section */}
           <div className="text-center mb-24 space-y-6">
-            <span className="text-[#B59A6D] text-[11px] font-black uppercase tracking-[0.6em] block font-sans">Exclusive Stay</span>
-            <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Tìm không gian riêng
-            </h2>
+            <span className="text-amber-500 text-sm font-black uppercase tracking-wider block font-sans">Exclusive Stay</span>
+            <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('roomList.header')}</h2>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-16">
@@ -143,24 +143,23 @@ const RoomList = () => {
               <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-premium space-y-12">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <SlidersHorizontal size={20} className="text-[#B59A6D]" />
-                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-900 font-sans">Bộ lọc</h3>
+                    <SlidersHorizontal size={20} className="text-amber-500" />
+                    <h3 className="text-xs font-black uppercase tracking-wider text-slate-900 font-sans">Bộ lọc</h3>
                   </div>
                   <button 
                     onClick={resetFilters}
-                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#B59A6D] transition-luxury flex items-center gap-3 font-sans"
+                    className="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-luxury flex items-center gap-3 font-sans"
                   >
-                    <Trash2 size={14} /> Xóa
-                  </button>
+                    <Trash2 size={14} />{t('roomList.clear')}</button>
                 </div>
 
                 {/* Loại phòng */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Loại phòng</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.room_type')}</label>
                   <div className="flex flex-col gap-2">
                     <button 
                       onClick={() => setFilters(prev => ({...prev, typeId: ''}))}
-                      className={`px-6 py-4 rounded-xl text-left text-[11px] font-bold transition-luxury ${filters.typeId === '' ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
+                      className={`px-6 py-4 rounded-xl text-left text-sm font-bold transition-luxury ${filters.typeId === '' ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
                     >
                       Tất cả
                     </button>
@@ -168,7 +167,7 @@ const RoomList = () => {
                       <button 
                         key={type.id}
                         onClick={() => setFilters(prev => ({...prev, typeId: type.id.toString()}))}
-                        className={`px-6 py-4 rounded-xl text-left text-[11px] font-bold transition-luxury flex justify-between items-center font-sans ${filters.typeId === type.id.toString() ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
+                        className={`px-6 py-4 rounded-xl text-left text-sm font-bold transition-luxury flex justify-between items-center font-sans ${filters.typeId === type.id.toString() ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
                       >
                         {type.name}
                         {filters.typeId === type.id.toString() && <Check size={16} />}
@@ -179,7 +178,7 @@ const RoomList = () => {
 
                 {/* Lọc theo Giá */}
                 <div className="space-y-8">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Khoảng giá (VNĐ)</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.price_range')}</label>
                   <div className="px-2">
                     <Slider 
                       range 
@@ -190,7 +189,7 @@ const RoomList = () => {
                       onChange={handlePriceChange}
                     />
                   </div>
-                  <div className="flex justify-between text-[11px] font-black tracking-widest text-[#B59A6D] bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div className="flex justify-between text-sm font-black tracking-widest text-amber-500 bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <span>{Number(filters.minPrice).toLocaleString()} đ</span>
                     <span>-</span>
                     <span>{Number(filters.maxPrice).toLocaleString()} đ</span>
@@ -199,23 +198,23 @@ const RoomList = () => {
 
                 {/* Sức chứa */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Sức chứa (Khách)</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.capacity')}</label>
                   <select 
                     value={filters.capacity}
                     onChange={(e) => setFilters(prev => ({...prev, capacity: e.target.value}))}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-4 text-[11px] font-bold text-slate-600 outline-none focus:border-[#B59A6D]/50 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-4 text-sm font-bold text-slate-600 outline-none focus:border-amber-500/50 transition-all appearance-none cursor-pointer"
                   >
-                    <option value="">Tất cả</option>
-                    <option value="1">1 Khách</option>
-                    <option value="2">2 Khách</option>
-                    <option value="4">3-4 Khách</option>
-                    <option value="10">8-10 Khách</option>
+                    <option value="">{t('roomList.all')}</option>
+                    <option value="1">{t('roomList.guests_1')}</option>
+                    <option value="2">{t('roomList.guests_2')}</option>
+                    <option value="4">{t('roomList.guests_4')}</option>
+                    <option value="10">{t('roomList.guests_10')}</option>
                   </select>
                 </div>
 
                 {/* Trạng thái */}
                 <div className="space-y-5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Trạng thái</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.status')}</label>
                   <label className="flex items-center gap-4 cursor-pointer group">
                     <div className="relative">
                       <input 
@@ -224,10 +223,10 @@ const RoomList = () => {
                         onChange={(e) => setFilters(prev => ({...prev, status: e.target.checked ? 'Available' : ''}))}
                         className="sr-only"
                       />
-                      <div className={`w-14 h-7 rounded-full transition-luxury ${filters.status === 'Available' ? 'bg-[#B59A6D]' : 'bg-slate-200'}`}></div>
+                      <div className={`w-14 h-7 rounded-full transition-luxury ${filters.status === 'Available' ? 'bg-amber-500' : 'bg-slate-200'}`}></div>
                       <div className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-luxury ${filters.status === 'Available' ? 'translate-x-7' : ''}`}></div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-[#B59A6D] transition-luxury font-sans">Còn phòng trống</span>
+                    <span className="text-sm font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.available')}</span>
                   </label>
                 </div>
               </div>
@@ -237,18 +236,18 @@ const RoomList = () => {
             <main className="lg:w-3/4 space-y-12">
               
               <div className="flex flex-col md:flex-row justify-between items-center bg-white px-10 py-6 rounded-[2rem] border border-slate-100 shadow-sm gap-6">
-                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic font-sans">
-                  Khám phá <span className="text-[#B59A6D]">{rooms.length}</span> tuyệt tác lưu trú
+                <p className="text-sm font-black text-slate-500 uppercase tracking-widest italic font-sans">
+                  Khám phá <span className="text-amber-500">{rooms.length}</span> tuyệt tác lưu trú
                 </p>
                 <div className="flex items-center gap-6">
                   {filtering && (
-                    <div className="flex items-center gap-3 text-[#B59A6D]">
+                    <div className="flex items-center gap-3 text-amber-500">
                       <Loader2 size={16} className="animate-spin" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Đang cập nhật...</span>
+                      <span className="text-xs font-black uppercase tracking-widest">Đang cập nhật...</span>
                     </div>
                   )}
                   <div className="flex items-center gap-4 border-l border-slate-100 pl-6">
-                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-sans">Sắp xếp:</label>
+                     <label className="text-sm font-black text-slate-400 uppercase tracking-widest font-sans">{t('roomList.sort')}</label>
                      <select 
                         onChange={(e) => {
                           const val = e.target.value;
@@ -258,12 +257,12 @@ const RoomList = () => {
                           if (val === 'capacity') sorted.sort((a,b) => b.roomType?.capacity - a.roomType?.capacity);
                           setRooms(sorted);
                         }}
-                        className="bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-900 outline-none cursor-pointer hover:text-[#B59A6D] transition-colors"
+                        className="bg-transparent text-xs font-black uppercase tracking-widest text-slate-900 outline-none cursor-pointer hover:text-amber-500 transition-colors"
                      >
-                        <option value="default">Mặc định</option>
-                        <option value="price-asc">Giá: Thấp đến Cao</option>
-                        <option value="price-desc">Giá: Cao đến Thấp</option>
-                        <option value="capacity">Sức chứa lớn nhất</option>
+                        <option value="default">{t('roomList.sort_default')}</option>
+                        <option value="price-asc">{t('roomList.price_asc')}</option>
+                        <option value="price-desc">{t('roomList.price_desc')}</option>
+                        <option value="capacity">{t('roomList.largest_cap')}</option>
                      </select>
                   </div>
                 </div>
@@ -271,14 +270,14 @@ const RoomList = () => {
 
               {rooms.length === 0 ? (
                 <div className="bg-white rounded-[3rem] p-32 text-center border border-slate-100 shadow-premium">
-                  <Filter size={48} className="text-[#B59A6D]/20 mx-auto mb-8" />
-                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Xin lỗi, không tìm thấy kết quả</h3>
+                  <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
+                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>{t('roomList.no_results')}</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
                     Vui lòng điều chỉnh lại bộ lọc để tìm thấy căn phòng phù hợp nhất dành cho quý khách.
                   </p>
                   <button 
                     onClick={resetFilters}
-                    className="bg-slate-900 text-white px-12 py-5 text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-[#B59A6D] transition-luxury shadow-lg"
+                    className="bg-slate-900 text-white px-12 py-5 text-sm font-black uppercase tracking-widest rounded-xl hover:bg-amber-500 transition-luxury shadow-lg"
                   >
                     Bắt đầu lại
                   </button>
@@ -299,7 +298,7 @@ const RoomList = () => {
                     return (
                       <div 
                         key={room.id} 
-                        className="group bg-white border border-slate-100 overflow-hidden hover:border-[#B59A6D]/30 transition-luxury shadow-premium hover:shadow-2xl rounded-[2.5rem]"
+                        className="group bg-white border border-slate-100 overflow-hidden hover:border-amber-500/30 transition-luxury shadow-premium hover:shadow-2xl rounded-[2.5rem]"
                       >
                         <div 
                           className="relative h-64 overflow-hidden cursor-pointer"
@@ -310,15 +309,15 @@ const RoomList = () => {
                             alt={`Room ${room.roomNumber}`}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1500ms]"
                           />
-                          <div className={`absolute top-6 left-6 backdrop-blur-md px-4 py-2 border text-[9px] font-black uppercase tracking-widest rounded-xl transition-colors ${isAvailable ? 'bg-emerald-50/90 text-emerald-600 border-emerald-100' : 'bg-red-50/90 text-red-600 border-red-100'}`}>
+                          <div className={`absolute top-6 left-6 backdrop-blur-md px-4 py-2 border text-sm font-black uppercase tracking-widest rounded-xl transition-colors ${isAvailable ? 'bg-emerald-50/90 text-emerald-600 border-emerald-100' : 'bg-red-50/90 text-red-600 border-red-100'}`}>
                             {isAvailable ? 'Khả dụng' : 'Hết phòng'}
                           </div>
                           {discount && (
-                            <div className="absolute top-6 right-6 bg-rose-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg animate-pulse">
+                            <div className="absolute top-6 right-6 bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg animate-pulse">
                               Ưu đãi -{Math.floor(discount.discountPercent)}%
                             </div>
                           )}
-                          <div className="absolute bottom-6 right-6 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-xl text-[10px] font-black text-[#B59A6D] border border-white/10 uppercase tracking-widest">
+                          <div className="absolute bottom-6 right-6 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-black text-amber-500 border border-white/10 uppercase tracking-widest">
                             Phòng {room.roomNumber}
                           </div>
                         </div>
@@ -328,43 +327,43 @@ const RoomList = () => {
                             <div className="space-y-1">
                               <h4 
                                 onClick={() => navigate(`/room/${room.id}`)}
-                                className="text-2xl font-serif italic text-slate-900 cursor-pointer hover:text-[#B59A6D] transition-luxury"
+                                className="text-2xl font-serif italic text-slate-900 cursor-pointer hover:text-amber-500 transition-luxury"
                                 style={{ fontFamily: "'Playfair Display', serif" }}
                               >
                                 {details.name || 'Luxury Suite'}
                               </h4>
-                              <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black italic font-sans">Private Collection</p>
+                              <p className="text-sm text-slate-400 uppercase tracking-widest font-black italic font-sans">Private Collection</p>
                             </div>
                             <div className="text-right">
                               {discount && (
-                                <p className="text-[10px] text-slate-300 line-through font-bold decoration-rose-500/30">
+                                <p className="text-xs text-slate-300 line-through font-bold decoration-rose-500/30">
                                   {originalPrice.toLocaleString()}đ
                                 </p>
                               )}
-                              <p className="text-[#B59A6D] font-serif text-2xl italic leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                              <p className="text-amber-500 font-serif text-2xl italic leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
                                 {discountedPrice.toLocaleString()}
                               </p>
-                              <span className="text-[9px] text-slate-300 uppercase tracking-widest font-black mt-1 block">VNĐ / Đêm</span>
+                              <span className="text-sm text-slate-300 uppercase tracking-widest font-black mt-1 block">{t('roomList.per_night')}</span>
                             </div>
                           </div>
 
                           <div className="grid grid-cols-2 gap-4 py-6 border-y border-slate-50">
                             <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-[#B59A6D]">
+                              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-amber-500">
                                 <Users size={16} strokeWidth={1} />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">{details.capacity || 2} Khách</span>
+                                <span className="text-xs font-black text-slate-900 uppercase tracking-widest font-sans">{details.capacity || 2} Khách</span>
                                 <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">Sức chứa</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-3 border-l border-slate-50 pl-4">
-                              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-[#B59A6D]">
+                              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-amber-500">
                                 <Maximize size={16} strokeWidth={1} />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">45 m²</span>
-                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">Diện tích</span>
+                                <span className="text-xs font-black text-slate-900 uppercase tracking-widest font-sans">45 m²</span>
+                                <span className="text-[8px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">{t('roomList.area')}</span>
                               </div>
                             </div>
                           </div>
@@ -372,20 +371,18 @@ const RoomList = () => {
                           <div className="flex gap-4">
                             <button 
                               onClick={() => navigate(`/room/${room.id}`)}
-                              className="flex-1 py-3.5 text-[10px] font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-xl font-sans"
-                            >
-                              Khám phá
-                            </button>
+                              className="flex-1 py-3.5 text-xs font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-xl font-sans"
+                            >{t('roomList.explore')}</button>
                             <button 
                               onClick={() => navigate(`/booking/${room.id}`)}
                               disabled={!isAvailable}
-                              className={`flex-[2] py-3.5 text-[10px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-3 rounded-xl shadow-lg shadow-slate-900/10 font-sans ${
+                              className={`flex-[2] py-3.5 text-xs font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-3 rounded-xl shadow-lg shadow-slate-900/10 font-sans ${
                                 isAvailable 
-                                ? 'bg-slate-900 text-white hover:bg-[#B59A6D]' 
+                                ? 'bg-slate-900 text-white hover:bg-amber-500' 
                                 : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200 shadow-none'
                               }`}
                             >
-                              {isAvailable ? <>Đặt phòng <ArrowRight size={16} /></> : 'Đã hết'}
+                              {isAvailable ? <>{t('roomList.book_now')} <ArrowRight size={16} /></> : 'Đã hết'}
                             </button>
                           </div>
                         </div>
@@ -403,3 +400,4 @@ const RoomList = () => {
 };
 
 export default RoomList;
+

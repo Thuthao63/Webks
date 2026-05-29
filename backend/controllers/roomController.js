@@ -57,6 +57,21 @@ const getRoomById = async (req, res) => {
     }
 };
 
+// 2.5 Lấy các phòng nổi bật
+const getFeaturedRooms = async (req, res) => {
+    try {
+        const featuredRooms = await Room.findAll({
+            include: [{ model: RoomType, as: 'roomType' }],
+            order: [['createdAt', 'DESC']],
+            limit: 4
+        });
+        res.status(200).json(featuredRooms);
+    } catch (error) {
+        console.error("Lỗi lấy phòng nổi bật:", error);
+        res.status(500).json({ message: "Lỗi lấy phòng nổi bật" });
+    }
+};
+
 // 3. Lấy tất cả loại phòng (HÀM ĐANG THIẾU NÈ THẢO)
 const getAllRoomTypes = async (req, res) => {
     try {
@@ -117,6 +132,7 @@ const updateFullRoomInfo = async (req, res) => {
 // --- XUẤT KHẨU TẤT CẢ (ĐẢM BẢO TÊN PHẢI KHỚP VỚI TRÊN) ---
 module.exports = {
     getAllRooms,
+    getFeaturedRooms,
     getRoomById,
     getAllRoomTypes, // Giờ nó đã được định nghĩa ở mục số 3 rồi nè!
     deleteRoom,

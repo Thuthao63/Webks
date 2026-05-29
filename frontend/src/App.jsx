@@ -65,7 +65,7 @@ const AppContent = () => {
       {/* 1. Chỉ hiện Navbar nếu không phải trang admin */}
       {!isAdminPage && <Navbar />}
       
-      <main className={!isAdminPage ? "min-h-screen bg-[#FDFBF7]" : ""}>
+      <main className={!isAdminPage ? "min-h-screen bg-paper" : ""}>
         <Suspense fallback={
           <div className="h-screen flex items-center justify-center bg-[#050505]">
             <Loader2 className="animate-spin text-amber-500" size={32} />

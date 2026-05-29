@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
@@ -56,7 +57,7 @@ const ResetPassword = () => {
           transition={{ delay: 0.4 }}
           className="space-y-1.5"
         >
-          <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu mới</label>
+          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu mới</label>
           <div className="relative group">
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
             <input 
@@ -98,7 +99,7 @@ const ResetPassword = () => {
         transition={{ delay: 0.7 }}
         className="text-center mt-12"
       >
-        <Link to="/login" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[10px] uppercase tracking-wider font-bold">
+        <Link to="/login" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-wider font-bold">
           <ArrowLeft size={14} /> Quay lại trang đăng nhập
         </Link>
       </motion.div>
@@ -107,3 +108,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+

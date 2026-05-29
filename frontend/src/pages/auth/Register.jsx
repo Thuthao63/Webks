@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
@@ -67,7 +68,7 @@ const Register = () => {
         {/* Full Name & Phone - Grid on larger mobile, stacked on small */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-1.5">
-            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Họ và tên</label>
+            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Họ và tên</label>
             <InputGroup 
               name="fullName"
               icon={<User size={16}/>} 
@@ -77,7 +78,7 @@ const Register = () => {
             />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-1.5">
-            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Số điện thoại</label>
+            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Số điện thoại</label>
             <InputGroup 
               name="phone"
               icon={<Phone size={16}/>} 
@@ -90,7 +91,7 @@ const Register = () => {
 
         {/* Email */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-1.5">
-          <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
           <InputGroup 
             name="email"
             icon={<Mail size={16}/>} 
@@ -104,7 +105,7 @@ const Register = () => {
         {/* Passwords */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="space-y-1.5">
-            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu</label>
+            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu</label>
             <div className="relative group">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
               <input 
@@ -122,7 +123,7 @@ const Register = () => {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-1.5">
-            <label className="text-[10px] uppercase tracking-wider text-amber-500/70 font-bold ml-1">Xác nhận</label>
+            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Xác nhận</label>
             <div className="relative group">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
               <input 
@@ -149,7 +150,7 @@ const Register = () => {
           whileTap={{ scale: 0.99 }}
           type="submit" 
           disabled={loading}
-          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-6 transition-all duration-300 uppercase text-[12px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
+          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-6 transition-all duration-300 uppercase text-[12px] tracking-wider flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : <>Khởi tạo tài khoản <ArrowRight size={16}/></>}
         </motion.button>
@@ -161,7 +162,7 @@ const Register = () => {
         transition={{ delay: 0.9 }}
         className="text-center mt-10"
       >
-        <p className="text-gray-500 text-[11px] uppercase tracking-wider">
+        <p className="text-gray-500 text-sm uppercase tracking-wider">
           Đã có tài khoản thành viên? 
           <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black text-[12px] uppercase">Đăng nhập</Link>
         </p>
@@ -188,3 +189,5 @@ const InputGroup = ({ icon, type = "text", placeholder, name, autoComplete, onCh
 );
 
 export default Register;
+
+

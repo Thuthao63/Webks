@@ -32,6 +32,7 @@ const ContactFab = () => {
       setIsOpen(false);
       e.target.reset();
     } catch (err) {
+      console.error(err);
       Swal.fire({
         icon: 'error',
         title: 'Thất bại',
@@ -74,26 +75,26 @@ const ContactFab = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-black ml-4">Quý danh</label>
-                    <input name="name" type="text" placeholder="Nguyễn Văn A" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-[#B59A6D]" />
+                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">Quý danh</label>
+                    <input name="name" type="text" placeholder="Nguyễn Văn A" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-black ml-4">Số điện thoại</label>
-                    <input name="phone" type="tel" placeholder="090..." className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-[#B59A6D]" />
+                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">Số điện thoại</label>
+                    <input name="phone" type="tel" placeholder="090..." className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] text-gray-600 uppercase tracking-widest font-medium ml-1">Địa chỉ Email</label>
-                  <input name="email" type="email" placeholder="email@gmail.com" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-[#B59A6D]" />
+                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">Địa chỉ Email</label>
+                  <input name="email" type="email" placeholder="email@gmail.com" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] text-gray-600 uppercase tracking-widest font-medium ml-1">Nội dung tư vấn</label>
-                  <textarea name="message" rows="4" placeholder="Quý khách cần hỗ trợ điều gì?" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-[#B59A6D] resize-none"></textarea>
+                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">Nội dung tư vấn</label>
+                  <textarea name="message" rows="4" placeholder="Quý khách cần hỗ trợ điều gì?" required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500 resize-none"></textarea>
                 </div>
 
-                <button disabled={loading} type="submit" className="w-full bg-[#B59A6D] text-white py-3 rounded-md font-semibold">
+                <button disabled={loading} type="submit" className="w-full bg-amber-500 text-white py-3 rounded-md font-semibold">
                   {loading ? 'Đang kết nối...' : 'Gửi cho Quản Gia'}
                 </button>
               </form>

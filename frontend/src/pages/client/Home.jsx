@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, ChevronRight, MapPin, ShieldCheck, Zap, Mail, Loader2, BedDouble, Quote, Award } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 
 const Home = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [featuredRooms, setFeaturedRooms] = useState([]);
   const [loadingRooms, setLoadingRooms] = useState(true);
   const [reviews, setReviews] = useState([]);
-  const [loadingReviews, setLoadingReviews] = useState(true);
   const [email, setEmail] = useState('');
 
   useEffect(() => {
@@ -30,7 +31,6 @@ const Home = () => {
         console.error("Lỗi lấy dữ liệu trang chủ:", err);
       } finally {
         setLoadingRooms(false);
-        setLoadingReviews(false);
       }
     };
     fetchHomeData();
@@ -53,7 +53,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-[#FDFBF7] text-gray-900 selection:bg-amber-100 selection:text-amber-900 font-sans">
+    <div className="bg-paper text-gray-900 selection:bg-amber-100 selection:text-amber-900 font-sans">
 
       {/* --- 1. HERO SECTION --- */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -79,21 +79,21 @@ const Home = () => {
           </div>
 
           <h1 className="mb-6 tracking-tight font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="block text-3xl md:text-4xl font-light mb-4 tracking-[0.3em] uppercase text-gray-800 font-serif">The Art of</span>
-            <span className="block text-6xl md:text-[8rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">Living</span>
+            <span className="block text-3xl md:text-4xl font-light mb-4 tracking-widest uppercase text-gray-800 font-serif">{t('home.art_of')}</span>
+            <span className="block text-6xl md:text-[8rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">{t('home.living')}</span>
           </h1>
 
-          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.5em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
-            Nghệ thuật nghỉ dưỡng thượng lưu
+          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.15em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
+            {t('home.subtitle')}
           </p>
 
           <div className="flex justify-center mt-4">
             <button
               onClick={() => document.getElementById('explore').scrollIntoView({ behavior: 'smooth' })}
-              className="group text-[11px] font-bold uppercase tracking-widest text-gray-800 flex items-center gap-3 border-b border-gray-400 pb-2 hover:border-amber-600 hover:text-amber-700 transition-all rounded-lg px-6 py-2 bg-white/80 shadow-premium font-sans"
+              className="group text-sm font-bold uppercase tracking-widest text-gray-800 flex items-center gap-3 border-b border-gray-400 pb-2 hover:border-amber-600 hover:text-amber-700 transition-all rounded-lg px-6 py-2 bg-white/80 shadow-premium font-sans"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
-              Khám phá thêm <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+              {t('home.explore')} <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
             </button>
           </div>
         </div>
@@ -112,30 +112,30 @@ const Home = () => {
               />
               <div className="absolute -bottom-10 -right-10 bg-white p-10 shadow-2xl border border-gray-50 rounded-[2rem] hidden md:block z-20">
                 <p className="text-4xl font-serif text-amber-600 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>100%</p>
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold font-sans">Sự hài lòng</p>
+                <p className="text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">Sự hài lòng</p>
               </div>
             </div>
 
             <div className="space-y-10 order-1 md:order-2">
               <div className="space-y-4">
-                <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block font-sans">Kỳ nghỉ mơ ước</span>
+                <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em] block font-sans">{t('home.story_sup')}</span>
                 <h2 className="text-4xl md:text-6xl leading-tight text-gray-900 font-serif" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Tuyệt tác <br /> <span className="italic font-light text-amber-700 font-serif">giữa đại dương</span>
+                  {t('home.story_head')} <br /> <span className="italic font-light text-amber-700 font-serif">{t('home.story_head_italic')}</span>
                 </h2>
               </div>
 
               <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic font-sans">
-                "Uy Nam Luxury mang đến một chuẩn mực mới về sự tinh tế. Nơi ánh sáng tự nhiên hòa quyện cùng nội thất đương đại, tạo nên không gian nghỉ dưỡng hoàn mỹ dành riêng cho bạn."
+                {t('home.story_desc')}
               </p>
 
               <div className="grid grid-cols-2 gap-10 border-t border-gray-100 pt-10">
                 <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
                   <ShieldCheck className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
-                  <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Riêng tư tuyệt đối</h5>
+                  <h5 className="text-xs uppercase tracking-widest font-black text-gray-800">{t('home.privacy')}</h5>
                 </div>
                 <div className="space-y-3 p-6 bg-gray-50 rounded-2xl group hover:shadow-xl transition-all">
                   <Zap className="text-amber-600 group-hover:scale-110 transition-transform" size={32} strokeWidth={1} />
-                  <h5 className="text-[10px] uppercase tracking-widest font-black text-gray-800">Phục vụ 24/7</h5>
+                  <h5 className="text-xs uppercase tracking-widest font-black text-gray-800">{t('home.service_247')}</h5>
                 </div>
               </div>
             </div>
@@ -144,11 +144,11 @@ const Home = () => {
       </section>
 
       {/* --- 2.5 AMENITIES HIGHLIGHT --- */}
-      <section className="py-24 md:py-32 bg-[#FDFBF7]">
+      <section className="py-24 md:py-32 bg-paper">
         <div className="max-w-7xl mx-auto px-6 text-center mb-16 md:mb-24">
-           <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.5em] mb-6 block">Premium Facilities</span>
+           <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-6 block">{t('home.amenities_sup')}</span>
            <h2 className="text-4xl md:text-7xl font-serif italic text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Tiện ích <span className="text-amber-600 not-italic font-bold">Thượng hạng</span>
+              {t('home.amenities_head')} <span className="text-amber-600 not-italic font-bold">{t('home.amenities_head_italic')}</span>
            </h2>
         </div>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -172,14 +172,14 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-8">
             <div className="space-y-4">
-              <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block text-center md:text-left">Lựa chọn hàng đầu</span>
-              <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Không gian <span className="not-italic text-amber-600">tuyệt mỹ</span></h3>
+              <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em] block text-center md:text-left">{t('home.top_picks')}</span>
+              <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('home.perfect_space')} <span className="not-italic text-amber-600">{t('home.perfect_space_italic')}</span></h3>
             </div>
             <button
               onClick={() => navigate('/rooms')}
-              className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-800 border-b border-gray-300 pb-2 hover:border-amber-600 hover:text-amber-600 transition-all flex items-center gap-4 group"
+              className="text-xs font-bold uppercase tracking-widest text-gray-800 border-b border-gray-300 pb-2 hover:border-amber-600 hover:text-amber-600 transition-all flex items-center gap-4 group"
             >
-              Xem tất cả <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform" />
+              {t('home.view_all')} <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform" />
             </button>
           </div>
 
@@ -200,7 +200,7 @@ const Home = () => {
                     className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                     alt={room.roomNumber}
                   />
-                  <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-900 border border-white/20 shadow-xl">
+                  <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-900 border border-white/20 shadow-xl">
                     Phòng {room.roomNumber}
                   </div>
                 </div>
@@ -208,13 +208,13 @@ const Home = () => {
                 <div className="p-8 space-y-4">
                   <div className="space-y-1">
                     <h4 className="text-2xl font-serif italic text-slate-900 group-hover:text-amber-600 transition-luxury" style={{ fontFamily: "'Playfair Display', serif" }}>{room.roomType?.name}</h4>
-                    <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black italic">Signature Collection</p>
+                    <p className="text-sm text-slate-400 uppercase tracking-widest font-black italic">Signature Collection</p>
                   </div>
 
                   <div className="flex items-center justify-between pt-6 border-t border-gray-50">
                     <div className="space-y-0.5">
-                      <p className="text-[9px] text-gray-300 uppercase tracking-widest font-black">Giá chuẩn</p>
-                      <p className="text-2xl font-serif italic text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-[10px] text-gray-300 font-black not-italic ml-1">VNĐ</span></p>
+                      <p className="text-sm text-gray-300 uppercase tracking-widest font-black">Giá chuẩn</p>
+                      <p className="text-2xl font-serif italic text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-xs text-gray-300 font-black not-italic ml-1">VNĐ</span></p>
                     </div>
                     <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-amber-600 group-hover:border-amber-600 group-hover:text-white group-hover:shadow-lg transition-luxury">
                       <ArrowRight size={20} />
@@ -228,11 +228,11 @@ const Home = () => {
       </section>
 
       {/* --- 4. LIFESTYLE GALLERY MASONRY --- */}
-      <section className="py-24 md:py-32 bg-[#FDFBF7]">
+      <section className="py-24 md:py-32 bg-paper">
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 md:mb-24">
-               <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.5em] mb-4 block">Capturing Moments</span>
-               <h3 className="text-4xl md:text-7xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Cảm hứng <span className="not-italic text-amber-600">Sống</span></h3>
+               <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-4 block">{t('home.capturing')}</span>
+               <h3 className="text-4xl md:text-7xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('home.live_inspire')} <span className="not-italic text-amber-600">{t('home.live_inspire_italic')}</span></h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-[800px]">
@@ -250,15 +250,6 @@ const Home = () => {
                   <img src="https://images.unsplash.com/photo-1582719477059-59eb59b19c69?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Bed" />
                </div>
             </div>
-
-            <div className="text-center mt-16">
-               <button 
-                  onClick={() => navigate('/gallery')}
-                  className="bg-white border border-gray-200 text-[#1E293B] px-12 py-5 rounded-full text-[10px] font-black uppercase tracking-widest hover:border-amber-600 hover:text-amber-600 transition-all shadow-sm"
-               >
-                  Xem thêm thư viện ảnh
-               </button>
-            </div>
          </div>
       </section>
 
@@ -269,21 +260,21 @@ const Home = () => {
                <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] -mr-40 -mt-40"></div>
                <Mail size={48} className="text-amber-500 mb-8 opacity-50" />
                <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Gia nhập <span className="text-amber-500">Uy Nam Elite</span>
+                  {t('home.join')} <span className="text-amber-500">{t('home.elite')}</span>
                </h2>
                <p className="text-gray-400 max-w-xl mx-auto text-sm tracking-widest leading-loose mb-12 uppercase font-bold">
-                  Nhận những ưu đãi đặc quyền và thông tin về các sự kiện nghệ thuật dành riêng cho hội viên.
+                  {t('home.newsletter')}
                </p>
                <form onSubmit={handleSubscribe} className="max-w-md w-full flex gap-4">
                   <input 
                      type="email" 
                      value={email}
                      onChange={(e) => setEmail(e.target.value)}
-                     placeholder="EMAIL CỦA BẠN" 
+                     placeholder={t('home.email_placeholder')}
                      className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white outline-none focus:border-amber-500/50 transition-all text-xs font-bold tracking-widest"
                   />
-                  <button type="submit" className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
-                     Đăng ký
+                  <button type="submit" className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">
+                     {t('home.subscribe')}
                   </button>
                </form>
             </div>
@@ -292,15 +283,15 @@ const Home = () => {
 
       {/* --- 6. TESTIMONIALS --- */}
       {reviews.length > 0 && (
-        <section className="py-24 md:py-32 bg-[#FDFBF7]">
+        <section className="py-24 md:py-32 bg-paper">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 md:mb-24 space-y-4">
-              <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em] block">Cảm nhận từ Thượng khách</span>
+              <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em] block">Cảm nhận từ Thượng khách</span>
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Ký ức <span className="not-italic text-amber-600">tuyệt vời</span></h3>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-              {reviews.map((rev, idx) => (
+              {reviews.map((rev) => (
                 <div key={rev.id} className="relative p-12 bg-white rounded-[3rem] border border-gray-50 shadow-premium hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 group">
                   <Quote className="absolute top-10 right-10 text-amber-600/5 group-hover:text-amber-600/10 transition-colors" size={60} />
                   <div className="flex gap-1.5 mb-8">
@@ -314,8 +305,8 @@ const Home = () => {
                       {rev.reviewer?.fullName?.charAt(0).toUpperCase() || 'G'}
                     </div>
                     <div>
-                      <p className="text-[11px] font-black uppercase tracking-widest text-[#1E293B]">{rev.reviewer?.fullName || 'Khách hàng'}</p>
-                      <p className="text-[9px] text-amber-600 uppercase tracking-widest font-bold italic">Elite Member</p>
+                      <p className="text-sm font-black uppercase tracking-widest text-[#1E293B]">{rev.reviewer?.fullName || 'Khách hàng'}</p>
+                      <p className="text-sm text-amber-600 uppercase tracking-widest font-bold italic">Elite Member</p>
                     </div>
                   </div>
                 </div>
@@ -326,13 +317,13 @@ const Home = () => {
       )}
 
       {/* --- 7. PRESTIGE & AWARDS --- */}
-      <section className="py-32 border-t border-gray-100 bg-[#FDFBF7]">
+      <section className="py-32 border-t border-gray-100 bg-paper">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap justify-center md:justify-between items-center gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-1000">
             {[1, 2, 3, 4].map((award) => (
               <div key={award} className="flex flex-col items-center gap-3">
                 <Award className="text-amber-700" size={40} strokeWidth={1} />
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 text-center leading-loose">International <br /> Luxury Award 2024</span>
+                <span className="text-sm font-black uppercase tracking-widest text-gray-600 text-center leading-loose">International <br /> Luxury Award 2024</span>
               </div>
             ))}
           </div>
@@ -343,3 +334,4 @@ const Home = () => {
 };
 
 export default Home;
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   ShieldCheck, Award, Users, Star, ArrowRight, 
   MapPin, Phone, Mail, Globe, 
@@ -34,7 +34,7 @@ const About = () => {
     ];
 
     return (
-        <div className="bg-[#FDFBF7] text-[#1E293B] selection:bg-amber-600 selection:text-white font-sans min-h-screen">
+        <div className="bg-paper text-[#1E293B] selection:bg-amber-600 selection:text-white font-sans min-h-screen">
 
             {/* 1. HERO BANNER - LIGHT & AIRY */}
             <section id="hero" className="relative h-[85vh] flex items-center overflow-hidden">
@@ -51,7 +51,7 @@ const About = () => {
                     <div className={`max-w-2xl transition-all duration-1000 ${isVisible['hero'] ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
                         <div className="flex items-center gap-3 mb-6">
                             <div className="w-12 h-[1px] bg-amber-600"></div>
-                            <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018</span>
+                            <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em]">Est. 2018</span>
                         </div>
                         <h1 className="text-6xl md:text-8xl leading-tight mb-8 font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
                             Nơi Thời Gian <br /> 
@@ -63,13 +63,13 @@ const About = () => {
                         <div className="flex items-center gap-8">
                             <button 
                                 onClick={() => navigate('/rooms')}
-                                className="bg-[#1E293B] hover:bg-amber-600 text-white px-10 py-4 text-[10px] font-black uppercase tracking-widest transition-all rounded-full flex items-center gap-3 shadow-xl"
+                                className="bg-[#1E293B] hover:bg-amber-600 text-white px-10 py-4 text-xs font-black uppercase tracking-widest transition-all rounded-full flex items-center gap-3 shadow-xl"
                             >
                                 Khám Phá <ArrowRight size={16} />
                             </button>
                             <div className="hidden md:flex flex-col">
                                 <span className="text-xs font-black text-amber-600 italic">"Tuyệt tác nghỉ dưỡng"</span>
-                                <span className="text-[9px] text-gray-400 uppercase tracking-widest mt-1">International Design Awards</span>
+                                <span className="text-sm text-gray-400 uppercase tracking-widest mt-1">International Design Awards</span>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ const About = () => {
 
                 {/* Vertical Text Decoration */}
                 <div className="absolute right-10 bottom-10 vertical-text hidden lg:block opacity-20">
-                   <p className="text-[10px] font-black uppercase tracking-[1em] rotate-180" style={{ writingMode: 'vertical-rl' }}>UY NAM LUXURY HOTEL & RESORT</p>
+                   <p className="text-xs font-black uppercase tracking-[1em] rotate-180" style={{ writingMode: 'vertical-rl' }}>UY NAM LUXURY HOTEL & RESORT</p>
                 </div>
             </section>
 
@@ -88,7 +88,7 @@ const About = () => {
                 <div className="container mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-24 items-center">
                         <div className={`relative transition-all duration-1000 delay-300 ${isVisible['story'] ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
-                            <div className="absolute -inset-10 border-[20px] border-[#FDFBF7] z-20 pointer-events-none"></div>
+                            <div className="absolute -inset-10 border-[20px] border-paper z-20 pointer-events-none"></div>
                             <div className="relative group overflow-hidden rounded-[2.5rem]">
                                 <img
                                     src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80"
@@ -100,12 +100,12 @@ const About = () => {
                             <div className="absolute -bottom-10 -right-10 bg-amber-600 text-white p-12 rounded-[2rem] shadow-2xl z-20 hidden md:block">
                                 <Sparkles size={32} className="mb-4" />
                                 <p className="text-3xl font-serif italic mb-1">05+</p>
-                                <p className="text-[9px] uppercase tracking-widest font-black opacity-80">Năm di sản bản địa</p>
+                                <p className="text-sm uppercase tracking-widest font-black opacity-80">Năm di sản bản địa</p>
                             </div>
                         </div>
 
                         <div className={`space-y-10 transition-all duration-1000 ${isVisible['story'] ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'}`}>
-                            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600 text-[9px] font-black uppercase tracking-widest">
+                            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600 text-sm font-black uppercase tracking-widest">
                                 <Building size={12} /> Hành trình kiến tạo
                             </div>
                             <h2 className="text-4xl md:text-5xl font-serif italic leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -129,10 +129,10 @@ const About = () => {
             </section>
 
             {/* 3. TEAM - NEW LEADERSHIP SECTION */}
-            <section id="team" className="py-32 bg-[#FDFBF7]">
+            <section id="team" className="py-32 bg-paper">
                 <div className="container mx-auto px-6 text-center mb-20">
                      <h3 className="text-3xl md:text-5xl font-serif italic text-amber-600 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Những người dẫn dắt</h3>
-                     <p className="text-[10px] uppercase tracking-[0.4em] text-gray-400 font-bold">Đội ngũ ban quản trị & Sáng tạo</p>
+                     <p className="text-xs uppercase tracking-[0.1em] text-gray-400 font-bold">Đội ngũ ban quản trị & Sáng tạo</p>
                 </div>
 
                 <div className="container mx-auto px-6 grid md:grid-cols-3 gap-12">
@@ -148,7 +148,7 @@ const About = () => {
                             </div>
                          </div>
                          <h4 className="text-xl font-bold mb-1">{member.name}</h4>
-                         <p className="text-[10px] uppercase tracking-widest text-amber-600 font-black">{member.role}</p>
+                         <p className="text-xs uppercase tracking-widest text-amber-600 font-black">{member.role}</p>
                       </div>
                    ))}
                 </div>
@@ -174,7 +174,7 @@ const About = () => {
                             { icon: <Star size={32} />, title: "Chạm Đến Cảm Xúc", desc: "Mỗi dịch vụ đều xuất phát từ sự thấu hiểu và chân thành của đội ngũ nhân viên." },
                             { icon: <Award size={32} />, title: "Gout Thượng Lưu", desc: "Nghệ thuật thưởng lãm tinh tế trong từng bữa ăn, kiến trúc và tiện ích đi kèm." },
                         ].map((v, i) => (
-                            <div key={i} className={`p-12 bg-[#FDFBF7] rounded-[2.5rem] border border-gray-100 hover:border-amber-200 hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 group transition-all duration-1000 delay-${i*200} ${isVisible['values'] ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}>
+                            <div key={i} className={`p-12 bg-paper rounded-[2.5rem] border border-gray-100 hover:border-amber-200 hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 group transition-all duration-1000 delay-${i*200} ${isVisible['values'] ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}>
                                 <div className="text-amber-600 mb-8 p-4 bg-white rounded-2xl w-fit shadow-sm group-hover:bg-amber-600 group-hover:text-white transition-colors">
                                     {v.icon}
                                 </div>
@@ -203,24 +203,24 @@ const About = () => {
             </section>
 
             {/* 6. CTA */}
-            <section id="cta" className="py-32 bg-[#FDFBF7]">
+            <section id="cta" className="py-32 bg-paper">
                <div className="container mx-auto px-6">
                   <div className={`bg-white border border-gray-100 rounded-[3rem] p-12 md:p-24 text-center shadow-2xl relative overflow-hidden transition-all duration-1000 ${isVisible['cta'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
                      <div className="absolute top-0 left-0 w-32 h-32 bg-amber-500/5 rounded-full -ml-16 -mt-16"></div>
-                     <span className="text-amber-600 text-[10px] font-black uppercase tracking-[0.5em] mb-6 block">Kế hoạch cho chuyến đi</span>
+                     <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-6 block">Kế hoạch cho chuyến đi</span>
                      <h2 className="text-4xl md:text-7xl font-serif italic mb-12" style={{ fontFamily: "'Playfair Display', serif" }}>
                          Sẵn sàng trải nghiệm <br /> <span className="text-amber-600">đẳng cấp mới?</span>
                      </h2>
                      <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                         <button 
                             onClick={() => navigate('/rooms')}
-                            className="bg-[#1E293B] hover:bg-amber-600 text-white px-12 py-5 text-[10px] font-black uppercase tracking-[0.3em] transition-all rounded-full"
+                            className="bg-[#1E293B] hover:bg-amber-600 text-white px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
                         >
                             Đặt Phòng Ngay
                         </button>
                         <button 
                             onClick={() => navigate('/contact')}
-                            className="border border-[#1E293B] hover:bg-[#1E293B] hover:text-white text-[#1E293B] px-12 py-5 text-[10px] font-black uppercase tracking-[0.3em] transition-all rounded-full"
+                            className="border border-[#1E293B] hover:bg-[#1E293B] hover:text-white text-[#1E293B] px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
                         >
                             Liên Hệ Tư Vấn
                         </button>
@@ -241,4 +241,6 @@ const About = () => {
 };
 
 export default About;
+
+
 

@@ -89,7 +89,7 @@ const Dashboard = () => {
       { name: 'Đã hủy', value: statusCounts['cancelled'] || 0, color: '#ef4444' },
     ].filter(item => item.value > 0);
 
-    // 3. Hoạt động đặt phòng theo ngày (luôn hiện 7 ngày gần nhất cho bar chart)
+    // 3. Hoạt động đặt phòng theo ngày
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
@@ -109,24 +109,24 @@ const Dashboard = () => {
 
   const renderStatus = (status) => {
     const config = {
-      pending: { color: 'text-amber-400 border-amber-500/20 bg-amber-500/5', icon: <Clock size={12} />, text: 'Chờ duyệt' },
-      confirmed: { color: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5', icon: <CheckCircle size={12} />, text: 'Xác nhận' },
-      cancelled: { color: 'text-rose-400 border-rose-500/20 bg-rose-500/5', icon: <XCircle size={12} />, text: 'Đã hủy' },
-      completed: { color: 'text-blue-400 border-blue-500/20 bg-blue-500/5', icon: <Package size={12} />, text: 'Hoàn tất' }
+      pending: { color: 'text-amber-500 border-amber-500/30 bg-amber-50', icon: <Clock size={12} />, text: 'Chờ duyệt' },
+      confirmed: { color: 'text-emerald-500 border-emerald-500/30 bg-emerald-50', icon: <CheckCircle size={12} />, text: 'Xác nhận' },
+      cancelled: { color: 'text-rose-500 border-rose-500/30 bg-rose-50', icon: <XCircle size={12} />, text: 'Đã hủy' },
+      completed: { color: 'text-blue-500 border-blue-500/30 bg-blue-50', icon: <Package size={12} />, text: 'Hoàn tất' }
     };
     const s = config[status] || config.pending;
     return (
-      <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[8px] font-black uppercase tracking-widest ${s.color}`}>
+      <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${s.color}`}>
         {s.icon} {s.text}
       </span>
     );
   };
 
   const statCards = [
-    { title: 'Doanh thu tổng', value: `${stats.revenue.toLocaleString()}đ`, icon: <Wallet size={24} />, color: 'text-amber-400', bg: 'bg-amber-500/10', trend: 'đã xác thực' },
-    { title: 'Lượt Booking', value: stats.bookings, icon: <CalendarCheck size={24} />, color: 'text-emerald-400', bg: 'bg-emerald-500/10', trend: 'tổng giao dịch' },
-    { title: 'Phòng khả dụng', value: stats.availableRooms, icon: <Bed size={24} />, color: 'text-sky-400', bg: 'bg-sky-500/10', trend: `trên ${stats.rooms} phòng` },
-    { title: 'Hiệu suất', value: `${stats.rooms > 0 ? Math.round(( (stats.rooms - stats.availableRooms) / stats.rooms) * 100) : 0}%`, icon: <Activity size={24} />, color: 'text-purple-400', bg: 'bg-purple-500/10', trend: 'tỷ lệ lấp đầy' },
+    { title: 'Doanh thu tổng', value: `${stats.revenue.toLocaleString()}đ`, icon: <Wallet size={24} />, color: 'text-amber-500', bg: 'bg-amber-50', trend: 'đã xác thực' },
+    { title: 'Lượt Booking', value: stats.bookings, icon: <CalendarCheck size={24} />, color: 'text-emerald-500', bg: 'bg-emerald-50', trend: 'tổng giao dịch' },
+    { title: 'Phòng khả dụng', value: stats.availableRooms, icon: <Bed size={24} />, color: 'text-sky-500', bg: 'bg-sky-50', trend: `trên ${stats.rooms} phòng` },
+    { title: 'Hiệu suất', value: `${stats.rooms > 0 ? Math.round(( (stats.rooms - stats.availableRooms) / stats.rooms) * 100) : 0}%`, icon: <Activity size={24} />, color: 'text-purple-500', bg: 'bg-purple-50', trend: 'tỷ lệ lấp đầy' },
   ];
 
   if (loading) return (
@@ -135,31 +135,31 @@ const Dashboard = () => {
           <Activity className="animate-bounce text-amber-500" size={50} />
           <div className="absolute inset-0 bg-amber-500/20 blur-xl animate-pulse rounded-full"></div>
        </div>
-       <p className="text-amber-500 text-[10px] tracking-[0.5em] uppercase font-black animate-pulse">Phân tích dữ liệu hệ thống...</p>
+       <p className="text-amber-500 text-xs tracking-[0.15em] uppercase font-black animate-pulse font-sans">Đang tải dữ liệu...</p>
     </div>
   );
 
   return (
-    <AdminLayout title="Bảng điều khiển" subtitle="Hệ thống quản trị kinh doanh & Phân tích dữ liệu thời gian thực">
+    <AdminLayout title="Bảng điều khiển" subtitle="Hệ thống quản trị kinh doanh & Phân tích dữ liệu">
       <div className="space-y-8 pb-10">
         
         {/* --- STAT CARDS --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((item, idx) => (
-            <div key={idx} className="relative group bg-[#0a0a0a] border border-white/5 p-6 rounded-[2rem] hover:border-white/20 transition-luxury overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] rounded-full -mr-16 -mt-16 group-hover:bg-white/[0.05] transition-luxury"></div>
+            <div key={idx} className="relative group bg-white border border-slate-100 p-6 rounded-3xl hover:border-amber-500/30 transition-luxury overflow-hidden shadow-sm hover:shadow-soft">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full -mr-16 -mt-16 group-hover:bg-amber-50 transition-luxury"></div>
                
-               <div className="flex items-center gap-4 mb-4">
-                  <div className={`p-4 rounded-2xl ${item.bg} ${item.color} border border-white/5`}>
+               <div className="flex items-center gap-4 mb-4 relative z-10">
+                  <div className={`p-4 rounded-2xl ${item.bg} ${item.color}`}>
                      {item.icon}
                   </div>
-                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{item.title}</p>
+                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest font-sans">{item.title}</p>
                </div>
                
-               <div className="flex flex-col">
-                  <h4 className="text-3xl font-serif italic text-white mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{item.value}</h4>
-                  <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest flex items-center gap-1">
-                     <ArrowUpRight size={10} className="text-emerald-500" /> {item.trend}
+               <div className="flex flex-col relative z-10">
+                  <h4 className="text-3xl font-serif italic text-slate-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{item.value}</h4>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1 font-sans">
+                     <ArrowUpRight size={12} className="text-emerald-500" /> {item.trend}
                   </p>
                </div>
             </div>
@@ -170,25 +170,25 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Revenue Chart */}
-          <div className="lg:col-span-2 bg-[#0a0a0a] border border-white/5 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-2xl">
+          <div className="lg:col-span-2 bg-white border border-slate-100 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-soft transition-luxury">
             <div className="flex items-center justify-between mb-8">
                <div>
-                  <h3 className="text-xl font-serif italic text-white flex items-center gap-3">
+                  <h3 className="text-xl font-serif italic text-slate-900 flex items-center gap-3">
                     <TrendingUp className="text-amber-500" size={20} />
                     Biểu đồ doanh thu
                   </h3>
-                  <p className="text-[9px] text-gray-500 uppercase tracking-widest font-bold mt-1 ml-8">Phát sinh trong {chartDays} ngày gần nhất</p>
+                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-black mt-1 ml-8 font-sans">Phát sinh trong {chartDays} ngày gần nhất</p>
                </div>
-               <div className="flex bg-white/5 p-1 rounded-xl border border-white/5">
+               <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
                   <button 
                     onClick={() => setChartDays(7)}
-                    className={`px-3 py-1.5 text-[9px] font-black uppercase rounded-lg transition-all ${chartDays === 7 ? 'text-amber-500 bg-amber-500/10' : 'text-gray-600 hover:text-gray-400'}`}
+                    className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all font-sans ${chartDays === 7 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     7 Ngày
                   </button>
                   <button 
                     onClick={() => setChartDays(30)}
-                    className={`px-3 py-1.5 text-[9px] font-black uppercase rounded-lg transition-all ${chartDays === 30 ? 'text-amber-500 bg-amber-500/10' : 'text-gray-600 hover:text-gray-400'}`}
+                    className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all font-sans ${chartDays === 30 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     Tháng
                   </button>
@@ -200,40 +200,40 @@ const Dashboard = () => {
                 <AreaChart data={revenueChartData}>
                   <defs>
                     <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#b59a6d" stopOpacity={0.2}/>
+                      <stop offset="95%" stopColor="#b59a6d" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                   <XAxis 
                     dataKey="name" 
-                    stroke="#4b5563" 
+                    stroke="#94a3b8" 
                     fontSize={10} 
                     tickLine={false} 
                     axisLine={false}
-                    tick={{ fontWeight: 'bold' }}
+                    tick={{ fontWeight: 'bold', fontFamily: 'Inter' }}
                   />
                   <YAxis 
-                    stroke="#4b5563" 
+                    stroke="#94a3b8" 
                     fontSize={10} 
                     tickLine={false} 
                     axisLine={false}
                     tickFormatter={(value) => `${value / 1000000}M`}
-                    tick={{ fontWeight: 'bold' }}
+                    tick={{ fontWeight: 'bold', fontFamily: 'Inter' }}
                   />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '15px', color: '#fff' }}
-                    itemStyle={{ color: '#f59e0b', fontSize: '11px', fontWeight: 'bold' }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #f1f5f9', borderRadius: '15px', color: '#0f172a', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}
+                    itemStyle={{ color: '#b59a6d', fontSize: '12px', fontWeight: 'bold', fontFamily: 'Inter' }}
                   />
-                  <Area type="monotone" dataKey="revenue" stroke="#f59e0b" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
+                  <Area type="monotone" dataKey="revenue" stroke="#b59a6d" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Status Pie Chart */}
-          <div className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-2xl">
-              <h3 className="text-xl font-serif italic text-white flex items-center gap-3 mb-8">
+          <div className="bg-white border border-slate-100 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-soft transition-luxury">
+              <h3 className="text-xl font-serif italic text-slate-900 flex items-center gap-3 mb-8">
                 <PieChartIcon className="text-emerald-500" size={20} />
                 Trạng thái đơn
               </h3>
@@ -255,24 +255,25 @@ const Dashboard = () => {
                       ))}
                     </Pie>
                     <Tooltip 
-                       contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                       contentStyle={{ backgroundColor: '#fff', border: '1px solid #f1f5f9', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                       itemStyle={{ fontWeight: 'bold', fontFamily: 'Inter' }}
                     />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                   <p className="text-2xl font-serif italic text-white">{allBookings.length}</p>
-                   <p className="text-[8px] text-gray-500 uppercase font-black">Tổng đơn</p>
+                   <p className="text-2xl font-serif italic text-slate-900">{allBookings.length}</p>
+                   <p className="text-[9px] text-slate-400 uppercase font-black font-sans">Tổng đơn</p>
                 </div>
               </div>
 
-              <div className="space-y-3 mt-6">
+              <div className="space-y-3 mt-8">
                  {statusChartData.map((item, idx) => (
                    <div key={idx} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></div>
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{item.name}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></div>
+                        <span className="text-xs text-slate-500 font-bold uppercase tracking-widest font-sans">{item.name}</span>
                       </div>
-                      <span className="text-xs font-bold text-white">{item.value} đơn</span>
+                      <span className="text-xs font-black text-slate-900 font-sans">{item.value} đơn</span>
                    </div>
                  ))}
               </div>
@@ -284,31 +285,31 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            
            {/* Recent Transactions */}
-           <div className="bg-[#0a0a0a] border border-white/5 p-8 pb-4 rounded-[2.5rem] shadow-2xl">
-              <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-6">
-                <h3 className="text-xl font-serif italic text-white flex items-center gap-3">
+           <div className="bg-white border border-slate-100 p-8 pb-4 rounded-[2.5rem] shadow-sm hover:shadow-soft transition-luxury">
+              <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-6">
+                <h3 className="text-xl font-serif italic text-slate-900 flex items-center gap-3">
                   <Sparkles className="text-amber-500" size={20} />
                   Giao dịch mới
                 </h3>
-                <button className="text-[10px] text-amber-500 hover:text-amber-400 uppercase font-black tracking-widest transition-all">Tất cả</button>
+                <button className="text-[10px] text-amber-600 hover:text-amber-500 uppercase font-black tracking-widest transition-all font-sans">Tất cả</button>
               </div>
 
               <div className="space-y-4">
                 {recentBookings.map((b, idx) => (
-                  <div key={b.id || idx} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] transition-all group">
+                  <div key={b.id || idx} className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all group">
                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-white font-black text-xs border border-white/10 group-hover:scale-110 transition-luxury">
+                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-900 font-black text-xs border border-slate-200 group-hover:scale-110 group-hover:border-amber-200 transition-luxury shadow-sm">
                            {(b.user?.fullName || b.customer?.fullName || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                           <p className="text-xs font-bold text-white truncate max-w-[120px]">{b.user?.fullName || 'Khách vãng lai'}</p>
-                           <p className="text-[9px] text-gray-600 font-bold tracking-widest mt-0.5">P.{b.room?.roomNumber || '---'}</p>
+                           <p className="text-xs font-bold text-slate-900 truncate max-w-[120px] font-sans">{b.user?.fullName || 'Khách vãng lai'}</p>
+                           <p className="text-[10px] text-slate-500 font-bold tracking-widest mt-0.5 font-sans">P.{b.room?.roomNumber || '---'}</p>
                         </div>
                      </div>
                      <div className="text-right flex items-center gap-6">
                         <div>
-                           <p className="text-xs font-black text-amber-500">{Number(b.totalPrice || 0).toLocaleString()} <span className="text-[8px] text-gray-600">Đ</span></p>
-                           <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
+                           <p className="text-xs font-black text-slate-900 font-sans">{Number(b.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-slate-400">Đ</span></p>
+                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5 font-sans">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
                         </div>
                         <div className="w-24 flex justify-end">
                           {renderStatus(b.status)}
@@ -320,19 +321,19 @@ const Dashboard = () => {
            </div>
 
            {/* Weekly Counts Bar Chart */}
-           <div className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[2.5rem] shadow-2xl">
-              <h3 className="text-xl font-serif italic text-white flex items-center gap-3 mb-8">
+           <div className="bg-white border border-slate-100 p-8 rounded-[2.5rem] shadow-sm hover:shadow-soft transition-luxury">
+              <h3 className="text-xl font-serif italic text-slate-900 flex items-center gap-3 mb-8">
                 <BarChart3 className="text-purple-500" size={20} />
                 Mật độ đặt phòng
               </h3>
               <div className="h-[300px] w-full">
                  <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={weeklyChartData}>
-                       <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                       <XAxis dataKey="name" stroke="#4b5563" fontSize={10} tickLine={false} axisLine={false} />
-                       <YAxis stroke="#4b5563" fontSize={10} tickLine={false} axisLine={false} />
-                       <Tooltip cursor={{ fill: '#ffffff02' }} contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }} />
-                       <Bar dataKey="counts" fill="#8b5cf6" radius={[6, 6, 0, 0]} barSize={25} />
+                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                       <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tick={{fontFamily: 'Inter', fontWeight: 'bold'}} />
+                       <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tick={{fontFamily: 'Inter', fontWeight: 'bold'}} />
+                       <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ backgroundColor: '#fff', border: '1px solid #f1f5f9', borderRadius: '12px' }} />
+                       <Bar dataKey="counts" fill="#b59a6d" radius={[6, 6, 0, 0]} barSize={25} />
                     </BarChart>
                  </ResponsiveContainer>
               </div>
@@ -345,4 +346,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard;

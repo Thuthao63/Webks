@@ -49,12 +49,12 @@ const Promotions = () => {
     ];
 
     return (
-        <div className="bg-[#FDFBF7] min-h-screen pt-44 pb-32">
+        <div className="bg-paper min-h-screen pt-44 pb-32">
             <div className="max-w-7xl mx-auto px-6">
                 
                 {/* Header */}
                 <div className="text-center mb-24 max-w-3xl mx-auto space-y-6">
-                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-amber-600/10 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-amber-600/10 text-amber-600 rounded-full text-xs font-black uppercase tracking-widest">
                         <Gift size={14} /> Đặc quyền thượng khách
                     </div>
                     <h1 className="text-5xl md:text-8xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -83,14 +83,14 @@ const Promotions = () => {
                                     />
                                     <div className="absolute top-8 left-8 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl flex items-center gap-3 text-amber-600 shadow-xl">
                                         {offer.icon}
-                                        <span className="text-[10px] font-black uppercase tracking-widest">{offer.tag}</span>
+                                        <span className="text-xs font-black uppercase tracking-widest">{offer.tag}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Content Side */}
                             <div className="w-full lg:w-2/5 space-y-8">
-                                <span className="text-gray-400 text-[10px] font-black uppercase tracking-[0.4em]">Limited Time Offer</span>
+                                <span className="text-gray-400 text-xs font-black uppercase tracking-[0.1em]">Limited Time Offer</span>
                                 <h3 className="text-4xl md:text-5xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
                                     {offer.title}
                                 </h3>
@@ -100,7 +100,7 @@ const Promotions = () => {
                                 
                                 <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
                                     <div>
-                                        <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Giá trọn gói từ</p>
+                                        <p className="text-sm text-gray-400 font-black uppercase tracking-widest mb-1">Giá trọn gói từ</p>
                                         <p className="text-3xl font-serif italic text-amber-600">{offer.price} <span className="text-xs not-italic text-gray-300 ml-2 font-sans font-black">VNĐ</span></p>
                                     </div>
                                     <button 
@@ -131,7 +131,7 @@ const Promotions = () => {
                             placeholder="Email của bạn..." 
                             className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white outline-none focus:border-amber-500/50 transition-all text-xs font-bold tracking-widest"
                         />
-                        <button className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl">
+                        <button className="bg-amber-600 hover:bg-white text-black px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-xl">
                             Gửi
                         </button>
                     </div>
@@ -142,3 +142,5 @@ const Promotions = () => {
 };
 
 export default Promotions;
+
+

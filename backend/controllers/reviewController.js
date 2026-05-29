@@ -1,6 +1,7 @@
 const Review = require('../models/Review');
 const User = require('../models/User');
 const Room = require('../models/Room');
+const { Op } = require('sequelize');
 
 // ==========================================
 // 1. TẠO ĐÁNH GIÁ MỚI
@@ -85,5 +86,25 @@ exports.deleteReview = async (req, res) => {
     } catch (error) {
         console.error("❌ Lỗi xóa đánh giá:", error);
         res.status(500).json({ message: "Lỗi Server khi xóa đánh giá" });
+    }
+};
+
+// ==========================================
+// 5. LẤY ĐÁNH GIÁ NỔI BẬT (Trang chủ)
+// ==========================================
+exports.getFeaturedReviews = async (req, res) => {
+    try {
+        const reviews = await Review.findAll({
+            where: { rating: { [Op.gte]: 4 } },
+            include: [
+                { model: User, as: 'reviewer', attributes: ['id', 'fullName', 'email'] }
+            ],
+            order: [['createdAt', 'DESC']],
+            limit: 3
+        });
+        res.status(200).json(reviews);
+    } catch (error) {
+        console.error("❌ Lỗi lấy đánh giá nổi bật:", error);
+        res.status(500).json({ message: "Lỗi Server khi tải đánh giá nổi bật" });
     }
 };
