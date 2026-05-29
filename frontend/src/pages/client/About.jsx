@@ -36,7 +36,7 @@ const About = () => {
     ];
 
     return (
-        <div className="bg-paper text-[#1E293B] selection:bg-amber-600 selection:text-white font-sans min-h-screen">
+        <div className="bg-paper text-slate-900 selection:bg-amber-600 selection:text-white font-sans min-h-screen">
 
             {/* 1. HERO BANNER - LIGHT & AIRY */}
             <section id="hero" className="relative h-[85vh] flex items-center overflow-hidden">
@@ -65,7 +65,7 @@ const About = () => {
                         <div className="flex items-center gap-8">
                             <button 
                                 onClick={() => navigate('/rooms')}
-                                className="bg-[#1E293B] hover:bg-amber-600 text-white px-10 py-4 text-xs font-black uppercase tracking-widest transition-all rounded-full flex items-center gap-3 shadow-xl"
+                                className="bg-slate-900 hover:bg-amber-600 text-white px-10 py-4 text-xs font-black uppercase tracking-widest transition-all rounded-full flex items-center gap-3 shadow-xl"
                             >
                                 {t('about.explore')} <ArrowRight size={16} />
                             </button>
@@ -142,7 +142,7 @@ const About = () => {
                       <div key={idx} className={`group transition-all duration-1000 delay-${idx*200} ${isVisible['team'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
                          <div className="relative mb-8 overflow-hidden rounded-[2rem] aspect-[4/5] shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
                             <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#1E293B]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
                                <div className="flex gap-4 mb-2">
                                   <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-amber-600 transition-colors cursor-pointer"><Globe size={14} /></div>
                                   <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-amber-600 transition-colors cursor-pointer"><Mail size={14} /></div>
@@ -189,7 +189,7 @@ const About = () => {
             </section>
 
             {/* 5. QUOTE SECTION */}
-            <section id="quote" className="py-40 bg-[#1E293B] text-white relative flex items-center justify-center overflow-hidden">
+            <section id="quote" className="py-40 bg-slate-900 text-white relative flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                    <img src="https://images.unsplash.com/photo-1549294413-26f195200c16?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Texture" />
                 </div>
@@ -216,13 +216,13 @@ const About = () => {
                      <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                         <button 
                             onClick={() => navigate('/rooms')}
-                            className="bg-[#1E293B] hover:bg-amber-600 text-white px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
+                            className="bg-slate-900 hover:bg-amber-600 text-white px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
                         >
                             {t('about.book_now')}
                         </button>
                         <button 
                             onClick={() => navigate('/contact')}
-                            className="border border-[#1E293B] hover:bg-[#1E293B] hover:text-white text-[#1E293B] px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
+                            className="border border-slate-900 hover:bg-slate-900 hover:text-white text-slate-900 px-12 py-5 text-xs font-black uppercase tracking-widest transition-all rounded-full"
                         >
                             {t('about.contact')}
                         </button>

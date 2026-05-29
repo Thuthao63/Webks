@@ -16,7 +16,6 @@ const ContactFab = () => {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      // SỬA LỖI: Endpoint đúng là /contacts thay vì /auth/contact
       await axiosClient.post('/contacts', data);
 
       Swal.fire({
@@ -53,57 +52,60 @@ const ContactFab = () => {
       <button
         onClick={() => setIsOpen(true)}
         aria-label={t('contact_fab.open_assistant')}
-        className="fixed bottom-8 right-8 z-50 rounded-full p-3 bg-[#0a0a0a] text-amber-500 shadow-soft hover:translate-y-[-2px] transition-transform"
+        className="fixed bottom-8 right-8 z-[9999] rounded-full p-4 bg-slate-900 text-amber-500 shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border border-slate-800"
       >
         <MessageSquare size={24} />
       </button>
 
       {/* --- MODAL CHAT SANG TRỌNG --- */}
       {isOpen && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setIsOpen(false)}></div>
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6">
+          <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setIsOpen(false)}></div>
 
-          <div className="relative bg-white w-full max-w-md rounded-xl shadow-soft overflow-hidden z-10">
-            <div className="p-6">
-              <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-gray-500">
-                <X size={20} />
-              </button>
+          <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-300 max-h-[95vh] flex flex-col">
+            <button onClick={() => setIsOpen(false)} className="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition-colors z-20 bg-slate-50 p-2 rounded-full">
+              <X size={20} />
+            </button>
 
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-semibold text-slate-900 mb-1">{t('contact_fab.send_message')}</h3>
-                <p className="text-sm text-slate-500">{t('contact_fab.leave_info')}</p>
+            <div className="overflow-y-auto custom-scrollbar p-8 sm:p-10">
+              <div className="text-center mb-8 relative">
+                <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
+                   <MessageSquare className="text-amber-500" size={28} />
+                </div>
+                <h3 className="text-3xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact_fab.send_message')}</h3>
+                <p className="text-xs uppercase tracking-widest text-slate-400 font-bold">{t('contact_fab.leave_info')}</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">{t('contact_fab.your_name')}</label>
-                    <input name="name" type="text" placeholder={t('contact_fab.placeholder_name')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="space-y-2 group">
+                    <label className="text-[10px] text-slate-400 uppercase tracking-widest font-black ml-2 group-focus-within:text-amber-600 transition-colors">{t('contact_fab.your_name')}</label>
+                    <input name="name" type="text" placeholder={t('contact_fab.placeholder_name')} required className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:border-amber-500 focus:bg-white transition-all text-slate-900 font-medium placeholder-slate-300" />
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-xs text-gray-500 uppercase tracking-widest font-black ml-4">{t('contact_fab.phone')}</label>
-                    <input name="phone" type="tel" placeholder={t('contact_fab.placeholder_phone')} className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+                  <div className="space-y-2 group">
+                    <label className="text-[10px] text-slate-400 uppercase tracking-widest font-black ml-2 group-focus-within:text-amber-600 transition-colors">{t('contact_fab.phone')}</label>
+                    <input name="phone" type="tel" placeholder={t('contact_fab.placeholder_phone')} className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:border-amber-500 focus:bg-white transition-all text-slate-900 font-medium placeholder-slate-300" />
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">{t('contact_fab.email_address')}</label>
-                  <input name="email" type="email" placeholder={t('contact_fab.placeholder_email')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500" />
+                <div className="space-y-2 group">
+                  <label className="text-[10px] text-slate-400 uppercase tracking-widest font-black ml-2 group-focus-within:text-amber-600 transition-colors">{t('contact_fab.email_address')}</label>
+                  <input name="email" type="email" placeholder={t('contact_fab.placeholder_email')} required className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:border-amber-500 focus:bg-white transition-all text-slate-900 font-medium placeholder-slate-300" />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-xs text-gray-600 uppercase tracking-widest font-medium ml-1">{t('contact_fab.consult_content')}</label>
-                  <textarea name="message" rows="4" placeholder={t('contact_fab.placeholder_message')} required className="w-full border border-gray-200 p-3 rounded-md text-sm outline-none focus:border-amber-500 resize-none"></textarea>
+                <div className="space-y-2 group">
+                  <label className="text-[10px] text-slate-400 uppercase tracking-widest font-black ml-2 group-focus-within:text-amber-600 transition-colors">{t('contact_fab.consult_content')}</label>
+                  <textarea name="message" rows="3" placeholder={t('contact_fab.placeholder_message')} required className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:border-amber-500 focus:bg-white transition-all resize-none text-slate-900 font-medium placeholder-slate-300"></textarea>
                 </div>
 
-                <button disabled={loading} type="submit" className="w-full bg-amber-500 text-white py-3 rounded-md font-semibold">
-                  {loading ? t('contact_fab.connecting') : t('contact_fab.send_to_butler')}
+                <button disabled={loading} type="submit" className="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-slate-900 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] flex items-center justify-center gap-2">
+                  {loading ? t('contact_fab.connecting') : t('contact_fab.send_to_butler')} <Send size={14} />
                 </button>
               </form>
 
-              <div className="mt-6 text-center text-sm text-slate-500">
-                <div className="mb-2">090 123 456</div>
-                <div>Concierge@uynam.com</div>
+              <div className="mt-8 pt-6 border-t border-slate-100 flex justify-center items-center gap-8 text-xs font-bold text-slate-400">
+                <div className="flex items-center gap-2 hover:text-amber-600 transition-colors cursor-pointer"><Phone size={14} /> 090 123 456</div>
+                <div className="flex items-center gap-2 hover:text-amber-600 transition-colors cursor-pointer"><Mail size={14} /> Concierge@uynam.com</div>
               </div>
             </div>
           </div>

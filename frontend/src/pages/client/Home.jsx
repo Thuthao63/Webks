@@ -276,7 +276,7 @@ const Home = () => {
                {/* Background Image with Parallax effect */}
                <div className="absolute inset-0 z-0">
                   <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80" alt="Newsletter Background" className="w-full h-full object-cover opacity-[0.15] group-hover:scale-110 transition-transform duration-[3000ms]" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#1E293B] to-slate-900/95 mix-blend-multiply"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-900/95 mix-blend-multiply"></div>
                </div>
                
                <div className="relative z-10 p-12 md:p-24 flex flex-col items-center text-center">
@@ -332,11 +332,11 @@ const Home = () => {
                   </div>
                   <p className="text-gray-600 italic leading-loose text-sm mb-12 relative z-10">"{rev.comment}"</p>
                   <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1E293B] to-[#334155] flex items-center justify-center text-white font-black text-sm shadow-xl">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-slate-900 to-[#334155] flex items-center justify-center text-white font-black text-sm shadow-xl">
                       {rev.reviewer?.fullName?.charAt(0).toUpperCase() || 'G'}
                     </div>
                     <div>
-                      <p className="text-sm font-black uppercase tracking-widest text-[#1E293B]">{rev.reviewer?.fullName || 'Khách hàng'}</p>
+                      <p className="text-sm font-black uppercase tracking-widest text-slate-900">{rev.reviewer?.fullName || 'Khách hàng'}</p>
                       <p className="text-sm text-amber-600 uppercase tracking-widest font-bold italic">Elite Member</p>
                     </div>
                   </div>

@@ -30,7 +30,7 @@ const Gallery = () => {
                 {/* Header */}
                 <div className="text-center mb-20 space-y-4">
                     <span className="text-amber-600 text-sm font-black uppercase tracking-[0.15em] block">Visual Journey</span>
-                    <h1 className="text-5xl md:text-7xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Thư viện <span className="text-amber-600 not-italic font-bold">Hình Ảnh</span>
                     </h1>
                 </div>
@@ -43,7 +43,7 @@ const Gallery = () => {
                             onClick={() => setFilter(cat)}
                             className={`px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
                                 filter === cat 
-                                ? 'bg-[#1E293B] text-white shadow-xl' 
+                                ? 'bg-slate-900 text-white shadow-xl' 
                                 : 'bg-white text-gray-500 border border-gray-100 hover:border-amber-600 hover:text-amber-600'
                             }`}
                         >

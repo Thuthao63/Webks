@@ -77,7 +77,7 @@ const Promotions = () => {
                     <div className="inline-flex items-center gap-3 px-4 py-2 bg-amber-600/10 text-amber-600 rounded-full text-xs font-black uppercase tracking-widest">
                         <Gift size={14} /> {t('promotions.guest_privilege')}
                     </div>
-                    <h1 className="text-5xl md:text-8xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h1 className="text-5xl md:text-8xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
                         {t('promotions.hero_title')} <span className="text-amber-600 not-italic font-bold">{t('promotions.hero_exclusive')}</span>
                     </h1>
                     <p className="text-gray-500 italic text-base leading-relaxed">
@@ -111,7 +111,7 @@ const Promotions = () => {
                             {/* Content Side */}
                             <div className="w-full lg:w-2/5 space-y-8">
                                 <span className="text-gray-400 text-xs font-black uppercase tracking-[0.1em]">{t('promotions.limited_time')}</span>
-                                <h3 className="text-4xl md:text-5xl font-serif italic text-[#1E293B]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                <h3 className="text-4xl md:text-5xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
                                     {offer.title}
                                 </h3>
                                 <p className="text-gray-600 leading-loose text-sm md:text-base font-medium italic">
@@ -125,7 +125,7 @@ const Promotions = () => {
                                     </div>
                                     <button 
                                         onClick={() => navigate('/rooms')}
-                                        className="w-14 h-14 rounded-2xl bg-[#1E293B] text-white flex items-center justify-center hover:bg-amber-600 transition-all shadow-xl hover:-translate-x-2"
+                                        className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center hover:bg-amber-600 transition-all shadow-xl hover:-translate-x-2"
                                     >
                                         <ArrowRight size={24} />
                                     </button>
@@ -136,7 +136,7 @@ const Promotions = () => {
                 </div>
 
                 {/* Newsletter Box Integration */}
-                <div className="mt-40 bg-[#1E293B] rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+                <div className="mt-40 bg-slate-900 rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[120px] -mr-64 -mt-64"></div>
                     <Sparkles size={48} className="text-amber-500 mx-auto mb-10 opacity-50" />
                     <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
