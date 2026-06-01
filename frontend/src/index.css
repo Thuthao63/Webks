@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @theme {
   --color-amber-50: #fcfaf6;
@@ -18,7 +18,7 @@
   --color-cream: #F9F8F6;
   
   --font-serif: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "Montserrat", sans-serif;
   
   --shadow-luxury: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 20px rgba(181, 154, 109, 0.1);
   --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 0, 0, 0.03);
@@ -71,4 +71,20 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Admin Table Scrollbar */
+.admin-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+.admin-scrollbar::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 8px;
+}
+.admin-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+.admin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

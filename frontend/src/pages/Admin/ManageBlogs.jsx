@@ -109,7 +109,7 @@ const ManageBlogs = () => {
                         </div>
                         <div>
                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tổng bài viết</p>
-                            <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{articles.length} bài đăng</p>
+                            <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{articles.length} bài đăng</p>
                         </div>
                     </div>
 
@@ -186,7 +186,7 @@ const ManageBlogs = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2 className="text-3xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                                 {editId ? 'Cập nhật' : 'Soạn'} <span className="text-amber-500">{editId ? 'Bài Viết' : 'Bài Mới'}</span>
                             </h2>
                             <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Lan tỏa phong cách sống thượng lưu</p>

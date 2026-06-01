@@ -17,7 +17,7 @@ const NotFound = () => {
                 
                 {/* 404 Visual */}
                 <div className="relative inline-block">
-                    <h1 className="text-[12rem] md:text-[20rem] font-serif italic leading-none opacity-10 select-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h1 className="text-[12rem] md:text-[20rem] font-serif italic leading-none opacity-10 select-none">
                         404
                     </h1>
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -29,7 +29,7 @@ const NotFound = () => {
 
                 {/* Text Content */}
                 <div className="space-y-6">
-                    <h2 className="text-4xl md:text-6xl font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h2 className="text-4xl md:text-6xl font-serif italic">
                         Hành trình <span className="text-amber-500 not-italic">bị gián đoạn</span>
                     </h2>
                     <p className="text-gray-500 text-xs md:text-sm uppercase tracking-[0.1em] leading-loose max-w-md mx-auto font-medium">
@@ -57,7 +57,7 @@ const NotFound = () => {
                 <div className="pt-20 flex flex-col items-center gap-4 opacity-40">
                     <div className="w-[1px] h-12 bg-gradient-to-b from-transparent to-amber-500"></div>
                     <div className="flex flex-col items-center">
-                        <span className="text-xl font-serif tracking-widest uppercase italic" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+                        <span className="text-xl font-serif tracking-widest uppercase italic">Uy Nam</span>
                         <span className="text-[10px] tracking-wider text-amber-500 uppercase font-black">Private Collection</span>
                     </div>
                 </div>

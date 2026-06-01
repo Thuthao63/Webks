@@ -25,7 +25,7 @@ export default {
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Montserrat', 'sans-serif'],
       },
       boxShadow: {
         luxury: '0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 20px rgba(16, 185, 129, 0.1)',

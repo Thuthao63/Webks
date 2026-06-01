@@ -65,7 +65,7 @@ const Contact = () => {
          </div>
          <div className="relative z-20 text-center px-6 mt-20 animate-in fade-in zoom-in duration-1000 max-w-4xl">
             <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] mb-8 block">{t('contact.butler_service')}</span>
-            <h1 className="text-6xl md:text-[7rem] mb-6 italic text-slate-100 drop-shadow-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h1 className="text-6xl md:text-[7rem] mb-6 italic text-slate-100 drop-shadow-2xl">
               {t('contact.connect')} <span className="text-amber-500 font-bold not-italic">{t('contact.dedicated')}</span>
             </h1>
             <p className="text-slate-200 text-xs md:text-xs uppercase tracking-[0.15em] max-w-xl mx-auto leading-loose bg-black/10 backdrop-blur-md py-4 px-10 rounded-full border border-white/5">
@@ -80,7 +80,7 @@ const Contact = () => {
           {/* INFO & MAP */}
           <div className="space-y-16 animate-in fade-in slide-in-from-left-10 duration-1000">
              <div className="space-y-8">
-                 <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.contact_info')} <br/> {t('contact.contact_info_highlight')}</h2>
+                 <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900">{t('contact.contact_info')} <br/> {t('contact.contact_info_highlight')}</h2>
                  <p className="text-slate-500 leading-relaxed text-base font-medium italic font-sans">
                    {t('contact.contact_desc')}
                  </p>
@@ -114,7 +114,7 @@ const Contact = () => {
                   <div className="w-24 h-24 rounded-full border border-amber-500 flex items-center justify-center text-amber-500 mb-10 shadow-lg shadow-amber-500/10">
                      <CheckCircle size={40} strokeWidth={1} />
                   </div>
-                  <h3 className="text-4xl font-serif italic mb-4 text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.mail_sent')}</h3>
+                  <h3 className="text-4xl font-serif italic mb-4 text-slate-900">{t('contact.mail_sent')}</h3>
                   <p className="text-slate-500 font-medium italic mb-12 font-sans">{t('contact.mail_sent_desc')}</p>
                   <button 
                     onClick={() => setSuccess(false)} 
@@ -126,7 +126,7 @@ const Contact = () => {
              ) : (
                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                   <div className="mb-10 text-center">
-                     <h3 className="text-3xl font-serif italic text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>{t('contact.leave_message')}</h3>
+                     <h3 className="text-3xl font-serif italic text-slate-900 mb-3">{t('contact.leave_message')}</h3>
                      <p className="text-sm text-slate-500 font-sans">{t('contact.leave_message_desc')}</p>
                   </div>
                   

@@ -69,7 +69,7 @@ const ManageContacts = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-100 p-4 rounded-3xl">
           <div className="flex items-center gap-6 pl-2">
              <div className="flex items-center gap-2">
-                <span className="text-4xl font-serif italic text-amber-500 leading-none drop-shadow-md" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <span className="text-4xl font-serif italic text-amber-500 leading-none drop-shadow-md">
                   {contacts.filter(c => c.status === 'Pending').length}
                 </span>
                 <div className="flex flex-col">
@@ -80,7 +80,7 @@ const ManageContacts = () => {
              <div className="h-8 w-px bg-slate-50" />
              <div>
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tổng lưu trữ</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{contacts.length} hội thoại</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{contacts.length} hội thoại</p>
              </div>
           </div>
           <button onClick={fetchContacts} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 rounded-2xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all">

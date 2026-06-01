@@ -31,7 +31,7 @@ const Blog = () => {
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16 space-y-4">
                     <span className="text-amber-600 text-xs font-black uppercase tracking-[0.2em] block">{t('blog.subtitle')}</span>
-                    <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900">
                         {t('blog.title_main')} <span className="not-italic text-amber-500">{t('blog.title_highlight')}</span>
                     </h1>
                     <p className="text-slate-500 max-w-2xl mx-auto pt-4">{t('blog.desc')}</p>

@@ -281,7 +281,7 @@ const ManageBookings = () => {
         <div className="space-y-8 pb-10">
           
           {/* Summary Stats Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { label: 'Tổng đơn hàng', value: bookings.length, icon: <Package size={20}/>, color: 'blue' },
               { label: 'Đang lưu trú', value: bookings.filter(b => b.status === 'confirmed').length, icon: <Bed size={20}/>, color: 'emerald' },
@@ -290,7 +290,7 @@ const ManageBookings = () => {
               <div key={i} className="bg-white border border-slate-100 p-5 rounded-3xl flex items-center justify-between">
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{stat.label}</p>
-                  <p className="text-3xl font-serif italic text-slate-900 leading-none mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
+                  <p className="text-3xl font-serif italic text-slate-900 leading-none mt-2">{stat.value}</p>
                 </div>
                 <div className={`w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400`}>
                    {stat.icon}
@@ -368,7 +368,7 @@ const ManageBookings = () => {
                         {renderStatus(booking.status)}
                       </td>
                       <td className="px-8 py-5 text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-30 group-hover:opacity-100 transition-all">
+                        <div className="flex items-center justify-end gap-2 opacity-30 group-hover:opacity-100 transition-all whitespace-nowrap">
                           {booking.status === 'pending' && (
                             <>
                               <button onClick={() => updateStatus(booking.id, 'confirmed')} className="p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-black transition-all">

@@ -122,7 +122,7 @@ const RoomDetails = () => {
                             <div className="flex items-center gap-3 text-amber-500 uppercase tracking-[0.15em] text-xs font-black italic font-sans">
                                 <Star size={14} fill="currentColor" /> Luxury Collection
                             </div>
-                            <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900 leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900 leading-tight">
                                 {t('room_details.room_prefix')} <span className="text-amber-500 not-italic">{room.roomNumber}</span>
                             </h1>
                             <p className="text-slate-500 text-lg leading-relaxed font-medium italic font-sans">
@@ -153,11 +153,11 @@ const RoomDetails = () => {
                                 </p>
                                 <div className="flex items-baseline gap-4">
                                     {discount && (
-                                        <p className="text-xl text-slate-300 line-through font-serif italic font-sans" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                        <p className="text-xl text-slate-300 line-through font-serif italic font-sans">
                                             {Number(details.price || 0).toLocaleString()}
                                         </p>
                                     )}
-                                    <p className="text-5xl text-amber-500 font-serif italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                    <p className="text-5xl text-amber-500 font-serif italic">
                                         {(Number(details.price || 0) * (discount ? (1 - discount.discountPercent / 100) : 1)).toLocaleString()}
                                         <span className="text-xs text-slate-400 not-italic uppercase font-black tracking-widest ml-4 font-sans">{t('room_details.currency_per_night')}</span>
                                     </p>
@@ -202,7 +202,7 @@ const RoomDetails = () => {
                     <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-50 pb-12 mb-16 gap-10">
                         <div className="space-y-6">
                             <span className="text-amber-500 text-sm font-black uppercase tracking-[0.15em] block font-sans">{t('room_details.customer_reviews')}</span>
-                            <h3 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            <h3 className="text-5xl md:text-7xl font-serif italic text-slate-900">
                                 {t('room_details.inspiration')} <span className="not-italic text-amber-500">{t('room_details.stay')}</span>
                             </h3>
                             <p className="text-slate-400 text-xs uppercase tracking-widest font-black italic flex items-center gap-3 font-sans">
@@ -212,7 +212,7 @@ const RoomDetails = () => {
                         </div>
                         {reviews.length > 0 && (
                             <div className="bg-slate-50 px-10 py-8 rounded-[2rem] border border-slate-100 flex items-center gap-8 shadow-sm">
-                                <span className="text-6xl text-amber-500 font-serif italic leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                <span className="text-6xl text-amber-500 font-serif italic leading-none">
                                     {(reviews.reduce((a, b) => a + b.rating, 0) / reviews.length).toFixed(1)}
                                 </span>
                                 <div className="border-l border-amber-500/20 pl-8 space-y-2">
@@ -259,7 +259,7 @@ const RoomDetails = () => {
                     <div className="mt-16 pt-16 border-t border-slate-100">
                         {user ? (
                             <form onSubmit={handleReviewSubmit} className="bg-cream p-10 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-8">
-                                <h4 className="text-2xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                <h4 className="text-2xl font-serif italic text-slate-900 mb-6">
                                     {t('room_details.share_experience')}
                                 </h4>
                                 <div className="space-y-4">

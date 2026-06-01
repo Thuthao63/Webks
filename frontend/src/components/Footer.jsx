@@ -37,12 +37,12 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-5 group w-fit">
               <div className="relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-all duration-500 group-hover:-translate-y-0.5">
                 <div className="absolute inset-[1.5px] bg-white rounded-[6.5px] flex items-center justify-center overflow-hidden">
-                   <span className="text-amber-500 font-serif text-xl tracking-tighter" style={{ fontFamily: "'Playfair Display', serif" }}>UN</span>
+                   <span className="text-amber-500 font-serif text-xl tracking-tighter">UN</span>
                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent"></div>
                 </div>
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-2xl font-serif tracking-widest text-slate-900 uppercase leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+                <span className="text-2xl font-serif tracking-widest text-slate-900 uppercase leading-none">Uy Nam</span>
                 <span className="text-[9px] tracking-[0.3em] text-amber-500 uppercase font-black mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
               </div>
             </Link>

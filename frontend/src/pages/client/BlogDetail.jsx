@@ -75,7 +75,7 @@ const BlogDetail = () => {
                                 {article.tags?.split(',')[0] || t('blogDetail.default_tag')}
                             </span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-8 drop-shadow-lg" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-8 drop-shadow-lg">
                             {article.title}
                         </h1>
                         <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-white/90 font-medium tracking-wider uppercase">

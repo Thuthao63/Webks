@@ -5,6 +5,7 @@ import axiosClient from '../../api/axiosClient';
 import { Mail, Lock, Phone, User, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import AuthLayout from './AuthLayout';
 import registerBg from '../../assets/auth/register-bg.png';
 
@@ -14,6 +15,7 @@ const Register = () => {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -21,8 +23,8 @@ const Register = () => {
     if (formData.password !== confirmPassword) {
       return Swal.fire({
         icon: 'error',
-        title: 'Mật khẩu không khớp',
-        text: 'Vui lòng kiểm tra lại mật khẩu xác nhận.',
+        title: t('auth.pass_mismatch'),
+        text: t('auth.check_confirm_pass'),
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#ef4444',
@@ -34,8 +36,8 @@ const Register = () => {
       await axiosClient.post('/auth/register', formData);
       Swal.fire({
         icon: 'success',
-        title: 'Đăng ký thành công',
-        text: 'Mã xác thực OTP đã được gửi đến Email của bạn.',
+        title: t('auth.register_success'),
+        text: t('auth.otp_sent'),
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#d97706',
@@ -46,8 +48,8 @@ const Register = () => {
     } catch (err) {
       Swal.fire({
         icon: 'error',
-        title: 'Lỗi đăng ký',
-        text: err.response?.data?.message || 'Không thể tạo tài khoản lúc này.',
+        title: t('auth.register_error'),
+        text: err.response?.data?.message || t('auth.cannot_create_account'),
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#ef4444',
@@ -59,30 +61,30 @@ const Register = () => {
 
   return (
     <AuthLayout
-      title="Gia Nhập Đặc Quyền"
-      subtitle="Trở thành thành viên để nhận những ưu đãi và dịch vụ thượng lưu nhất."
+      title={t('auth.join_exclusive')}
+      subtitle={t('auth.register_subtitle')}
       image={registerBg}
       imageAlt="Luxury Hotel Exterior"
     >
-      <form onSubmit={handleRegister} className="space-y-4">
+      <form onSubmit={handleRegister} className="space-y-5">
         {/* Full Name & Phone - Grid on larger mobile, stacked on small */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-1.5">
-            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Họ và tên</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
+            <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.fullname_label')}</label>
             <InputGroup 
               name="fullName"
-              icon={<User size={16}/>} 
-              placeholder="Nguyễn Văn A" 
+              icon={<User size={18}/>} 
+              placeholder={t('auth.fullname_placeholder')} 
               autoComplete="name"
               onChange={(val) => setFormData({...formData, fullName: val})} 
             />
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-1.5">
-            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Số điện thoại</label>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2">
+            <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.phone_label')}</label>
             <InputGroup 
               name="phone"
-              icon={<Phone size={16}/>} 
-              placeholder="0901234567" 
+              icon={<Phone size={18}/>} 
+              placeholder={t('auth.phone_placeholder')} 
               autoComplete="tel"
               onChange={(val) => setFormData({...formData, phone: val})} 
             />
@@ -90,53 +92,53 @@ const Register = () => {
         </div>
 
         {/* Email */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-1.5">
-          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
+          <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.email_label')}</label>
           <InputGroup 
             name="email"
-            icon={<Mail size={16}/>} 
+            icon={<Mail size={18}/>} 
             type="email" 
-            placeholder="guest@luxury.com" 
+            placeholder={t('auth.email_placeholder')} 
             autoComplete="email"
             onChange={(val) => setFormData({...formData, email: val})} 
           />
         </motion.div>
 
         {/* Passwords */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="space-y-1.5">
-            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Mật khẩu</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="space-y-2">
+            <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.password_label')}</label>
             <div className="relative group">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
               <input 
                 name="password"
                 type={showPass ? "text" : "password"} 
-                placeholder="••••••••" 
+                placeholder={t('auth.password_placeholder')} 
                 autoComplete="new-password"
-                className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+                className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 pr-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
                 onChange={(e) => setFormData({...formData, password: e.target.value})} 
                 required 
               />
-              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
-                {showPass ? <EyeOff size={16}/> : <Eye size={16}/>}
+              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors">
+                {showPass ? <EyeOff size={18}/> : <Eye size={18}/>}
               </button>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-1.5">
-            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Xác nhận</label>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-2">
+            <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.confirm_label')}</label>
             <div className="relative group">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
               <input 
                 name="confirmPassword"
                 type={showConfirmPass ? "text" : "password"} 
-                placeholder="••••••••" 
+                placeholder={t('auth.password_placeholder')} 
                 autoComplete="new-password"
-                className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+                className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 pr-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
                 onChange={(e) => setConfirmPassword(e.target.value)} 
                 required 
               />
-              <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors">
-                {showConfirmPass ? <EyeOff size={16}/> : <Eye size={16}/>}
+              <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors">
+                {showConfirmPass ? <EyeOff size={18}/> : <Eye size={18}/>}
               </button>
             </div>
           </motion.div>
@@ -146,13 +148,13 @@ const Register = () => {
           initial={{ opacity: 0, y: 10 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.7 }}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="submit" 
           disabled={loading}
-          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-6 transition-all duration-300 uppercase text-[12px] tracking-wider flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black py-4 rounded-2xl mt-8 transition-all duration-300 uppercase text-xs tracking-widest flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(217,119,6,0.2)] hover:shadow-[0_0_30px_rgba(217,119,6,0.4)]"
         >
-          {loading ? <Loader2 className="animate-spin" size={18} /> : <>Khởi tạo tài khoản <ArrowRight size={16}/></>}
+          {loading ? <Loader2 className="animate-spin" size={18} /> : <>{t('auth.create_account_btn')} <ArrowRight size={18}/></>}
         </motion.button>
       </form>
 
@@ -160,11 +162,11 @@ const Register = () => {
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
         transition={{ delay: 0.9 }}
-        className="text-center mt-10"
+        className="text-center mt-12"
       >
-        <p className="text-gray-500 text-sm uppercase tracking-wider">
-          Đã có tài khoản thành viên? 
-          <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black text-[12px] uppercase">Đăng nhập</Link>
+        <p className="text-slate-500 text-xs uppercase tracking-widest font-bold">
+          {t('auth.has_account')} 
+          <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.login_btn')}</Link>
         </p>
       </motion.div>
     </AuthLayout>
@@ -173,7 +175,7 @@ const Register = () => {
 
 const InputGroup = ({ icon, type = "text", placeholder, name, autoComplete, onChange }) => (
   <div className="relative group">
-    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors">
+    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors">
       {icon}
     </div>
     <input 
@@ -181,7 +183,7 @@ const InputGroup = ({ icon, type = "text", placeholder, name, autoComplete, onCh
       type={type} 
       placeholder={placeholder} 
       autoComplete={autoComplete}
-      className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+      className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
       onChange={(e) => onChange(e.target.value)} 
       required 
     />

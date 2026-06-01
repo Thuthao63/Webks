@@ -98,7 +98,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
               <Menu size={24} />
             </button>
             <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-              <h1 className="text-xl lg:text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <h1 className="text-xl lg:text-2xl font-serif italic text-slate-900">
                 {title}
               </h1>
               <p className="text-xs text-slate-500 uppercase tracking-widest font-bold hidden sm:block mt-1 font-sans">

@@ -1,6 +1,7 @@
 const Review = require('../models/Review');
 const User = require('../models/User');
 const Room = require('../models/Room');
+const Booking = require('../models/Booking');
 const { Op } = require('sequelize');
 
 // ==========================================
@@ -12,6 +13,21 @@ exports.createReview = async (req, res) => {
 
         if (!comment || !rating || !roomId || !userId) {
             return res.status(400).json({ message: "Vui lòng cung cấp đầy đủ thông tin đánh giá!" });
+        }
+
+        // Kiểm tra xem user đã từng đặt phòng này và đã hoàn thành/xác nhận chưa
+        const hasBooked = await Booking.findOne({
+            where: {
+                userId: userId,
+                roomId: roomId,
+                status: {
+                    [Op.in]: ['completed', 'confirmed'] // Chỉ những trạng thái đã đặt/hoàn thành mới được đánh giá
+                }
+            }
+        });
+
+        if (!hasBooked) {
+            return res.status(403).json({ message: "Bạn chỉ có thể đánh giá những phòng bạn đã đặt và sử dụng!" });
         }
 
         const review = await Review.create({ comment, rating, roomId, userId });

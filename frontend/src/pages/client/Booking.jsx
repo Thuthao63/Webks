@@ -207,7 +207,7 @@ const Booking = () => {
               <div className="flex items-center gap-2 text-amber-600 uppercase tracking-wider text-sm font-semibold">
                 <Star size={14} fill="currentColor" /> {t('booking.premium_room')}
               </div>
-              <h1 className="text-2xl md:text-4xl font-serif italic text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <h1 className="text-2xl md:text-4xl font-serif italic text-gray-900">
                 {t('booking.room_title')} <span className="text-amber-600 not-italic">{room?.roomNumber}</span>
               </h1>
             </div>
@@ -363,7 +363,7 @@ const Booking = () => {
           <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             {/* Header */}
             <div className="bg-slate-50 p-8 text-center border-b border-slate-100 relative">
-              <h3 className="text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('booking.secure_payment')}</h3>
+              <h3 className="text-2xl font-serif italic text-slate-900">{t('booking.secure_payment')}</h3>
               <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">{t('booking.deposit_amount')} <span className="text-amber-600">{formatCurrency(depositAmount)}</span></p>
             </div>
             

@@ -30,7 +30,7 @@ const Gallery = () => {
                 {/* Header */}
                 <div className="text-center mb-20 space-y-4">
                     <span className="text-amber-600 text-sm font-black uppercase tracking-[0.15em] block">Visual Journey</span>
-                    <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h1 className="text-5xl md:text-7xl font-serif italic text-slate-900">
                         Thư viện <span className="text-amber-600 not-italic font-bold">Hình Ảnh</span>
                     </h1>
                 </div>
@@ -67,7 +67,7 @@ const Gallery = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
                                 <span className="text-amber-500 text-sm font-black uppercase tracking-widest mb-2">{img.category}</span>
-                                <h3 className="text-xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>{img.title}</h3>
+                                <h3 className="text-xl font-serif italic text-white">{img.title}</h3>
                                 <div className="mt-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
                                     <Maximize2 size={16} />
                                 </div>
@@ -95,7 +95,7 @@ const Gallery = () => {
                         />
                         <div className="absolute -bottom-16 left-0 w-full text-center">
                             <span className="text-amber-500 text-sm font-black uppercase tracking-widest block mb-2">{selectedImage.category}</span>
-                            <h2 className="text-3xl font-serif italic text-white" style={{ fontFamily: "'Playfair Display', serif" }}>{selectedImage.title}</h2>
+                            <h2 className="text-3xl font-serif italic text-white">{selectedImage.title}</h2>
                         </div>
                     </div>
                 </div>

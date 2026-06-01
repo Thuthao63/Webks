@@ -108,7 +108,7 @@ const ManageDiscounts = () => {
                         </div>
                         <div>
                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Chiến dịch hiện hữu</p>
-                            <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{discounts.length} chương trình</p>
+                            <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{discounts.length} chương trình</p>
                         </div>
                     </div>
 
@@ -154,7 +154,7 @@ const ManageDiscounts = () => {
                                             </td>
                                             <td className="px-6 py-5">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-2xl font-serif italic text-amber-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                                    <span className="text-2xl font-serif italic text-amber-500">
                                                         -{Math.floor(discount.discountPercent)}%
                                                     </span>
                                                 </div>
@@ -213,7 +213,7 @@ const ManageDiscounts = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2 className="text-3xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                                 Thiết lập <span className="text-amber-500">Giảm giá</span>
                             </h2>
                             <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>

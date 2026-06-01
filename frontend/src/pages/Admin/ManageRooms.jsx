@@ -88,7 +88,7 @@ const ManageRooms = () => {
              </div>
              <div>
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tình trạng kho</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{rooms.length} phòng định danh</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{rooms.length} phòng định danh</p>
              </div>
           </div>
           
@@ -186,7 +186,7 @@ const ManageRooms = () => {
                   <X size={20} />
                </button>
 
-               <h2 className="text-3xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+               <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                   Khai báo <span className="text-amber-500">Phòng Mới</span>
                </h2>
                <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Cung cấp các thông số định danh thiết yếu</p>

@@ -96,7 +96,7 @@ const ManageUsers = () => {
              </div>
              <div>
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tổng hồ sơ định danh</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{users.length} tài khoản người dùng</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{users.length} tài khoản người dùng</p>
              </div>
           </div>
           

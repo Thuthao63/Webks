@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Bed } from 'lucide-react';
+import { Bed, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import loginBg from '../../assets/auth/login-bg.png';
 
 const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Luxury Hotel" }) => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen flex bg-[#050505] text-white overflow-hidden font-inter">
       {/* Left side: Image (Hidden on small screens) */}
@@ -36,7 +39,7 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
               <Bed className="text-amber-500 w-6 h-6" />
             </div>
             <span className="text-amber-500/80 font-serif tracking-widest uppercase text-xs font-bold">
-              Uy Nam Luxury Hotel
+              {t('auth.brand_name')}
             </span>
           </motion.div>
           <motion.h1 
@@ -45,8 +48,8 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-5xl font-serif text-white max-w-md leading-tight"
           >
-            Nơi Vẻ Đẹp Gặp Gỡ <br />
-            <span className="text-amber-500 italic font-light">Sự Đẳng Cấp</span>
+            {t('auth.slogan_1')} <br />
+            <span className="text-amber-500 italic font-light">{t('auth.slogan_2')}</span>
           </motion.h1>
         </div>
       </motion.div>
@@ -68,15 +71,19 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-amber-500/30 mb-4 bg-white/5 backdrop-blur-sm">
               <Bed className="text-amber-500 w-7 h-7" />
             </div>
-            <p className="text-amber-500/60 text-xs uppercase tracking-widest font-bold">Uy Nam Luxury Hotel</p>
+            <p className="text-amber-500/60 text-xs uppercase tracking-widest font-bold">{t('auth.brand_name')}</p>
           </div>
 
           <div className="mb-10 text-center lg:text-left">
+            <Link to="/" className="inline-flex items-center gap-2 text-amber-500/70 hover:text-amber-500 text-xs font-bold uppercase tracking-widest mb-8 transition-colors group">
+              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+              {t('auth.back_to_home')}
+            </Link>
             <motion.h2 
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-3xl md:text-4xl font-serif text-white mb-3 leading-tight tracking-tight break-keep"
+              className="text-3xl md:text-4xl font-serif text-white mb-3 leading-tight tracking-tight break-words"
             >
               {title}
             </motion.h2>
@@ -97,8 +104,7 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
 
           {/* Footer branding or contact */}
           <div className="mt-12 pt-8 border-t border-white/5 flex flex-col items-center lg:items-start">
-            <p className="text-xs uppercase tracking-widest text-gray-600 font-bold">
-              &copy; 2026 Uy Nam Luxury Hotel. All rights reserved.
+            <p className="text-xs uppercase tracking-widest text-gray-600 font-bold" dangerouslySetInnerHTML={{ __html: t('auth.rights_reserved') }}>
             </p>
           </div>
         </motion.div>

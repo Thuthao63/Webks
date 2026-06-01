@@ -102,7 +102,7 @@ const ManageServices = () => {
              </div>
              <div>
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Sản phẩm hiện có</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{services.length} hạng mục dịch vụ</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{services.length} hạng mục dịch vụ</p>
              </div>
           </div>
           
@@ -132,7 +132,7 @@ const ManageServices = () => {
 
                   <h3 className="font-black text-xl text-slate-900 group-hover:text-amber-500 transition-colors uppercase tracking-tight mb-2">{service.name}</h3>
                   <div className="flex items-baseline gap-2 mb-8">
-                     <span className="text-2xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{Number(service.price).toLocaleString()}</span>
+                     <span className="text-2xl font-serif italic text-slate-900">{Number(service.price).toLocaleString()}</span>
                      <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest text-glow-amber">VNĐ</span>
                   </div>
 
@@ -167,7 +167,7 @@ const ManageServices = () => {
                     <X size={20} />
                 </button>
 
-                <h2 className="text-3xl font-serif italic text-slate-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                    {editingId ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">Dịch vụ</span>
                 </h2>
                 <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Thiết lập tham số cho hạng mục tiện ích</p>

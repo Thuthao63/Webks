@@ -46,7 +46,7 @@ const Services = () => {
            <div className="flex justify-center mb-10 transition-luxury hover:scale-110">
               <Gem size={40} className="text-amber-500 drop-shadow-lg" strokeWidth={1} />
            </div>
-           <h1 className="text-5xl md:text-8xl mb-6 italic text-slate-100 drop-shadow-xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+           <h1 className="text-5xl md:text-8xl mb-6 italic text-slate-100 drop-shadow-xl">
              {t('services_page.hero_experience')} <br/> <span className="text-amber-500 font-bold not-italic">{t('services_page.hero_privilege')}</span>
            </h1>
            <p className="text-slate-300 text-xs md:text-xs uppercase tracking-wider max-w-xl mx-auto leading-loose bg-black/10 backdrop-blur-sm py-4 px-8 rounded-full border border-white/5">
@@ -77,7 +77,7 @@ const Services = () => {
                            ))}
                        </div>
                        <div>
-                          <h3 className="text-3xl font-serif italic mb-4 text-slate-900 group-hover:text-amber-500 transition-colors" style={{ fontFamily: "'Playfair Display', serif" }}>
+                          <h3 className="text-3xl font-serif italic mb-4 text-slate-900 group-hover:text-amber-500 transition-colors">
                               {service.name}
                           </h3>
                           <p className="text-slate-500 text-sm leading-relaxed font-medium italic">
@@ -111,7 +111,7 @@ const Services = () => {
          <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] -ml-40 -mb-40"></div>
          
          <div className="relative z-10 max-w-4xl mx-auto space-y-12">
-            <h2 className="text-4xl md:text-6xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl md:text-6xl font-serif italic text-slate-900">
                {t('services_page.cta_explore')} <span className="text-amber-500 not-italic font-bold">{t('services_page.cta_world')}</span>
             </h2>
             <p className="text-slate-500 max-w-2xl mx-auto text-base italic leading-relaxed font-medium">

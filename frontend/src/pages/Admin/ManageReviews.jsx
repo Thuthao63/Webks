@@ -80,7 +80,7 @@ const ManageReviews = () => {
              </div>
              <div>
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Feedback tích lũy</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>{reviews.length} đánh giá từ khách lưu trú</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{reviews.length} đánh giá từ khách lưu trú</p>
              </div>
           </div>
           <button onClick={fetchReviews} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 rounded-2xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">

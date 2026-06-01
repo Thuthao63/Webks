@@ -95,18 +95,18 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-5 group">
             <div className="relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-all duration-500 group-hover:-translate-y-0.5">
               <div className="absolute inset-[1.5px] bg-slate-950 rounded-[6.5px] flex items-center justify-center overflow-hidden">
-                 <span className="text-amber-500 font-serif text-xl tracking-tighter" style={{ fontFamily: "'Playfair Display', serif" }}>UN</span>
+                 <span className="text-amber-500 font-serif text-xl tracking-tighter">UN</span>
                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/10 to-transparent"></div>
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-2xl font-serif tracking-widest text-white uppercase leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>Uy Nam</span>
+              <span className="text-2xl font-serif tracking-widest text-white uppercase leading-none">Uy Nam</span>
               <span className="text-[9px] tracking-[0.3em] text-amber-500 uppercase font-black mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Luxury Collection</span>
             </div>
           </Link>
 
           {/* --- DESKTOP NAVIGATION --- */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -116,7 +116,7 @@ const Navbar = () => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }
                 }}
-                className={`text-[13px] uppercase tracking-wider font-semibold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-amber-500' : 'text-gray-300 hover:text-white'
+                className={`whitespace-nowrap text-[13px] uppercase tracking-wider font-semibold transition-all duration-500 relative group py-2 ${location.pathname === link.path ? 'text-amber-500' : 'text-gray-300 hover:text-white'
                   }`}
               >
                 {link.name}
@@ -207,64 +207,57 @@ const Navbar = () => {
                   {isUserMenuOpen && (
                     <>
                       <div className="fixed inset-0 z-[-1]" onClick={() => setIsUserMenuOpen(false)}></div>
-                      <div className="absolute right-0 mt-6 w-80 bg-white/90 backdrop-blur-3xl border border-slate-200/60 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden animate-in fade-in zoom-in-95 duration-500">
-                        {/* Member Card Header - Light Version */}
-                        <div className="p-8 bg-gradient-to-br from-amber-500/10 to-cream relative overflow-hidden group/header">
-                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-amber-500/5 to-transparent opacity-0 group-hover/header:opacity-100 transition-opacity duration-1000"></div>
-                          <Star className="absolute top-6 right-6 text-amber-500 opacity-10 group-hover/header:opacity-40 group-hover/header:rotate-12 transition-all duration-700" size={48} strokeWidth={1} />
+                      <div className="absolute right-0 mt-4 w-64 bg-white/95 backdrop-blur-3xl border border-slate-200/60 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                        {/* Member Card Header */}
+                        <div className="p-5 bg-gradient-to-br from-amber-500/10 to-transparent relative overflow-hidden group/header border-b border-slate-100">
+                          <Star className="absolute top-4 right-4 text-amber-500 opacity-10 group-hover/header:opacity-30 group-hover/header:rotate-12 transition-all duration-700" size={32} strokeWidth={1} />
                           
                           <div className="relative z-10">
-                            <span className="text-sm text-amber-500 uppercase font-black tracking-[0.1em] mb-4 block">{t('nav.elite_member')}</span>
-                            <h4 className="text-slate-900 font-serif text-2xl italic leading-none mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{user.fullName}</h4>
-                            <p className="text-sm text-slate-500 tracking-wider font-medium flex items-center gap-2">
-                              <span className="w-1 h-1 bg-amber-500 rounded-full"></span>
+                            <span className="text-[10px] text-amber-600 uppercase font-black tracking-[0.15em] mb-1.5 block">{t('nav.elite_member')}</span>
+                            <h4 className="text-slate-900 font-serif text-lg italic leading-none mb-1.5">{user.fullName}</h4>
+                            <p className="text-xs text-slate-500 tracking-wide font-medium truncate">
                               {user.email}
                             </p>
                           </div>
                         </div>
 
-                        <div className="p-4 space-y-1 bg-white/50">
+                        <div className="p-2 space-y-1 bg-white/50">
                           {user.role?.toLowerCase() === 'admin' && (
                             <button 
                               onClick={() => { navigate('/admin/dashboard'); setIsUserMenuOpen(false); }} 
-                              className="w-full flex items-center justify-between px-5 py-4 text-amber-500 hover:bg-amber-50 rounded-2xl transition-all duration-500 group/item border border-transparent hover:border-amber-500/10"
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-amber-600 hover:bg-amber-50 rounded-2xl transition-colors duration-300"
                             >
-                              <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-amber-500/5 flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                                  <Settings size={18} />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">{t('nav.admin_system')}</p>
-                                  <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.full_control')}</p>
-                                </div>
+                              <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center">
+                                <Settings size={14} />
                               </div>
-                              <div className="w-1.5 h-1.5 bg-amber-500 rounded-full opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
+                              <div className="text-left">
+                                <p className="text-xs font-black uppercase tracking-wider leading-none mb-0.5">{t('nav.admin_system')}</p>
+                                <p className="text-[9px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.full_control')}</p>
+                              </div>
                             </button>
                           )}
                           
                           <button 
                             onClick={() => { navigate('/profile'); setIsUserMenuOpen(false); }} 
-                            className="w-full flex items-center justify-between px-5 py-4 text-slate-600 hover:bg-slate-50 rounded-2xl transition-all duration-500 group/item border border-transparent hover:border-slate-100"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-700 hover:bg-slate-50 rounded-2xl transition-colors duration-300"
                           >
-                            <div className="flex items-center gap-4">
-                              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                                <User size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
-                              </div>
-                              <div>
-                                <p className="text-sm font-black uppercase tracking-widest leading-none mb-1">{t('nav.personal_profile')}</p>
-                                <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.guest_settings')}</p>
-                              </div>
+                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                              <User size={14} className="text-slate-500" />
+                            </div>
+                            <div className="text-left">
+                              <p className="text-xs font-black uppercase tracking-wider leading-none mb-0.5">{t('nav.personal_profile')}</p>
+                              <p className="text-[9px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.guest_settings')}</p>
                             </div>
                           </button>
                         </div>
 
-                        <div className="p-6 bg-slate-50/80 border-t border-slate-100">
+                        <div className="p-3 bg-slate-50/80 border-t border-slate-100">
                           <button 
                             onClick={handleLogout} 
-                            className="w-full flex items-center justify-center gap-3 py-4 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white rounded-2xl transition-all duration-500 text-xs font-black uppercase tracking-widest relative group/logout overflow-hidden shadow-sm"
+                            className="w-full flex items-center justify-center gap-2 py-2.5 text-rose-500 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-xl transition-colors duration-300 text-[11px] font-black uppercase tracking-widest"
                           >
-                            <LogOut size={16} className="relative z-10" />
-                            <span className="relative z-10">{t('nav.logout_now')}</span>
+                            <LogOut size={14} />
+                            <span>{t('nav.logout_now')}</span>
                           </button>
                         </div>
                       </div>
@@ -275,10 +268,10 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="relative group px-10 py-3.5 overflow-hidden rounded-full transition-all duration-700"
+                className="relative group px-6 xl:px-10 py-3.5 overflow-hidden rounded-full transition-all duration-700 whitespace-nowrap flex-shrink-0"
               >
                 <div className="absolute inset-0 bg-amber-500 group-hover:bg-white transition-colors duration-700"></div>
-                <span className="relative z-10 text-slate-900 text-[12px] font-bold uppercase tracking-wider group-hover:text-amber-500 transition-colors duration-700">
+                <span className="relative z-10 text-slate-900 text-[12px] font-bold uppercase tracking-wider group-hover:text-amber-500 transition-colors duration-700 whitespace-nowrap">
                   {t('nav.login_access')}
                 </span>
                 <div className="absolute -inset-1 bg-amber-500/30 blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -287,7 +280,7 @@ const Navbar = () => {
 
             <button
               aria-label="Mở menu di động"
-              className="md:hidden p-2 text-amber-500 hover:scale-110 transition-transform active:scale-95 z-[1001]"
+              className="lg:hidden p-2 text-amber-500 hover:scale-110 transition-transform active:scale-95 z-[1001]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
@@ -297,7 +290,7 @@ const Navbar = () => {
       </nav>
 
       {/* --- MOBILE DRAWER --- */}
-      <div className={`fixed inset-0 z-[1000] transition-all duration-700 md:hidden ${isMobileMenuOpen ? 'visible' : 'invisible'
+      <div className={`fixed inset-0 z-[1000] transition-all duration-700 lg:hidden ${isMobileMenuOpen ? 'visible' : 'invisible'
         }`}>
         {/* Backdrop */}
         <div className={`absolute inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity duration-700 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
@@ -309,7 +302,7 @@ const Navbar = () => {
           <div className="space-y-12 mt-10">
             <div className="space-y-2 border-b border-white/10 pb-6">
               <p className="text-amber-500 text-[12px] uppercase font-bold tracking-widest">{t('nav.category')}</p>
-              <h4 className="text-white font-serif italic text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>{t('nav.menu')}</h4>
+              <h4 className="text-white font-serif italic text-3xl">{t('nav.menu')}</h4>
             </div>
 
             <div className="flex flex-col gap-8">

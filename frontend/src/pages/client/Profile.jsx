@@ -303,7 +303,7 @@ const Profile = () => {
                     </button>
                 </div>
                 
-                <h1 className="text-4xl md:text-5xl font-serif italic text-slate-900 mt-6 mb-2 drop-shadow-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h1 className="text-4xl md:text-5xl font-serif italic text-slate-900 mt-6 mb-2 drop-shadow-sm">
                     {user?.fullName}
                 </h1>
                 
@@ -366,7 +366,7 @@ const Profile = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1.5">{stat.label}</p>
-                                        <p className="text-3xl font-serif italic text-slate-900 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>{stat.value}</p>
+                                        <p className="text-3xl font-serif italic text-slate-900 leading-none">{stat.value}</p>
                                     </div>
                                 </div>
                             ))}
@@ -375,7 +375,7 @@ const Profile = () => {
                         {/* WIDE LATEST ACTIVITY CARD */}
                         <div className="bg-white rounded-[2.5rem] p-12 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden">
                             <div className="flex justify-between items-center mb-10 pb-8 border-b border-slate-50">
-                                <h3 className="text-3xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.latest_trip')}</h3>
+                                <h3 className="text-3xl font-serif italic text-slate-900">{t('profile.latest_trip')}</h3>
                                 <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
                                     {t('profile.view_history')} <ArrowUpRight size={14} />
                                 </button>
@@ -434,7 +434,7 @@ const Profile = () => {
                     <div className="space-y-8 max-w-4xl mx-auto">
                         <div className="flex justify-between items-end border-b border-slate-200 pb-8 mb-8">
                             <div>
-                                <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.stay_history')}</h3>
+                                <h3 className="text-4xl font-serif italic text-slate-900">{t('profile.stay_history')}</h3>
                                 <p className="text-xs text-slate-500 mt-3 font-medium">{t('profile.discover_moments')}</p>
                             </div>
                             <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-4 py-2 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
@@ -474,7 +474,7 @@ const Profile = () => {
                 {activeTab === 'settings' && (
                     <div className="max-w-4xl mx-auto bg-white rounded-[3rem] border border-slate-100 p-12 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
                         <div className="border-b border-slate-100 pb-10 mb-10 text-center">
-                            <h3 className="text-4xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('profile.account_settings')}</h3>
+                            <h3 className="text-4xl font-serif italic text-slate-900">{t('profile.account_settings')}</h3>
                             <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-4 font-sans">{t('profile.manage_identity')}</p>
                         </div>
 

@@ -141,7 +141,7 @@ const RoomList = () => {
           {/* Header Section */}
           <div className="text-center mb-24 space-y-6">
             <span className="text-amber-500 text-sm font-black uppercase tracking-wider block font-sans">Exclusive Stay</span>
-            <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900" style={{ fontFamily: "'Playfair Display', serif" }}>{t('roomList.header')}</h2>
+            <h2 className="text-5xl md:text-7xl font-serif italic text-slate-900">{t('roomList.header')}</h2>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-16">
@@ -279,7 +279,7 @@ const RoomList = () => {
               {rooms.length === 0 ? (
                 <div className="bg-white rounded-[3rem] p-32 text-center border border-slate-100 shadow-premium">
                   <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
-                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>{t('roomList.no_results')}</h3>
+                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6">{t('roomList.no_results')}</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
                     Vui lòng điều chỉnh lại bộ lọc để tìm thấy căn phòng phù hợp nhất dành cho quý khách.
                   </p>
@@ -335,7 +335,7 @@ const RoomList = () => {
                               <h4 
                                 onClick={() => navigate(`/room/${room.id}`)}
                                 className="text-2xl font-serif italic text-slate-900 cursor-pointer hover:text-amber-500 transition-luxury"
-                                style={{ fontFamily: "'Playfair Display', serif" }}
+                               
                               >
                                 {details.name || 'Luxury Suite'}
                               </h4>
@@ -347,7 +347,7 @@ const RoomList = () => {
                                   {originalPrice.toLocaleString()}đ
                                 </p>
                               )}
-                              <p className="text-amber-500 font-serif text-2xl italic leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                              <p className="text-amber-500 font-serif text-2xl italic leading-none">
                                 {discountedPrice.toLocaleString()}
                               </p>
                               <span className="text-sm text-slate-300 uppercase tracking-widest font-black mt-1 block">{t('roomList.per_night')}</span>

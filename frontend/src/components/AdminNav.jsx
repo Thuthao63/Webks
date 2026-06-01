@@ -38,7 +38,7 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
           <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-110 transition-transform">
             <span className="text-white font-black text-lg">U</span>
           </div>
-          <span className="text-xl font-serif italic text-slate-900 tracking-widest" style={{ fontFamily: "'Playfair Display', serif" }}>UY NAM</span>
+          <span className="text-xl font-serif italic text-slate-900 tracking-widest">UY NAM</span>
         </Link>
         <button
           onClick={() => setIsOpen(false)}

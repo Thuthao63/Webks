@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { Mail, Lock, Eye, EyeOff, Loader2, LogIn } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import AuthLayout from './AuthLayout';
 import loginBg from '../../assets/auth/login-bg.png';
 
@@ -13,6 +14,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -25,8 +27,8 @@ const Login = () => {
 
       Swal.fire({
         icon: 'success',
-        title: 'Đăng nhập thành công',
-        text: `Chào mừng ${res.data.user.fullName} quay trở lại!`,
+        title: t('auth.login_success'),
+        text: t('auth.welcome_back_user', { name: res.data.user.fullName }),
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#d97706',
@@ -42,8 +44,8 @@ const Login = () => {
     } catch (err) {
       Swal.fire({
         icon: 'error',
-        title: 'Lỗi đăng nhập',
-        text: err.response?.data?.message || 'Email hoặc mật khẩu không chính xác.',
+        title: t('auth.login_error'),
+        text: err.response?.data?.message || t('auth.email_pass_incorrect'),
         background: '#0a0a0a',
         color: '#fff',
         confirmButtonColor: '#ef4444',
@@ -55,29 +57,29 @@ const Login = () => {
 
   return (
     <AuthLayout
-      title="Chào Mừng Trở Lại"
-      subtitle="Đăng nhập để trải nghiệm không gian nghỉ dưỡng đẳng cấp bậc nhất."
+      title={t('auth.welcome_back')}
+      subtitle={t('auth.login_subtitle')}
       image={loginBg}
       imageAlt="Luxury Hotel Lobby"
     >
-      <form onSubmit={handleLogin} className="space-y-5">
+      <form onSubmit={handleLogin} className="space-y-6">
         {/* Email */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="space-y-1.5"
+          className="space-y-2"
         >
-          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.email_label')}</label>
           <div className="relative group">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
             <input
               name="email"
               type="email"
               required
-              placeholder="email@luxury.com"
+              placeholder={t('auth.email_placeholder')}
               autoComplete="username"
-              className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+              className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
@@ -88,32 +90,32 @@ const Login = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="space-y-1.5"
+          className="space-y-2"
         >
-          <div className="flex justify-between items-center px-1">
-            <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold">Mật khẩu</label>
-            <Link to="/forgot-password" className="text-xs uppercase tracking-widest text-gray-500 hover:text-amber-500 transition-colors">
-              Quên mật khẩu?
-            </Link>
-          </div>
+          <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.password_label')}</label>
           <div className="relative group">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
             <input
               name="password"
               type={showPassword ? "text" : "password"}
               required
-              placeholder="••••••••"
+              placeholder={t('auth.password_placeholder')}
               autoComplete="current-password"
-              className="w-full bg-white/[0.02] border border-white/10 p-3.5 pl-12 pr-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+              className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 pr-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors"
             >
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
+          </div>
+          <div className="flex justify-end pt-1">
+            <Link to="/forgot-password" className="text-[11px] uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-colors font-bold">
+              {t('auth.forgot_password')}
+            </Link>
           </div>
         </motion.div>
 
@@ -121,14 +123,14 @@ const Login = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={loading}
-          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg mt-4 flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-amber-600/10 uppercase text-[12px] tracking-wider"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black py-4 rounded-2xl mt-8 flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_0_20px_rgba(217,119,6,0.2)] hover:shadow-[0_0_30px_rgba(217,119,6,0.4)] uppercase text-xs tracking-widest"
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />}
-          Đăng Nhập
+          {t('auth.login_btn')}
         </motion.button>
       </form>
 
@@ -136,11 +138,11 @@ const Login = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="text-center mt-10"
+        className="text-center mt-12"
       >
-        <p className="text-gray-500 text-sm uppercase tracking-wider">
-          Nếu chưa có tài khoản?
-          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase text-[12px]">Đăng ký</Link>
+        <p className="text-slate-500 text-xs uppercase tracking-widest font-bold">
+          {t('auth.no_account')}
+          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.register')}</Link>
         </p>
       </motion.div>
     </AuthLayout>

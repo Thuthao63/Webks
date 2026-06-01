@@ -157,7 +157,7 @@ const Dashboard = () => {
                </div>
                
                <div className="flex flex-col relative z-10">
-                  <h4 className="text-3xl font-serif italic text-slate-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{item.value}</h4>
+                  <h4 className="text-3xl font-serif italic text-slate-900 mb-1">{item.value}</h4>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1 font-sans">
                      <ArrowUpRight size={12} className="text-emerald-500" /> {item.trend}
                   </p>
