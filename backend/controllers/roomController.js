@@ -54,7 +54,30 @@ const getAllRooms = async (req, res) => {
             }]
         });
 
-        res.status(200).json(rooms);
+        // Tự động đồng bộ (Self-healing): Nếu có đơn đang check-in thì phòng phải là Occupied
+        const activeBookings = await Booking.findAll({
+            where: { status: 'checked_in' },
+            attributes: ['roomId']
+        });
+        const occupiedRoomIds = activeBookings.map(b => b.roomId);
+
+        const processedRooms = rooms.map(r => {
+            const roomData = r.toJSON();
+            if (occupiedRoomIds.includes(r.id)) {
+                roomData.status = 'Occupied';
+                // Chữa lỗi database nếu bị lệch
+                if (r.status !== 'Occupied') {
+                    Room.update({ status: 'Occupied' }, { where: { id: r.id } }).catch(err => console.error("Self-heal lỗi", err));
+                }
+            } else if (r.status === 'Occupied' && !occupiedRoomIds.includes(r.id)) {
+                // Tự động gỡ lỗi: Phòng báo có khách nhưng thực tế không có đơn nào đang ở
+                roomData.status = 'Available';
+                Room.update({ status: 'Available' }, { where: { id: r.id } }).catch(err => console.error("Self-heal gỡ lỗi", err));
+            }
+            return roomData;
+        });
+
+        res.status(200).json(processedRooms);
     } catch (error) {
         console.error("Lỗi lấy danh sách phòng:", error);
         res.status(500).json({ message: "Lỗi lấy danh sách phòng" });
@@ -115,15 +138,21 @@ const deleteRoom = async (req, res) => {
 // 5. Tạo phòng mới
 const createFullRoomInfo = async (req, res) => {
     try {
-        const { roomNumber, status, name, price, description, capacity } = req.body;
+        const { roomNumber, status, name, price, description, capacity, typeId } = req.body;
         const imageUrl = req.file ? req.file.filename : null;
 
-        const newType = await RoomType.create({
-            name, price, description, capacity: capacity || 2, image: imageUrl
-        });
+        let finalTypeId = typeId;
+
+        // Nếu người dùng tạo hạng phòng mới (không truyền typeId)
+        if (!finalTypeId) {
+            const newType = await RoomType.create({
+                name, price, description, capacity: capacity || 2, image: imageUrl
+            });
+            finalTypeId = newType.id;
+        }
 
         const newRoom = await Room.create({
-            roomNumber, status: status || 'Available', typeId: newType.id
+            roomNumber, status: status || 'Available', typeId: finalTypeId
         });
 
         res.status(201).json({ message: "Thêm thành công", room: newRoom });

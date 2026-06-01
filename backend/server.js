@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const http = require('http'); // 0. Import HTTP để chạy cùng Socket.io
+const { Server } = require('socket.io'); // 0. Import Socket.io
 require('dotenv').config();
 
 // 1. Import DB Connection
@@ -47,8 +49,31 @@ RoomType.hasMany(Discount, { foreignKey: 'roomTypeId', as: 'discounts' });
 // 3. KHỞI TẠO EXPRESS & MIDDLEWARE
 // ========================================================
 const app = express();
+const server = http.createServer(app);
+
+// Cấu hình Socket.io
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Hoặc chỉ định rõ url frontend như 'http://localhost:5173'
+        methods: ["GET", "POST", "PUT", "DELETE"]
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log(`🔌 Client connected: ${socket.id}`);
+    socket.on('disconnect', () => {
+        console.log(`🔌 Client disconnected: ${socket.id}`);
+    });
+});
+
 app.use(cors());
 app.use(express.json());
+
+// Gắn io vào req để các Controllers có thể sử dụng (ví dụ: req.io.emit(...))
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 
 // Cung cấp thư mục ảnh để Frontend có thể truy cập được
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -102,8 +127,8 @@ const startServer = async () => {
         console.log('✨ Database đã sẵn sàng với đầy đủ quan hệ bảng!');
 
         const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => {
-            console.log(`📡 SERVER ĐANG CHẠY TẠI: http://localhost:${PORT}`);
+        server.listen(PORT, () => {
+            console.log(`📡 HTTP & SOCKET SERVER ĐANG CHẠY TẠI: http://localhost:${PORT}`);
             console.log(`✅ Thảo có thể test API tại: http://localhost:${PORT}/api/rooms`);
         });
     } catch (err) {

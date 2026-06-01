@@ -37,8 +37,8 @@ const ManageBlogs = () => {
         customClass: {
             popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
             title: 'font-serif italic text-amber-500 text-2xl',
-            confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl transition-all',
-            cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+            confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest px-8 py-3 rounded-2xl transition-all',
+            cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold  tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
         }
     });
 
@@ -108,14 +108,14 @@ const ManageBlogs = () => {
                             <FileText size={20} />
                         </div>
                         <div>
-                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tổng bài viết</p>
+                            <p className="text-[10px] text-slate-500 font-bold  tracking-widest">Tổng bài viết</p>
                             <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{articles.length} bài đăng</p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => setShowModal(true)}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
                     >
                         <Plus size={16} strokeWidth={3} />
                         Soạn bài mới
@@ -126,7 +126,7 @@ const ManageBlogs = () => {
                 <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto admin-scrollbar">
                         <table className="w-full text-left">
-                            <thead className="text-[10px] text-slate-500 uppercase font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+                            <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                                 <tr>
                                     <th className="px-8 py-6">Bài viết</th>
                                     <th className="px-6 py-6">Chủ đề (Tags)</th>
@@ -146,7 +146,7 @@ const ManageBlogs = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-slate-500 bg-slate-100">
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[9px] font-black  tracking-widest text-slate-500 bg-slate-100">
                                                 {article.tags || 'Tin tức'}
                                             </span>
                                         </td>
@@ -173,7 +173,7 @@ const ManageBlogs = () => {
                 {articles.length === 0 && (
                     <div className="py-20 text-center border border-dashed border-slate-100 rounded-[2.5rem] bg-slate-50/50 font-sans">
                         <FileText size={40} className="mx-auto mb-4 text-slate-300" />
-                        <p className="text-slate-500 text-[10px] font-bold tracking-[0.2em] uppercase">Chưa có bài viết nào</p>
+                        <p className="text-slate-500 text-[10px] font-bold tracking-[0.2em] ">Chưa có bài viết nào</p>
                     </div>
                 )}
 
@@ -189,46 +189,46 @@ const ManageBlogs = () => {
                             <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                                 {editId ? 'Cập nhật' : 'Soạn'} <span className="text-amber-500">{editId ? 'Bài Viết' : 'Bài Mới'}</span>
                             </h2>
-                            <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Lan tỏa phong cách sống thượng lưu</p>
+                            <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Lan tỏa phong cách sống thượng lưu</p>
 
                             <div className="space-y-6 pb-10">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Tiêu đề bài viết</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Tiêu đề bài viết</label>
                                     <input type="text" placeholder="Khám phá ẩm thực 5 sao..." required value={formData.title}
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold"
                                         onChange={e => setFormData({ ...formData, title: e.target.value })} />
                                 </div>
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Đường dẫn tĩnh (Slug)</label>
+                                        <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Đường dẫn tĩnh (Slug)</label>
                                         <input type="text" placeholder="kham-pha-am-thuc" required value={formData.slug}
                                             className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold"
                                             onChange={e => setFormData({ ...formData, slug: e.target.value })} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Chủ đề (Tags)</label>
+                                        <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Chủ đề (Tags)</label>
                                         <input type="text" placeholder="Ẩm thực, Khám phá" required value={formData.tags}
                                             className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold text-amber-600"
                                             onChange={e => setFormData({ ...formData, tags: e.target.value })} />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Hình ảnh bìa (Thumbnail)</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Hình ảnh bìa (Thumbnail)</label>
                                     <label className="w-full bg-slate-50 border border-dashed border-slate-300 text-slate-500 p-4 rounded-2xl cursor-pointer hover:bg-slate-100 transition-all flex items-center justify-center gap-3">
                                         <ImageIcon size={18} />
-                                        <span className="text-[10px] font-bold uppercase truncate max-w-[200px]">{formData.image ? formData.image.name : 'Nhấp để tải ảnh lên (PNG, JPG)'}</span>
+                                        <span className="text-[10px] font-bold  truncate max-w-[200px]">{formData.image ? formData.image.name : 'Nhấp để tải ảnh lên (PNG, JPG)'}</span>
                                         <input type="file" className="hidden" accept="image/*" onChange={e => setFormData({ ...formData, image: e.target.files[0] })} />
                                     </label>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Nội dung (HTML Hỗ trợ)</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Nội dung (HTML Hỗ trợ)</label>
                                     <textarea placeholder="<b>Nội dung bài viết...</b>" required rows={6} value={formData.content}
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-medium font-mono text-sm leading-relaxed"
                                         onChange={e => setFormData({ ...formData, content: e.target.value })}></textarea>
                                 </div>
                             </div>
 
-                            <button type="submit" className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all">
+                            <button type="submit" className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black  tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all">
                                 {editId ? 'Lưu cập nhật' : 'Xuất bản bài viết'}
                             </button>
                         </form>

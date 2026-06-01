@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { ArrowLeft, Star, Maximize, Users, Bed, Loader2, ArrowRight, Check, User, Quote, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next';
 const RoomDetails = () => {
     const { roomId } = useParams();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const checkInDate = searchParams.get('checkInDate');
+    const checkOutDate = searchParams.get('checkOutDate');
     const [room, setRoom] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [discount, setDiscount] = useState(null);
@@ -163,19 +166,31 @@ const RoomDetails = () => {
                                     </p>
                                 </div>
                             </div>
-                            <button
-                                onClick={() => navigate(`/booking/${room.id}`)}
-                                disabled={room.status === 'Maintenance'}
-                                className={`w-full py-6 font-black uppercase text-sm tracking-[0.1em] transition-luxury flex items-center justify-center gap-6 rounded-2xl shadow-premium font-sans ${
-                                    room.status !== 'Maintenance' 
-                                    ? 'bg-slate-900 text-white hover:bg-amber-500 hover:shadow-2xl shadow-slate-900/10 active:scale-95' 
-                                    : 'bg-slate-50 text-slate-300 cursor-not-allowed border border-slate-100'
-                                }`}
-                            >
-                                {room.status !== 'Maintenance' ? (
-                                    <>{t('room_details.confirm_booking')} <ArrowRight size={18} /></>
-                                ) : t('room_details.room_maintenance')}
-                            </button>
+                            {(!checkInDate || !checkOutDate) ? (
+                                <button
+                                    onClick={() => {
+                                        toast.error("Vui lòng chọn ngày lưu trú trước khi Đặt phòng");
+                                        navigate('/rooms');
+                                    }}
+                                    className="w-full py-6 font-black uppercase text-sm tracking-[0.1em] transition-luxury flex items-center justify-center gap-6 rounded-2xl shadow-premium font-sans bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100"
+                                >
+                                    Vui lòng chọn ngày lưu trú
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => navigate(`/booking/${room.id}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`)}
+                                    disabled={room.status === 'Maintenance'}
+                                    className={`w-full py-6 font-black uppercase text-sm tracking-[0.1em] transition-luxury flex items-center justify-center gap-6 rounded-2xl shadow-premium font-sans ${
+                                        room.status !== 'Maintenance' 
+                                        ? 'bg-slate-900 text-white hover:bg-amber-500 hover:shadow-2xl shadow-slate-900/10 active:scale-95' 
+                                        : 'bg-slate-50 text-slate-300 cursor-not-allowed border border-slate-100'
+                                    }`}
+                                >
+                                    {room.status !== 'Maintenance' ? (
+                                        <>{t('room_details.confirm_booking')} <ArrowRight size={18} /></>
+                                    ) : t('room_details.room_maintenance')}
+                                </button>
+                            )}
                         </div>
                     </div>
 

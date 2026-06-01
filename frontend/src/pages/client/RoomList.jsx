@@ -26,7 +26,8 @@ const RoomList = () => {
     capacity: searchParams.get('capacity') || '',
     status: searchParams.get('status') || '',
     checkInDate: searchParams.get('checkInDate') || '',
-    checkOutDate: searchParams.get('checkOutDate') || ''
+    checkOutDate: searchParams.get('checkOutDate') || '',
+    hasDiscount: searchParams.get('hasDiscount') === 'true'
   });
 
   // Đồng bộ URL params vào state khi URL thay đổi (VD: từ trang chủ chuyển sang)
@@ -38,7 +39,8 @@ const RoomList = () => {
       capacity: searchParams.get('capacity') || '',
       status: searchParams.get('status') || '',
       checkInDate: searchParams.get('checkInDate') || '',
-      checkOutDate: searchParams.get('checkOutDate') || ''
+      checkOutDate: searchParams.get('checkOutDate') || '',
+      hasDiscount: searchParams.get('hasDiscount') === 'true'
     });
   }, [searchParams]);
 
@@ -92,6 +94,7 @@ const RoomList = () => {
       if (filters.status) newParams.status = filters.status;
       if (filters.checkInDate) newParams.checkInDate = filters.checkInDate;
       if (filters.checkOutDate) newParams.checkOutDate = filters.checkOutDate;
+      if (filters.hasDiscount) newParams.hasDiscount = 'true';
       
       // Chỉ cập nhật URL nếu nó thực sự thay đổi để tránh vòng lặp
       const currentParamsString = searchParams.toString();
@@ -159,6 +162,35 @@ const RoomList = () => {
                     className="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-luxury flex items-center gap-3 font-sans"
                   >
                     <Trash2 size={14} />{t('roomList.clear')}</button>
+                </div>
+
+                {/* --- LỌC NGÀY (QUAN TRỌNG) --- */}
+                <div id="filter-dates" className="space-y-3 bg-amber-50/50 p-3 rounded-xl border border-amber-100">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-600 font-sans flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Thời gian lưu trú
+                  </h4>
+                  <div className="space-y-2">
+                    <div>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">Ngày Check-in</label>
+                      <input 
+                        type="date" 
+                        value={filters.checkInDate}
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => setFilters(prev => ({...prev, checkInDate: e.target.value}))}
+                        className="w-full mt-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] font-bold text-slate-900 outline-none focus:border-amber-500 transition-all cursor-pointer shadow-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">Ngày Check-out</label>
+                      <input 
+                        type="date" 
+                        value={filters.checkOutDate}
+                        min={filters.checkInDate || new Date().toISOString().split('T')[0]}
+                        onChange={(e) => setFilters(prev => ({...prev, checkOutDate: e.target.value}))}
+                        className="w-full mt-1 bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-[11px] font-bold text-slate-900 outline-none focus:border-amber-500 transition-all cursor-pointer shadow-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Loại phòng */}
@@ -237,6 +269,24 @@ const RoomList = () => {
                     <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.available')}</span>
                   </label>
                 </div>
+                
+                {/* Lọc Khuyến mãi */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Khuyến mãi</label>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative">
+                      <input 
+                        type="checkbox" 
+                        checked={filters.hasDiscount}
+                        onChange={(e) => setFilters(prev => ({...prev, hasDiscount: e.target.checked}))}
+                        className="sr-only"
+                      />
+                      <div className={`w-9 h-5 rounded-full transition-luxury ${filters.hasDiscount ? 'bg-amber-500' : 'bg-slate-200'}`}></div>
+                      <div className={`absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-luxury ${filters.hasDiscount ? 'translate-x-4' : ''}`}></div>
+                    </div>
+                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">Đang giảm giá</span>
+                  </label>
+                </div>
               </div>
             </aside>
 
@@ -245,7 +295,16 @@ const RoomList = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center bg-white px-4 py-2.5 rounded-xl border border-slate-100 shadow-sm gap-2">
                 <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic font-sans">
-                  Khám phá <span className="text-amber-500">{rooms.length}</span> phòng nghỉ cao cấp
+                  Khám phá <span className="text-amber-500">{(() => {
+                    const displayed = rooms.filter(room => {
+                       if (filters.hasDiscount) {
+                          const hasActive = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
+                          if (!hasActive) return false;
+                       }
+                       return true;
+                    });
+                    return displayed.length;
+                  })()}</span> phòng nghỉ cao cấp
                 </p>
                 <div className="flex items-center gap-4">
                   {filtering && (
@@ -276,7 +335,16 @@ const RoomList = () => {
                 </div>
               </div>
 
-              {rooms.length === 0 ? (
+              {(() => {
+                 const displayedRooms = rooms.filter(room => {
+                    if (filters.hasDiscount) {
+                       const hasActive = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
+                       if (!hasActive) return false;
+                    }
+                    return true;
+                 });
+                 
+                 return displayedRooms.length === 0 ? (
                 <div className="bg-white rounded-2xl p-16 text-center border border-slate-100 shadow-premium">
                   <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
                   <h3 className="text-4xl font-serif italic text-slate-900 mb-6">{t('roomList.no_results')}</h3>
@@ -292,7 +360,7 @@ const RoomList = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {rooms.map((room) => {
+                  {displayedRooms.map((room) => {
                     const details = room.roomType || {}; 
                     // Tìm khuyến mãi cho hạng phòng này
                     const isAvailable = room.status !== 'Maintenance';
@@ -377,27 +445,49 @@ const RoomList = () => {
 
                           <div className="flex gap-2 mt-auto">
                             <button 
-                              onClick={() => navigate(`/room/${room.id}`)}
-                              className="flex-1 py-1 text-[8px] font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-md font-sans"
+                              onClick={() => {
+                                const qs = (filters.checkInDate && filters.checkOutDate) ? `?checkInDate=${filters.checkInDate}&checkOutDate=${filters.checkOutDate}` : '';
+                                navigate(`/room/${room.id}${qs}`);
+                              }}
+                              className="flex-1 py-1.5 text-[8px] font-black uppercase tracking-widest border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-luxury rounded-md font-sans"
                             >{t('roomList.explore')}</button>
-                            <button 
-                              onClick={() => navigate(`/booking/${room.id}`)}
-                              disabled={!isAvailable}
-                              className={`flex-[1.5] py-1 text-[8px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-1.5 rounded-md shadow-lg shadow-slate-900/10 font-sans ${
-                                isAvailable 
-                                ? 'bg-slate-900 text-white hover:bg-amber-500' 
-                                : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200 shadow-none'
-                              }`}
-                            >
-                              {isAvailable ? <>{t('roomList.book_now')} <ArrowRight size={10} /></> : 'Đã hết'}
-                            </button>
+
+                            {/* Bắt buộc chọn ngày trước khi đặt */}
+                            {(!filters.checkInDate || !filters.checkOutDate) ? (
+                              <button 
+                                onClick={() => {
+                                  const el = document.getElementById('filter-dates');
+                                  if(el) {
+                                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    el.classList.add('ring-2', 'ring-rose-500', 'ring-offset-2');
+                                    setTimeout(() => el.classList.remove('ring-2', 'ring-rose-500', 'ring-offset-2'), 1500);
+                                  }
+                                }}
+                                className="flex-[1.5] py-1.5 text-[8px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-1.5 rounded-md shadow-lg shadow-slate-900/10 font-sans bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100"
+                              >
+                                Vui lòng chọn ngày
+                              </button>
+                            ) : (
+                              <button 
+                                onClick={() => navigate(`/booking/${room.id}?checkInDate=${filters.checkInDate}&checkOutDate=${filters.checkOutDate}`)}
+                                disabled={!isAvailable}
+                                className={`flex-[1.5] py-1.5 text-[8px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-1.5 rounded-md shadow-lg shadow-slate-900/10 font-sans ${
+                                  isAvailable 
+                                  ? 'bg-slate-900 text-white hover:bg-amber-500' 
+                                  : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200 shadow-none'
+                                }`}
+                              >
+                                {isAvailable ? <>{t('roomList.book_now')} <ArrowRight size={10} /></> : 'Đã hết'}
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              )}
+              );
+              })()}
             </main>
           </div>
         </div>

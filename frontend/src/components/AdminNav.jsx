@@ -6,6 +6,7 @@ import {
   Settings, ShieldCheck, FileText
 } from 'lucide-react';
 import { AuthContext } from "../context/AuthContext";
+import Swal from 'sweetalert2';
 
 const AdminNav = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
@@ -51,7 +52,7 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
 
       {/* Nav Links */}
       <div className="flex-1 overflow-y-auto py-8 px-4 space-y-2 admin-scrollbar bg-white">
-        <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest px-4 mb-4 font-sans">Danh mục</p>
+        <p className="text-[10px] text-slate-400  font-black tracking-widest px-4 mb-4 font-sans">Danh mục</p>
 
         {navs.map(nav => {
           const isActive = location.pathname.startsWith(nav.path);
@@ -79,7 +80,9 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
               </div>
 
               {isActive ? (
-                <Sparkles size={14} className="animate-pulse opacity-80" />
+                <div className="w-3.5 h-3.5 rounded-full bg-amber-500/20 flex items-center justify-center">
+                   <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                </div>
               ) : (
                 <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-slate-300" />
               )}
@@ -88,8 +91,11 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
         })}
 
         <div className="pt-8 mt-8 border-t border-slate-100">
-          <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest px-4 mb-4 font-sans">Hệ thống</p>
-          <button className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-luxury font-bold text-xs tracking-wide font-sans group">
+          <p className="text-[10px] text-slate-400 font-black tracking-widest px-4 mb-4 font-sans">Hệ thống</p>
+          <button 
+             onClick={() => Swal.fire({ title: 'Đang phát triển', text: 'Tính năng Cài đặt chung đang được hoàn thiện và sẽ ra mắt trong bản cập nhật tới!', icon: 'info' })}
+             className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-luxury font-bold text-xs tracking-wide font-sans group"
+          >
             <Settings size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
             <span>Cài đặt chung</span>
           </button>
@@ -106,14 +112,14 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
             <p className="text-xs font-bold text-slate-900 truncate font-sans">{user?.fullName || 'Admin User'}</p>
             <div className="flex items-center gap-1 mt-0.5">
                <ShieldCheck size={10} className="text-emerald-500" />
-               <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest">Quyền Quản Trị</p>
+               <p className="text-[9px] text-slate-400  font-black tracking-widest">Quyền Quản Trị</p>
             </div>
           </div>
         </div>
 
         <button 
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900 text-white hover:bg-rose-600 transition-luxury text-[11px] font-black uppercase tracking-widest shadow-lg shadow-slate-900/10 font-sans"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900 text-white hover:bg-rose-600 transition-luxury text-[11px] font-black  tracking-widest shadow-lg shadow-slate-900/10 font-sans"
         >
           <LogOut size={14} />
           Đăng xuất

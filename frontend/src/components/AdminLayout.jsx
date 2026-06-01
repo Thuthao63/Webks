@@ -23,9 +23,20 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
     const fetchNotifications = async () => {
       try {
         const res = await axiosClient.get('/bookings');
-        const pendingBookings = res.data.filter(b => b.status === 'pending');
-        pendingBookings.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
-        setNotifications(pendingBookings.slice(0, 5));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const targetBookings = res.data.filter(b => {
+            if (b.status === 'pending') return true;
+            if (b.status === 'confirmed' && b.checkInDate) {
+                const checkInDate = new Date(b.checkInDate);
+                checkInDate.setHours(0, 0, 0, 0);
+                if (checkInDate.getTime() <= today.getTime()) return true;
+            }
+            return false;
+        });
+        targetBookings.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
+        setNotifications(targetBookings.slice(0, 5));
       } catch (error) {
         console.error("Failed to fetch notifications", error);
       }
@@ -35,7 +46,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
     // Kết nối Socket.io
     const socket = io('http://localhost:5000');
     
-    socket.on('new_booking_notification', (newBooking) => {
+    socket.on('newBooking', (newBooking) => {
         setNotifications(prev => {
             const updated = [newBooking, ...prev];
             return updated.slice(0, 5); // Giữ tối đa 5 thông báo
@@ -46,9 +57,10 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
             toast: true,
             position: 'bottom-end',
             icon: 'info',
-            title: `Đơn đặt phòng mới từ ${newBooking.user?.fullName || 'Khách'}!`,
+            title: `Đơn mới từ ${newBooking.customerName || 'Khách'}!`,
+            text: `Phòng ${newBooking.roomNumber}`,
             showConfirmButton: false,
-            timer: 3000,
+            timer: 4000,
             timerProgressBar: true
         });
     });
@@ -135,7 +147,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
               <h1 className="text-xl lg:text-2xl font-serif text-slate-800">
                 {title}
               </h1>
-              <p className="text-[11px] text-slate-500 uppercase tracking-widest font-medium hidden sm:block mt-0.5 font-sans">
+              <p className="text-[11px] text-slate-500  tracking-widest font-medium hidden sm:block mt-0.5 font-sans">
                 {subtitle}
               </p>
             </div>
@@ -161,7 +173,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
                     {/* Kết quả Bookings */}
                     {searchResults?.bookings?.length > 0 && (
                       <div className="mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-3 py-1">Đơn đặt phòng</p>
+                        <p className="text-[10px] font-black  tracking-widest text-slate-400 px-3 py-1">Đơn đặt phòng</p>
                         {searchResults.bookings.map(b => (
                           <div key={`b-${b.id}`} onClick={() => { setShowSearchDropdown(false); navigate('/admin/bookings'); }} className="px-3 py-2 hover:bg-slate-50 rounded-xl cursor-pointer">
                             <p className="text-xs font-bold text-slate-800">Mã đơn #{b.id}</p>
@@ -174,7 +186,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
                     {/* Kết quả Users */}
                     {searchResults?.users?.length > 0 && (
                       <div className="mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-3 py-1">Khách hàng</p>
+                        <p className="text-[10px] font-black  tracking-widest text-slate-400 px-3 py-1">Khách hàng</p>
                         {searchResults.users.map(u => (
                           <div key={`u-${u.id}`} onClick={() => { setShowSearchDropdown(false); navigate('/admin/users'); }} className="px-3 py-2 hover:bg-slate-50 rounded-xl cursor-pointer">
                             <p className="text-xs font-bold text-slate-800">{u.fullName}</p>
@@ -187,7 +199,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
                     {/* Kết quả Rooms */}
                     {searchResults?.rooms?.length > 0 && (
                       <div className="mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-3 py-1">Phòng</p>
+                        <p className="text-[10px] font-black  tracking-widest text-slate-400 px-3 py-1">Phòng</p>
                         {searchResults.rooms.map(r => (
                           <div key={`r-${r.id}`} onClick={() => { setShowSearchDropdown(false); navigate('/admin/rooms'); }} className="px-3 py-2 hover:bg-slate-50 rounded-xl cursor-pointer">
                             <p className="text-xs font-bold text-slate-800">Phòng {r.roomNumber}</p>
@@ -224,19 +236,57 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
                 {showNotifMenu && (
                   <div className="absolute right-0 mt-3 w-80 bg-white border border-slate-200 rounded-2xl shadow-luxury overflow-hidden z-50 animate-in fade-in slide-in-from-top-4">
                     <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Thông báo mới</span>
+                      <span className="text-[10px] font-black  tracking-widest text-slate-500">Thông báo mới</span>
                       <span className="text-[10px] text-amber-600 cursor-pointer" onClick={() => setNotifications([])}>Đánh dấu đã đọc</span>
                     </div>
                     <div className="max-h-80 overflow-y-auto">
                       {notifications.length > 0 ? notifications.map(notif => (
                         <div
                           key={notif.id}
-                          onClick={() => { setShowNotifMenu(false); navigate('/admin/bookings'); }}
-                          className="p-4 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors"
+                          onClick={() => {
+                              setShowNotifMenu(false);
+                              Swal.fire({
+                                title: `Đơn Đặt Phòng #${notif.id}`,
+                                html: `
+                                  <div class="text-left space-y-4 mt-4 font-sans">
+                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                      <p class="text-[10px]  font-black tracking-widest text-slate-400 mb-1">Khách Hàng</p>
+                                      <p class="font-bold text-slate-900 text-lg">${notif.customerName || notif.user?.fullName || 'Khách'}</p>
+                                    </div>
+                                    <div class="flex gap-4">
+                                      <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex-1">
+                                        <p class="text-[10px]  font-black tracking-widest text-slate-400 mb-1">Số Phòng</p>
+                                        <p class="font-bold text-slate-900 text-lg">${notif.roomNumber || notif.room?.roomNumber || 'N/A'}</p>
+                                      </div>
+                                      <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex-1">
+                                        <p class="text-[10px]  font-black tracking-widest text-emerald-600 mb-1">Đã Cọc (50%)</p>
+                                        <p class="font-bold text-emerald-700 text-lg">${Number(notif.prepaidAmount || (notif.totalPrice ? notif.totalPrice/2 : 0)).toLocaleString()} đ</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                `,
+                                showCancelButton: true,
+                                confirmButtonText: notif.status === 'confirmed' ? 'Xử lý nhận phòng' : 'Quản Lý Đơn Ngay',
+                                cancelButtonText: 'Đóng',
+                                confirmButtonColor: '#d97706',
+                                borderRadius: '2rem'
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  navigate(`/admin/bookings?bookingId=${notif.id}`);
+                                }
+                              });
+                          }}
+                          className={`p-4 border-b hover:bg-slate-50 cursor-pointer transition-colors ${notif.status === 'confirmed' ? 'bg-amber-50/30 border-amber-100' : 'border-slate-50'}`}
                         >
-                          <p className="text-sm font-bold text-slate-800">Đơn đặt phòng mới #{notif.id}</p>
-                          <p className="text-xs text-slate-500 mt-1">Khách hàng {notif.user?.fullName || notif.customer?.fullName || 'ẩn danh'} vừa đặt phòng {notif.room?.roomNumber}.</p>
-                          <p className="text-[10px] text-slate-400 mt-2">{timeSince(notif.createdAt)}</p>
+                          <p className={`text-sm font-bold ${notif.status === 'confirmed' ? 'text-amber-700' : 'text-slate-800'}`}>
+                             {notif.status === 'confirmed' ? `🛎️ Khách tới nhận phòng #${notif.id}` : `✨ Đơn đặt phòng mới #${notif.id}`}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-1">
+                             {notif.status === 'confirmed' 
+                               ? <span>Khách <span className="font-bold text-slate-700">{notif.customerName || notif.user?.fullName || 'ẩn danh'}</span> có lịch nhận phòng {notif.roomNumber || notif.room?.roomNumber} hôm nay.</span>
+                               : <span>Khách <span className="font-bold text-slate-700">{notif.customerName || notif.user?.fullName || 'ẩn danh'}</span> vừa chốt phòng {notif.roomNumber || notif.room?.roomNumber}.</span>}
+                          </p>
+                          <p className="text-[10px] text-slate-400 mt-2">{notif.createdAt ? timeSince(notif.createdAt) : 'Vừa xong'}</p>
                         </div>
                       )) : (
                         <div className="p-6 text-center text-slate-400 text-xs italic">
@@ -264,7 +314,7 @@ const AdminLayout = ({ children, title = "Dashboard", subtitle = "Luxury Hotel M
                   <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-200 rounded-2xl shadow-luxury overflow-hidden z-50 animate-in fade-in slide-in-from-top-4">
                     <div className="p-5 border-b border-slate-100 bg-slate-50/50">
                       <p className="text-sm font-bold text-slate-900 truncate">{user?.fullName || 'Quản trị viên'}</p>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mt-1">{user?.role || 'Admin'}</p>
+                      <p className="text-[10px] font-black  tracking-widest text-amber-500 mt-1">{user?.role || 'Admin'}</p>
                     </div>
                     <div className="p-2">
                       <Link to="/" className="flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors">

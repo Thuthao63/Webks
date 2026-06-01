@@ -243,18 +243,51 @@ const Profile = () => {
         });
     };
 
-    const renderStatusBadge = (status) => {
-        const configs = {
-            'pending': { color: 'text-amber-600 bg-amber-50 border-amber-100', text: t('profile.status_pending'), icon: Clock },
-            'confirmed': { color: 'text-emerald-600 bg-emerald-50 border-emerald-100', text: t('profile.status_confirmed'), icon: CheckCircle },
-            'cancelled': { color: 'text-rose-600 bg-rose-50 border-rose-100', text: t('profile.status_cancelled'), icon: XCircle },
-            'completed': { color: 'text-blue-600 bg-blue-50 border-blue-100', text: t('profile.status_completed'), icon: Award }
-        };
-        const config = configs[status] || configs['pending'];
-        const Icon = config.icon;
+    const renderStatusBadge = (booking) => {
+        const status = booking.status;
+        const checkInDate = new Date(booking.checkInDate);
+        const checkOutDate = new Date(booking.checkOutDate);
+        const now = new Date();
+        now.setHours(0,0,0,0);
+        checkInDate.setHours(0,0,0,0);
+        checkOutDate.setHours(0,0,0,0);
+
+        let displayText = '';
+        let displayColor = '';
+        let Icon = CheckCircle;
+
+        if (status === 'pending') {
+            displayText = t('profile.status_pending');
+            displayColor = 'text-amber-600 bg-amber-50 border-amber-100';
+            Icon = Clock;
+        } else if (status === 'cancelled') {
+            displayText = t('profile.status_cancelled');
+            displayColor = 'text-rose-600 bg-rose-50 border-rose-100';
+            Icon = XCircle;
+        } else if (status === 'completed') {
+            displayText = t('profile.status_completed');
+            displayColor = 'text-slate-600 bg-slate-50 border-slate-200';
+            Icon = Award;
+        } else if (status === 'confirmed') {
+            if (now < checkInDate) {
+                displayText = 'Đã đặt (Sắp tới)';
+                displayColor = 'text-blue-600 bg-blue-50 border-blue-100';
+            } else if (now >= checkInDate && now <= checkOutDate) {
+                displayText = 'Đang lưu trú';
+                displayColor = 'text-emerald-600 bg-emerald-50 border-emerald-100';
+            } else {
+                displayText = 'Chờ hoàn tất';
+                displayColor = 'text-emerald-600 bg-emerald-50 border-emerald-100';
+            }
+        } else {
+            displayText = t('profile.status_pending');
+            displayColor = 'text-amber-600 bg-amber-50 border-amber-100';
+            Icon = Clock;
+        }
+
         return (
-            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-bold uppercase tracking-widest font-sans ${config.color}`}>
-                <Icon size={12} /> {config.text}
+            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-bold uppercase tracking-widest font-sans ${displayColor}`}>
+                <Icon size={12} /> {displayText}
             </span>
         );
     };
@@ -403,7 +436,7 @@ const Profile = () => {
                                                     <MapPin size={12} className="text-amber-500" /> Đà Nẵng, Việt Nam
                                                 </p>
                                             </div>
-                                            {renderStatusBadge(myBookings[0].status)}
+                                            {renderStatusBadge(myBookings[0])}
                                         </div>
                                         <p className="text-sm text-slate-500 leading-relaxed font-medium font-sans max-w-lg">
                                             Một trải nghiệm nghỉ dưỡng hoàn hảo được thiết kế riêng. Không gian riêng tư tuyệt đối hòa quyện cùng thiên nhiên.
@@ -456,7 +489,7 @@ const Profile = () => {
                                         </div>
                                         <div className="flex flex-col items-center md:items-end gap-3">
                                             <span className="text-base font-bold text-slate-900">{Number(booking.totalPrice).toLocaleString()}đ</span>
-                                            {renderStatusBadge(booking.status)}
+                                            {renderStatusBadge(booking)}
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); setPrintingBooking(booking); setTimeout(() => window.print(), 500); }}
                                                 className="px-4 py-2 mt-1 bg-slate-900 text-white rounded-xl flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"

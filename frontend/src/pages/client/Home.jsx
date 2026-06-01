@@ -221,7 +221,7 @@ const Home = () => {
                   <div className="flex items-center justify-between pt-4 border-t border-gray-50">
                     <div className="space-y-0.5">
                       <p className="text-[9px] text-gray-300 uppercase tracking-widest font-black">{t('home.standard_price')}</p>
-                      <p className="text-[17px] font-serif italic text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-[9px] text-gray-300 font-black not-italic ml-0.5">{t('home.currency')}</span></p>
+                      <p className="text-base font-sans font-semibold text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-[9px] text-gray-300 font-bold not-italic ml-0.5">{t('home.currency')}</span></p>
                     </div>
                     <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-amber-600 group-hover:border-amber-600 group-hover:text-white group-hover:shadow-lg transition-luxury">
                       <ArrowRight size={16} />

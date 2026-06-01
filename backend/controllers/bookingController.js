@@ -9,7 +9,7 @@ const { Op } = require('sequelize');
 // 1. Khách hàng đặt phòng (Khớp với router.post('/') )
 const createBooking = async (req, res) => {
     try {
-        const { roomId, checkInDate, checkOutDate, totalPrice, serviceIds } = req.body;
+        const { roomId, checkInDate, checkOutDate, totalPrice, serviceIds, services } = req.body;
 
         // Thảo lưu ý: Nếu chưa làm Login thì tạm thời gán userId = 1 
         // Nếu đã có Login thì lấy từ req.user.id
@@ -41,7 +41,15 @@ const createBooking = async (req, res) => {
         });
 
         // Nếu có dịch vụ đi kèm, lưu vào bảng BookingService
-        if (serviceIds && Array.isArray(serviceIds) && serviceIds.length > 0) {
+        // Hỗ trợ cả định dạng cũ (serviceIds) và định dạng mới (services: [{serviceId, quantity}])
+        if (services && Array.isArray(services) && services.length > 0) {
+            const bookingServices = services.map(s => ({
+                bookingId: newBooking.id,
+                serviceId: s.serviceId,
+                quantity: s.quantity || 1
+            }));
+            await BookingService.bulkCreate(bookingServices);
+        } else if (serviceIds && Array.isArray(serviceIds) && serviceIds.length > 0) {
             const bookingServices = serviceIds.map(serviceId => ({
                 bookingId: newBooking.id,
                 serviceId: serviceId,
@@ -109,15 +117,29 @@ const updateBookingStatus = async (req, res) => {
         await booking.save();
 
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn
-        if (status === 'confirmed') {
+        if (status === 'checked_in') {
             await Room.update({ status: 'Occupied' }, { where: { id: booking.roomId } });
-            
-            // Nếu từ pending -> confirmed (mới thanh toán xong), thì gửi email
-            if (oldStatus !== 'confirmed' && booking.user && booking.user.email) {
-                sendInvoiceEmail(booking.user.email, booking).catch(err => console.error("Lỗi gửi email ngầm", err));
-            }
         } else if (status === 'completed' || status === 'cancelled') {
             await Room.update({ status: 'Available' }, { where: { id: booking.roomId } });
+        }
+
+        if (status === 'confirmed') {
+            // Nếu từ pending -> confirmed (mới thanh toán xong)
+            if (oldStatus !== 'confirmed') {
+                if (booking.user && booking.user.email) {
+                    sendInvoiceEmail(booking.user.email, booking).catch(err => console.error("Lỗi gửi email ngầm", err));
+                }
+                
+                // [TÍNH NĂNG REAL-TIME] Bắn thông báo về cho Admin!
+                if (req.io) {
+                    req.io.emit('newBooking', {
+                        id: booking.id,
+                        customerName: booking.user?.fullName || 'Khách hàng',
+                        roomNumber: booking.room?.roomNumber || 'N/A',
+                        prepaidAmount: (booking.totalPrice / 2) // Giả định cọc 50%
+                    });
+                }
+            }
         }
 
         res.status(200).json({ message: "Cập nhật thành công" });

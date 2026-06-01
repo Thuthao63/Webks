@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { Calendar, CreditCard, ArrowLeft, Loader2, Info, CheckCircle2, Star } from 'lucide-react';
@@ -19,7 +19,7 @@ const Booking = () => {
   const [room, setRoom] = useState(null);
   const [activeDiscounts, setActiveDiscounts] = useState([]);
   const [availableServices, setAvailableServices] = useState([]);
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState({}); // { serviceId: quantity }
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
   
@@ -28,9 +28,13 @@ const Booking = () => {
   const [pendingBookingId, setPendingBookingId] = useState(null);
   const [processingPayment, setProcessingPayment] = useState(false);
 
+  const [searchParams] = useSearchParams();
+  const queryCheckIn = searchParams.get('checkInDate');
+  const queryCheckOut = searchParams.get('checkOutDate');
+
   // Quản lý ngày bằng đối tượng Date để DatePicker hoạt động mượt mà
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date(Date.now() + 86400000));
+  const [startDate, setStartDate] = useState(queryCheckIn ? new Date(queryCheckIn) : new Date());
+  const [endDate, setEndDate] = useState(queryCheckOut ? new Date(queryCheckOut) : new Date(Date.now() + 86400000));
   const [totalPrice, setTotalPrice] = useState(0);
   const [days, setDays] = useState(1);
 
@@ -84,9 +88,9 @@ const Booking = () => {
         const roomTotal = Math.round(diffDays * price * discountFactor);
         
         // Tính tổng tiền dịch vụ cộng thêm
-        const servicesTotal = selectedServices.reduce((sum, serviceId) => {
-            const service = availableServices.find(s => s.id === serviceId);
-            return sum + (service ? Number(service.price) : 0);
+        const servicesTotal = Object.entries(selectedServices).reduce((sum, [serviceId, quantity]) => {
+            const service = availableServices.find(s => s.id === Number(serviceId));
+            return sum + (service ? Number(service.price) * quantity : 0);
         }, 0);
         
         setTotalPrice(roomTotal + servicesTotal);
@@ -97,12 +101,18 @@ const Booking = () => {
     }
   }, [startDate, endDate, room, activeDiscounts, selectedServices, availableServices]);
 
-  const toggleService = (serviceId) => {
-    setSelectedServices(prev => 
-      prev.includes(serviceId) 
-        ? prev.filter(id => id !== serviceId)
-        : [...prev, serviceId]
-    );
+  const updateServiceQuantity = (serviceId, delta) => {
+    setSelectedServices(prev => {
+      const currentQty = prev[serviceId] || 0;
+      const newQty = currentQty + delta;
+      
+      if (newQty <= 0) {
+        const newState = { ...prev };
+        delete newState[serviceId];
+        return newState;
+      }
+      return { ...prev, [serviceId]: newQty };
+    });
   };
 
   const handleBooking = async () => {
@@ -117,7 +127,10 @@ const Booking = () => {
         checkInDate: startDate.toISOString().split('T')[0],
         checkOutDate: endDate.toISOString().split('T')[0],
         totalPrice: totalPrice,
-        serviceIds: selectedServices
+        services: Object.entries(selectedServices).map(([serviceId, quantity]) => ({
+            serviceId: Number(serviceId),
+            quantity
+        }))
       });
       
       Swal.close();
@@ -232,26 +245,40 @@ const Booking = () => {
             <div className="p-10 bg-white border border-gray-100 rounded-3xl shadow-sm">
               <h3 className="text-xl font-serif italic text-gray-900 mb-6">{t('booking.services_title')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {availableServices.map(service => (
+                {availableServices.map(service => {
+                  const qty = selectedServices[service.id] || 0;
+                  const isSelected = qty > 0;
+                  return (
                   <div 
                     key={service.id} 
-                    onClick={() => toggleService(service.id)}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-4 ${
-                      selectedServices.includes(service.id) 
+                    className={`p-4 rounded-2xl border transition-all flex flex-col gap-3 ${
+                      isSelected 
                         ? 'border-amber-500 bg-amber-50/50' 
                         : 'border-gray-100 hover:border-amber-300'
                     }`}
                   >
-                    <div className={`mt-1 w-5 h-5 rounded flex items-center justify-center border ${selectedServices.includes(service.id) ? 'bg-amber-500 border-amber-500 text-white' : 'border-gray-300'}`}>
-                      {selectedServices.includes(service.id) && <CheckCircle2 size={14} />}
+                    <div className="flex items-start gap-4 cursor-pointer" onClick={() => updateServiceQuantity(service.id, isSelected ? -qty : 1)}>
+                        <div className={`mt-1 w-5 h-5 rounded flex items-center justify-center border ${isSelected ? 'bg-amber-500 border-amber-500 text-white' : 'border-gray-300'}`}>
+                          {isSelected && <CheckCircle2 size={14} />}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 font-sans">{service.name}</h4>
+                          <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{service.description}</p>
+                          <p className="text-sm font-semibold text-amber-600 mt-2">{formatCurrency(service.price)} <span className="text-[10px] text-gray-400 font-normal">/ {service.unit || 'khách'}</span></p>
+                        </div>
                     </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-gray-900">{service.name}</h4>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">{service.description}</p>
-                      <p className="text-sm font-bold text-amber-600 mt-2">+{formatCurrency(service.price)}</p>
-                    </div>
+                    {isSelected && (
+                      <div className="flex items-center justify-between border-t border-amber-200/50 pt-3 mt-1">
+                         <span className="text-xs font-black uppercase tracking-widest text-amber-700/60">Số lượng:</span>
+                         <div className="flex items-center gap-3 bg-white rounded-lg border border-amber-200 p-1">
+                            <button onClick={(e) => { e.stopPropagation(); updateServiceQuantity(service.id, -1); }} className="w-6 h-6 flex items-center justify-center rounded bg-slate-50 text-slate-600 hover:bg-slate-200 transition-colors">-</button>
+                            <span className="text-xs font-bold w-4 text-center">{qty}</span>
+                            <button onClick={(e) => { e.stopPropagation(); updateServiceQuantity(service.id, 1); }} className="w-6 h-6 flex items-center justify-center rounded bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors">+</button>
+                         </div>
+                      </div>
+                    )}
                   </div>
-                ))}
+                )})}
                 {availableServices.length === 0 && (
                   <p className="text-sm text-gray-400 italic">{t('booking.no_services')}</p>
                 )}
@@ -316,13 +343,13 @@ const Booking = () => {
                       <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
                     </div>
                   )}
-                  {selectedServices.length > 0 && (
+                  {Object.keys(selectedServices).length > 0 && (
                     <div className="flex justify-between items-start text-xs uppercase tracking-widest text-amber-600 font-bold font-sans">
                       <span className="flex flex-col gap-1">{t('booking.included_services')}</span>
                       <span className="text-right">
-                        +{formatCurrency(selectedServices.reduce((sum, id) => {
-                          const s = availableServices.find(x => x.id === id);
-                          return sum + (s ? Number(s.price) : 0);
+                        +{formatCurrency(Object.entries(selectedServices).reduce((sum, [id, qty]) => {
+                          const s = availableServices.find(x => x.id === Number(id));
+                          return sum + (s ? Number(s.price) * qty : 0);
                         }, 0))}
                       </span>
                     </div>
@@ -332,8 +359,16 @@ const Booking = () => {
                       <div className="text-xs font-black uppercase text-amber-600 tracking-wider">{t('booking.total_value')}</div>
                       <div className="text-sm text-gray-500">{days} {t('booking.night')} • {formatCurrency(room?.roomType?.price || 0)} {t('booking.per_night')}</div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-3xl md:text-4xl font-serif text-gray-900 italic">{formatCurrency(totalPrice)}</div>
+                     <div className="text-right">
+                      {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
+                         <div className="text-sm text-gray-400 line-through mb-0.5">
+                            {formatCurrency((days * (room?.roomType?.price || room?.typeDetails?.price || 0)) + Object.entries(selectedServices).reduce((sum, [id, qty]) => {
+                               const s = availableServices.find(x => x.id === Number(id));
+                               return sum + (s ? Number(s.price) * qty : 0);
+                            }, 0))}
+                         </div>
+                      )}
+                      <div className="text-xl md:text-2xl font-sans font-semibold tracking-tight text-gray-900">{formatCurrency(totalPrice)}</div>
                     </div>
                   </div>
                 </div>

@@ -26,8 +26,8 @@ const ManageDiscounts = () => {
             popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
             title: 'font-serif italic text-amber-500 text-2xl',
             htmlContainer: 'text-slate-400 text-sm',
-            confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-            cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold uppercase tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+            confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
+            cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold  tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
         }
     });
 
@@ -92,7 +92,7 @@ const ManageDiscounts = () => {
     if (loading) return (
         <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
             <Loader2 className="animate-spin text-amber-500" size={40} />
-            <p className="text-slate-500 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">Đang truy xuất dữ liệu ưu đãi...</p>
+            <p className="text-slate-500 text-[10px] tracking-[0.3em]  font-bold animate-pulse">Đang truy xuất dữ liệu ưu đãi...</p>
         </div>
     );
 
@@ -107,14 +107,14 @@ const ManageDiscounts = () => {
                             <Percent size={20} />
                         </div>
                         <div>
-                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Chiến dịch hiện hữu</p>
+                            <p className="text-[10px] text-slate-500 font-bold  tracking-widest">Chiến dịch hiện hữu</p>
                             <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{discounts.length} chương trình</p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => setShowModal(true)}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
                     >
                         <Plus size={16} strokeWidth={3} />
                         Thiết lập giảm giá
@@ -125,7 +125,7 @@ const ManageDiscounts = () => {
                 <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto admin-scrollbar">
                         <table className="w-full text-left">
-                            <thead className="text-[10px] text-slate-500 uppercase font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+                            <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                                 <tr>
                                     <th className="px-8 py-6">Đối tượng / Hạng phòng</th>
                                     <th className="px-6 py-6">Mức giảm</th>
@@ -148,7 +148,7 @@ const ManageDiscounts = () => {
                                                     </div>
                                                     <div>
                                                         <p className="text-slate-700 font-bold text-sm font-sans">{discount.roomType?.name || 'Tất cả phòng'}</p>
-                                                        <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">{discount.description || 'Chương trình khuyến mãi'}</p>
+                                                        <p className="text-[9px] text-slate-500 font-bold  tracking-widest">{discount.description || 'Chương trình khuyến mãi'}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -168,7 +168,7 @@ const ManageDiscounts = () => {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-5">
-                                                <span className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border ${
+                                                <span className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[9px] font-black  tracking-widest border ${
                                                     isExpired 
                                                     ? 'text-slate-500 border-slate-100 bg-slate-50' 
                                                     : isUpcoming 
@@ -200,7 +200,7 @@ const ManageDiscounts = () => {
                 {discounts.length === 0 && (
                     <div className="py-20 text-center border border-dashed border-slate-100 rounded-[2.5rem] bg-slate-50/50 font-sans">
                         <Sparkles size={40} className="mx-auto mb-4 text-slate-300" />
-                        <p className="text-slate-500 text-[10px] font-bold tracking-[0.2em] uppercase">Chưa có chương trình ưu đãi nào</p>
+                        <p className="text-slate-500 text-[10px] font-bold tracking-[0.2em] ">Chưa có chương trình ưu đãi nào</p>
                     </div>
                 )}
 
@@ -216,11 +216,11 @@ const ManageDiscounts = () => {
                             <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
                                 Thiết lập <span className="text-amber-500">Giảm giá</span>
                             </h2>
-                            <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>
+                            <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Hạng phòng áp dụng</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Hạng phòng áp dụng</label>
                                     <select 
                                         required 
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold appearance-none cursor-pointer"
@@ -237,7 +237,7 @@ const ManageDiscounts = () => {
                                 </div>
                                 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Mức giảm (%)</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Mức giảm (%)</label>
                                     <input 
                                         type="number" placeholder="20" required min="1" max="90"
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-amber-500"
@@ -247,7 +247,7 @@ const ManageDiscounts = () => {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Mô tả ngắn</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Mô tả ngắn</label>
                                     <input 
                                         type="text" placeholder="Ưu đãi mùa hè" required
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
@@ -257,7 +257,7 @@ const ManageDiscounts = () => {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Ngày bắt đầu</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Ngày bắt đầu</label>
                                     <input 
                                         type="date" required
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
@@ -267,7 +267,7 @@ const ManageDiscounts = () => {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1">Ngày kết thúc</label>
+                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Ngày kết thúc</label>
                                     <input 
                                         type="date" required
                                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
@@ -280,7 +280,7 @@ const ManageDiscounts = () => {
                             <button 
                                 type="submit" 
                                 disabled={submitting}
-                                className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                                className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black  tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
                             >
                                 {submitting ? (
                                     <Loader2 className="animate-spin mx-auto" size={18} />

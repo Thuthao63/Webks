@@ -121,7 +121,7 @@ const Promotions = () => {
                                 <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
                                     <div>
                                         <p className="text-sm text-gray-400 font-black uppercase tracking-widest mb-1">{t('promotions.package_price_from')}</p>
-                                        <p className="text-3xl font-serif italic text-amber-600">{offer.price} <span className="text-xs not-italic text-gray-300 ml-2 font-sans font-black">{t('promotions.currency')}</span></p>
+                                        <p className="text-2xl font-sans font-semibold tracking-tight text-amber-600">{offer.price} <span className="text-[10px] not-italic text-gray-400 ml-1.5 font-sans font-bold">{t('promotions.currency')}</span></p>
                                     </div>
                                     <button 
                                         onClick={() => navigate('/rooms')}

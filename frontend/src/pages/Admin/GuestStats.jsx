@@ -67,22 +67,46 @@ const GuestStats = () => {
     }, 500);
   };
 
-  const getStatusBadge = (status) => {
-    const config = {
-      pending: 'bg-amber-100 text-amber-600 border-amber-200',
-      confirmed: 'bg-emerald-100 text-emerald-600 border-emerald-200',
-      completed: 'bg-blue-100 text-blue-600 border-blue-200',
-      cancelled: 'bg-rose-100 text-rose-600 border-rose-200',
-    };
-    const labels = {
-      pending: 'Đang chờ',
-      confirmed: 'Đang lưu trú',
-      completed: 'Đã trả phòng',
-      cancelled: 'Đã hủy',
-    };
+  const getStatusBadge = (booking) => {
+    const status = booking.status;
+    const checkInDate = new Date(booking.checkInDate);
+    const checkOutDate = new Date(booking.checkOutDate);
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    checkInDate.setHours(0,0,0,0);
+    checkOutDate.setHours(0,0,0,0);
+
+    let badgeClass = 'bg-slate-100 text-slate-600 border-slate-200';
+    let label = status;
+
+    if (status === 'pending') {
+      badgeClass = 'bg-amber-100 text-amber-600 border-amber-200';
+      label = 'Đang chờ';
+    } else if (status === 'cancelled') {
+      badgeClass = 'bg-rose-100 text-rose-600 border-rose-200';
+      label = 'Đã hủy';
+    } else if (status === 'completed') {
+      badgeClass = 'bg-slate-100 text-slate-600 border-slate-200';
+      label = 'Đã trả phòng';
+    } else if (status === 'checked_in') {
+      badgeClass = 'bg-emerald-100 text-emerald-600 border-emerald-200';
+      label = 'Đang lưu trú';
+    } else if (status === 'confirmed') {
+      if (now < checkInDate) {
+        badgeClass = 'bg-blue-100 text-blue-600 border-blue-200';
+        label = 'Đã cọc (Sắp tới)';
+      } else if (now >= checkInDate && now <= checkOutDate) {
+        badgeClass = 'bg-emerald-100 text-emerald-600 border-emerald-200';
+        label = 'Đang lưu trú'; // Cập nhật sau
+      } else {
+        badgeClass = 'bg-emerald-100 text-emerald-600 border-emerald-200';
+        label = 'Chờ hoàn tất';
+      }
+    }
+
     return (
-      <span className={`px-2 py-1 border rounded-md text-[9px] font-black uppercase tracking-widest ${config[status] || config.pending}`}>
-        {labels[status] || status}
+      <span className={`px-2 py-1 border rounded-md text-[9px] font-black tracking-widest ${badgeClass}`}>
+        {label}
       </span>
     );
   };
@@ -133,7 +157,7 @@ const GuestStats = () => {
                   
                   <div className="flex items-center gap-8 w-full md:w-auto justify-between md:justify-end">
                     <div className="text-right">
-                       <p className="text-[10px] uppercase font-black tracking-widest text-slate-400">Tổng chi tiêu</p>
+                       <p className="text-[10px]  font-black tracking-widest text-slate-400">Tổng chi tiêu</p>
                        <p className="text-lg font-black text-emerald-600 font-sans">
                          {customer.totalSpent.toLocaleString('vi-VN')} <span className="text-xs">VNĐ</span>
                        </p>
@@ -147,20 +171,20 @@ const GuestStats = () => {
                 {/* Danh sách các phòng đã đặt (Mở rộng) */}
                 {expandedUser === customer.id && (
                   <div className="bg-slate-50 border-t border-slate-100 p-6">
-                    <h4 className="text-[10px] uppercase font-black tracking-widest text-slate-500 mb-4">Lịch sử {customer.bookings.length} lần đặt phòng</h4>
+                    <h4 className="text-[10px]  font-black tracking-widest text-slate-500 mb-4">Lịch sử {customer.bookings.length} lần đặt phòng</h4>
                     <div className="space-y-3">
                       {customer.bookings.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(booking => (
                         <div key={booking.id} className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                           
                           <div className="flex items-center gap-4 flex-1">
                              <div className="w-12 h-12 rounded-xl bg-slate-100 flex flex-col items-center justify-center border border-slate-200">
-                               <p className="text-[8px] font-black uppercase text-slate-400">Phòng</p>
+                               <p className="text-[8px] font-black  text-slate-400">Phòng</p>
                                <p className="text-sm font-black text-slate-900">{booking.room?.roomNumber || '---'}</p>
                              </div>
                              <div>
                                <div className="flex items-center gap-2">
                                  <p className="text-xs font-bold text-slate-800">Mã đơn: #{booking.id}</p>
-                                 {getStatusBadge(booking.status)}
+                                 {getStatusBadge(booking)}
                                </div>
                                <p className="text-[11px] text-slate-500 mt-1 font-medium flex items-center gap-1.5">
                                  <Calendar size={12}/>
@@ -170,9 +194,12 @@ const GuestStats = () => {
                           </div>
 
                           <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                            <p className="text-sm font-black text-slate-900">
-                              {Number(booking.totalPrice).toLocaleString('vi-VN')} VNĐ
-                            </p>
+                            <div className="text-right">
+                              <p className="text-sm font-black text-slate-900">
+                                {Number(booking.totalPrice).toLocaleString('vi-VN')} VNĐ
+                              </p>
+                              <p className="text-[9px] font-bold text-slate-400 mt-0.5 tracking-widest uppercase">Tổng đơn (100%)</p>
+                            </div>
                             <button 
                               onClick={(e) => { e.stopPropagation(); handlePrint(booking); }}
                               className="px-4 py-2 bg-slate-900 text-white rounded-xl flex items-center gap-2 text-xs font-bold hover:bg-amber-500 transition-colors"
@@ -210,7 +237,7 @@ const GuestStats = () => {
                  <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
                </div>
                <div className="text-right">
-                 <h2 className="text-3xl font-black uppercase tracking-widest text-slate-200">INVOICE</h2>
+                 <h2 className="text-3xl font-black  tracking-widest text-slate-200">INVOICE</h2>
                  <p className="text-sm text-slate-600 font-bold mt-2">Mã Hóa Đơn: #{String(printingBooking.id).toUpperCase()}</p>
                  <p className="text-xs text-slate-500 mt-1">Ngày xuất: {new Date().toLocaleDateString('vi-VN')}</p>
                </div>
@@ -219,13 +246,13 @@ const GuestStats = () => {
              {/* Customer & Booking Info */}
              <div className="flex justify-between mb-12">
                 <div className="bg-slate-50 p-6 rounded-2xl w-[45%]">
-                   <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-2">Thông tin khách hàng</p>
+                   <p className="text-[10px]  font-black tracking-widest text-slate-400 mb-2">Thông tin khách hàng</p>
                    <p className="font-bold text-slate-900 text-lg">{printingBooking.user?.fullName || printingBooking.customer?.fullName || 'Khách vãng lai'}</p>
                    <p className="text-sm text-slate-600 mt-1">{printingBooking.user?.email || printingBooking.customer?.email}</p>
                    <p className="text-sm text-slate-600">{printingBooking.user?.phone || printingBooking.customer?.phone}</p>
                 </div>
                 <div className="bg-amber-50/50 p-6 rounded-2xl w-[45%] text-right">
-                   <p className="text-[10px] uppercase font-black tracking-widest text-amber-500 mb-2">Chi tiết lưu trú</p>
+                   <p className="text-[10px]  font-black tracking-widest text-amber-500 mb-2">Chi tiết lưu trú</p>
                    <p className="font-bold text-slate-900 text-lg">Phòng {printingBooking.room?.roomNumber || '---'}</p>
                    <p className="text-sm text-slate-600 mt-1">Check-in: {new Date(printingBooking.checkInDate).toLocaleDateString('vi-VN')}</p>
                    <p className="text-sm text-slate-600">Check-out: {new Date(printingBooking.checkOutDate).toLocaleDateString('vi-VN')}</p>
@@ -236,9 +263,9 @@ const GuestStats = () => {
              <table className="w-full text-left mb-12">
                 <thead>
                   <tr className="border-b-2 border-slate-900">
-                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900">Diễn giải dịch vụ</th>
-                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900 text-right w-1/4">Đơn giá</th>
-                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900 text-right w-1/4">Thành tiền</th>
+                    <th className="py-4 text-xs font-black  tracking-widest text-slate-900">Diễn giải dịch vụ</th>
+                    <th className="py-4 text-xs font-black  tracking-widest text-slate-900 text-right w-1/4">Đơn giá</th>
+                    <th className="py-4 text-xs font-black  tracking-widest text-slate-900 text-right w-1/4">Thành tiền</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -272,7 +299,7 @@ const GuestStats = () => {
                       <span>Đã bao gồm</span>
                    </div>
                    <div className="flex justify-between py-4 text-amber-600">
-                      <span className="font-black uppercase tracking-widest text-lg">Tổng Thanh Toán</span>
+                      <span className="font-black  tracking-widest text-lg">Tổng Thanh Toán</span>
                       <span className="font-black text-2xl">{Number(printingBooking.totalPrice).toLocaleString('vi-VN')} đ</span>
                    </div>
                 </div>

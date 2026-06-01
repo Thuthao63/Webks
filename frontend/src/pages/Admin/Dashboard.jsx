@@ -107,17 +107,38 @@ const Dashboard = () => {
     return { revenueChartData: revData, statusChartData: statData, weeklyChartData: weekData };
   }, [allBookings, chartDays]);
 
-  const renderStatus = (status) => {
-    const config = {
-      pending: { color: 'text-amber-500 border-amber-500/30 bg-amber-50', icon: <Clock size={12} />, text: 'Chờ duyệt' },
-      confirmed: { color: 'text-emerald-500 border-emerald-500/30 bg-emerald-50', icon: <CheckCircle size={12} />, text: 'Xác nhận' },
-      cancelled: { color: 'text-rose-500 border-rose-500/30 bg-rose-50', icon: <XCircle size={12} />, text: 'Đã hủy' },
-      completed: { color: 'text-blue-500 border-blue-500/30 bg-blue-50', icon: <Package size={12} />, text: 'Hoàn tất' }
-    };
-    const s = config[status] || config.pending;
+  const renderStatus = (booking) => {
+    const status = booking.status;
+    const checkInDate = new Date(booking.checkInDate);
+    const checkOutDate = new Date(booking.checkOutDate);
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    checkInDate.setHours(0,0,0,0);
+    checkOutDate.setHours(0,0,0,0);
+
+    let config = { color: 'text-slate-500 border-slate-500/30 bg-slate-50', icon: <Package size={12} />, text: status };
+
+    if (status === 'pending') {
+      config = { color: 'text-amber-500 border-amber-500/30 bg-amber-50', icon: <Clock size={12} />, text: 'Chờ duyệt' };
+    } else if (status === 'cancelled') {
+      config = { color: 'text-rose-500 border-rose-500/30 bg-rose-50', icon: <XCircle size={12} />, text: 'Đã hủy' };
+    } else if (status === 'completed') {
+      config = { color: 'text-slate-500 border-slate-500/30 bg-slate-50', icon: <Package size={12} />, text: 'Hoàn tất' };
+    } else if (status === 'checked_in') {
+      config = { color: 'text-blue-500 border-blue-500/30 bg-blue-50', icon: <CheckCircle size={12} />, text: 'Đang lưu trú' };
+    } else if (status === 'confirmed') {
+      if (now < checkInDate) {
+        config = { color: 'text-emerald-500 border-emerald-500/30 bg-emerald-50', icon: <CheckCircle size={12} />, text: 'Đã cọc (Sắp tới)' };
+      } else if (now >= checkInDate && now <= checkOutDate) {
+        config = { color: 'text-blue-500 border-blue-500/30 bg-blue-50', icon: <CheckCircle size={12} />, text: 'Đang lưu trú' };
+      } else {
+        config = { color: 'text-emerald-500 border-emerald-500/30 bg-emerald-50', icon: <CheckCircle size={12} />, text: 'Chờ hoàn tất' };
+      }
+    }
+
     return (
-      <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${s.color}`}>
-        {s.icon} {s.text}
+      <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-black tracking-widest ${config.color}`}>
+        {config.icon} {config.text}
       </span>
     );
   };
@@ -135,7 +156,7 @@ const Dashboard = () => {
           <Activity className="animate-bounce text-amber-500" size={50} />
           <div className="absolute inset-0 bg-amber-500/20 blur-xl animate-pulse rounded-full"></div>
        </div>
-       <p className="text-amber-500 text-xs tracking-[0.15em] uppercase font-black animate-pulse font-sans">Đang tải dữ liệu...</p>
+       <p className="text-amber-500 text-xs tracking-[0.15em]  font-black animate-pulse font-sans">Đang tải dữ liệu...</p>
     </div>
   );
 
@@ -153,12 +174,12 @@ const Dashboard = () => {
                   <div className={`p-4 rounded-2xl ${item.bg} ${item.color}`}>
                      {item.icon}
                   </div>
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest font-sans">{item.title}</p>
+                  <p className="text-[10px] text-slate-400 font-black  tracking-widest font-sans">{item.title}</p>
                </div>
                
                <div className="flex flex-col relative z-10">
                   <h4 className="text-3xl font-serif italic text-slate-900 mb-1">{item.value}</h4>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1 font-sans">
+                  <p className="text-[10px] text-slate-500 font-bold  tracking-widest flex items-center gap-1 font-sans">
                      <ArrowUpRight size={12} className="text-emerald-500" /> {item.trend}
                   </p>
                </div>
@@ -177,18 +198,18 @@ const Dashboard = () => {
                     <TrendingUp className="text-amber-500" size={20} />
                     Biểu đồ doanh thu
                   </h3>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-black mt-1 ml-8 font-sans">Phát sinh trong {chartDays} ngày gần nhất</p>
+                  <p className="text-[10px] text-slate-400  tracking-widest font-black mt-1 ml-8 font-sans">Phát sinh trong {chartDays} ngày gần nhất</p>
                </div>
                <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
                   <button 
                     onClick={() => setChartDays(7)}
-                    className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all font-sans ${chartDays === 7 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-4 py-2 text-[10px] font-black  tracking-wider rounded-lg transition-all font-sans ${chartDays === 7 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     7 Ngày
                   </button>
                   <button 
                     onClick={() => setChartDays(30)}
-                    className={`px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all font-sans ${chartDays === 30 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-4 py-2 text-[10px] font-black  tracking-wider rounded-lg transition-all font-sans ${chartDays === 30 ? 'text-amber-600 bg-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     Tháng
                   </button>
@@ -262,7 +283,7 @@ const Dashboard = () => {
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                    <p className="text-2xl font-serif italic text-slate-900">{allBookings.length}</p>
-                   <p className="text-[9px] text-slate-400 uppercase font-black font-sans">Tổng đơn</p>
+                   <p className="text-[9px] text-slate-400  font-black font-sans">Tổng đơn</p>
                 </div>
               </div>
 
@@ -271,7 +292,7 @@ const Dashboard = () => {
                    <div key={idx} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></div>
-                        <span className="text-xs text-slate-500 font-bold uppercase tracking-widest font-sans">{item.name}</span>
+                        <span className="text-xs text-slate-500 font-bold  tracking-widest font-sans">{item.name}</span>
                       </div>
                       <span className="text-xs font-black text-slate-900 font-sans">{item.value} đơn</span>
                    </div>
@@ -291,7 +312,7 @@ const Dashboard = () => {
                   <Sparkles className="text-amber-500" size={20} />
                   Giao dịch mới
                 </h3>
-                <button className="text-[10px] text-amber-600 hover:text-amber-500 uppercase font-black tracking-widest transition-all font-sans">Tất cả</button>
+                <button className="text-[10px] text-amber-600 hover:text-amber-500  font-black tracking-widest transition-all font-sans">Tất cả</button>
               </div>
 
               <div className="space-y-4">
@@ -309,10 +330,10 @@ const Dashboard = () => {
                      <div className="text-right flex items-center gap-6">
                         <div>
                            <p className="text-xs font-black text-slate-900 font-sans">{Number(b.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-slate-400">Đ</span></p>
-                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5 font-sans">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
+                           <p className="text-[9px] text-slate-400 font-bold  tracking-widest mt-0.5 font-sans">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
                         </div>
                         <div className="w-24 flex justify-end">
-                          {renderStatus(b.status)}
+                          {renderStatus(b)}
                         </div>
                      </div>
                   </div>
