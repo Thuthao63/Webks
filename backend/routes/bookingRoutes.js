@@ -7,6 +7,9 @@ const { verifyToken } = require('../middleware/authMiddleware');
 // Thêm verifyToken để lấy được req.user khi đặt phòng
 router.post('/', verifyToken, bookingController.createBooking);
 
+// Lễ tân đặt phòng tại quầy (không cần auth client, nhưng cần auth admin)
+router.post('/walk-in', bookingController.createWalkInBooking);
+
 // 2. Route dành cho Admin/User cập nhật trạng thái
 router.put('/:id', verifyToken, bookingController.updateBookingStatus);
 

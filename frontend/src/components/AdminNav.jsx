@@ -26,7 +26,8 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
     { name: 'Bài viết', path: '/admin/blogs', icon: <FileText size={18} /> },
     { name: 'Giảm giá', path: '/admin/discounts', icon: <Sparkles size={18} /> },
     { name: 'Hộp thư', path: '/admin/contacts', icon: <MessageSquare size={18} /> },
-    { name: 'Tài khoản', path: '/admin/users', icon: <Users size={18} /> },
+    { name: 'Khách hàng', path: '/admin/users', icon: <Users size={18} /> },
+    { name: 'Hóa đơn', path: '/admin/guest-stats', icon: <FileText size={18} /> },
   ];
 
   return (

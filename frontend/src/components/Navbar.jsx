@@ -191,15 +191,14 @@ const Navbar = () => {
                     aria-haspopup="true"
                     aria-expanded={isUserMenuOpen}
                     onClick={() => { setIsUserMenuOpen(!isUserMenuOpen); setIsNotifMenuOpen(false); }}
-                    className="flex items-center gap-4 pl-1.5 pr-5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition-all duration-500 group"
+                    className="flex items-center gap-3 pl-1.5 pr-4 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition-all duration-500 group"
                   >
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 border border-amber-500/30 flex items-center justify-center text-amber-500 font-black text-xs shadow-lg group-hover:shadow-amber-500/20">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 border border-amber-500/30 flex items-center justify-center text-amber-500 font-black text-xs shadow-lg group-hover:shadow-amber-500/20">
                       {user.fullName?.charAt(0).toUpperCase()}
                     </div>
-                    <div className="hidden lg:flex flex-col items-start leading-none gap-1">
-                      <span className="text-xs text-amber-500 font-bold uppercase tracking-widest opacity-70">{t('nav.account')}</span>
-                      <span className="text-[13px] text-white font-semibold">{user.fullName}</span>
-                    </div>
+                    <span className="hidden lg:block text-xs text-white font-bold whitespace-nowrap max-w-[120px] truncate">
+                      {user.fullName}
+                    </span>
                     <ChevronDown size={14} className={`text-amber-500 transition-transform duration-500 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
 

@@ -65,6 +65,7 @@ const discountRoutes = require('./routes/discountRoutes');
 const articleRoutes = require('./routes/articleRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 const { startCronJobs } = require('./cron/jobs');
 
 app.use('/api/auth', authRoutes);
@@ -78,6 +79,7 @@ app.use('/api/discounts', discountRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/newsletters', newsletterRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/search', searchRoutes);
 
 // Bắt đầu chạy các Cron Jobs ngầm (Tự động trả phòng...)
 startCronJobs();
@@ -93,10 +95,10 @@ const startServer = async () => {
     try {
         // Kết nối cơ sở dữ liệu
         await connectDB();
-        
+
         console.log('🔄 Đang đồng bộ cấu trúc Database...');
-        // alter: true giúp cập nhật bảng mà không mất dữ liệu cũ
-        await sequelize.sync({ alter: true });
+        // Tạm thời tắt alter: true để tránh lỗi "Too many keys specified" của Sequelize với MySQL
+        await sequelize.sync();
         console.log('✨ Database đã sẵn sàng với đầy đủ quan hệ bảng!');
 
         const PORT = process.env.PORT || 5000;

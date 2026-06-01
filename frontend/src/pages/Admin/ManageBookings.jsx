@@ -4,7 +4,7 @@ import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { 
   Check, X, Clock, CheckCircle, XCircle, Package, Bed, 
-  Calendar, Loader2, RefreshCw, Printer, User, Wallet, MoreVertical
+  Calendar, Loader2, RefreshCw, Printer, User, Wallet, MoreVertical, Plus
 } from 'lucide-react';
 
 const ManageBookings = () => {
@@ -253,6 +253,149 @@ const ManageBookings = () => {
     setTimeout(() => { window.print(); }, 500);
   };
 
+  const handleWalkInBooking = async () => {
+    try {
+      Swal.fire({ title: 'Đang tải danh sách phòng...', didOpen: () => Swal.showLoading() });
+      const roomsRes = await axiosClient.get('/rooms');
+      const availableRooms = roomsRes.data.filter(r => r.status === 'Available');
+      Swal.close();
+
+      if (availableRooms.length === 0) {
+        return luxurySwal.fire('Hết phòng', 'Hiện tại không còn phòng trống nào.', 'warning');
+      }
+
+      let roomOptionsHtml = availableRooms.map(r => `<option value="${r.id}" data-price="${r.price || r.roomType?.price || 0}">Phòng ${r.roomNumber} - ${Number(r.price || r.roomType?.price || 0).toLocaleString()} đ/đêm</option>`).join('');
+
+      const { value: formValues } = await luxurySwal.fire({
+        title: 'Tạo đơn tại quầy',
+        html: `
+          <div class="text-left space-y-4 mt-4 font-sans">
+            <div>
+              <label class="text-xs font-black uppercase tracking-widest text-slate-400">Tên Khách Hàng</label>
+              <input type="text" id="walkin-name" placeholder="Ví dụ: Khách vãng lai" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-black uppercase tracking-widest text-slate-400">Số Điện Thoại *</label>
+                <input type="text" id="walkin-phone" placeholder="Bắt buộc" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900" />
+              </div>
+              <div>
+                <label class="text-xs font-black uppercase tracking-widest text-slate-400">Email *</label>
+                <input type="email" id="walkin-email" placeholder="Bắt buộc" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-black uppercase tracking-widest text-slate-400">Chọn Phòng Trống</label>
+              <select id="walkin-room" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900 cursor-pointer">
+                <option value="">-- Chọn phòng --</option>
+                ${roomOptionsHtml}
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-black uppercase tracking-widest text-slate-400">Ngày Check-in</label>
+                <input type="date" id="walkin-checkin" value="${new Date().toISOString().split('T')[0]}" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900 cursor-pointer" />
+              </div>
+              <div>
+                <label class="text-xs font-black uppercase tracking-widest text-slate-400">Ngày Check-out</label>
+                <input type="date" id="walkin-checkout" min="${new Date().toISOString().split('T')[0]}" class="w-full mt-1 p-3 bg-white border border-slate-200 rounded-xl focus:border-amber-500 outline-none font-bold text-slate-900 cursor-pointer" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-black uppercase tracking-widest text-slate-400">Tổng Tiền (Dự tính)</label>
+              <input type="text" id="walkin-total-display" readonly value="0 VNĐ" class="w-full mt-1 p-3 bg-slate-50 border border-slate-100 rounded-xl text-amber-600 font-black italic text-xl outline-none cursor-not-allowed" />
+              <input type="hidden" id="walkin-total-value" value="0" />
+            </div>
+          </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Chốt đơn ngay',
+        cancelButtonText: 'Hủy',
+        didOpen: () => {
+          const roomSelect = document.getElementById('walkin-room');
+          const checkinInput = document.getElementById('walkin-checkin');
+          const checkoutInput = document.getElementById('walkin-checkout');
+          const displayInput = document.getElementById('walkin-total-display');
+          const valueInput = document.getElementById('walkin-total-value');
+          
+          const calculateTotal = () => {
+             const roomOpt = roomSelect.options[roomSelect.selectedIndex];
+             if(!roomOpt || !roomOpt.value || !checkinInput.value || !checkoutInput.value) {
+                displayInput.value = '0 VNĐ'; valueInput.value = 0; return;
+             }
+             const price = Number(roomOpt.getAttribute('data-price') || 0);
+             const checkIn = new Date(checkinInput.value);
+             const checkOut = new Date(checkoutInput.value);
+             let days = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+             if (days <= 0) days = 1; // Mặc định ít nhất 1 ngày nếu chọn cùng ngày
+             const total = days * price;
+             displayInput.value = total.toLocaleString('vi-VN') + ' VNĐ';
+             valueInput.value = total;
+          };
+
+          roomSelect.addEventListener('change', calculateTotal);
+          checkinInput.addEventListener('change', calculateTotal);
+          checkoutInput.addEventListener('change', calculateTotal);
+        },
+        preConfirm: () => {
+          const guestName = document.getElementById('walkin-name').value || 'Khách vãng lai';
+          const guestPhone = document.getElementById('walkin-phone').value;
+          const guestEmail = document.getElementById('walkin-email').value;
+          const roomId = document.getElementById('walkin-room').value;
+          const checkInDate = document.getElementById('walkin-checkin').value;
+          const checkOutDate = document.getElementById('walkin-checkout').value;
+          const totalPrice = document.getElementById('walkin-total-value').value;
+          
+          if (!guestPhone || !guestEmail) {
+            Swal.showValidationMessage('Vui lòng nhập SĐT và Email để liên lạc/gửi hóa đơn');
+            return false;
+          }
+          if (!roomId || !checkInDate || !checkOutDate) {
+            Swal.showValidationMessage('Vui lòng chọn phòng và ngày check-out hợp lệ');
+            return false;
+          }
+          if (new Date(checkOutDate) < new Date(checkInDate)) {
+            Swal.showValidationMessage('Ngày check-out không được trước ngày check-in');
+            return false;
+          }
+          return { guestName, guestPhone, guestEmail, roomId, checkInDate, checkOutDate, totalPrice: Number(totalPrice) };
+        }
+      });
+
+      if (formValues) {
+        Swal.fire({ title: 'Đang khởi tạo đơn...', didOpen: () => Swal.showLoading() });
+        const res = await axiosClient.post('/bookings/walk-in', formValues);
+        
+        // Hỏi in hóa đơn
+        const printConfirm = await luxurySwal.fire({
+          icon: 'success',
+          title: 'Tạo đơn thành công!',
+          text: 'Bạn có muốn in phiếu xác nhận cho khách ngay không?',
+          showCancelButton: true,
+          confirmButtonText: 'In Hóa Đơn',
+          cancelButtonText: 'Không cần',
+          confirmButtonColor: '#0f172a'
+        });
+
+        fetchBookings(); // Reload data
+
+        if (printConfirm.isConfirmed) {
+          // Lấy thông tin chi tiết booking vừa tạo để in
+          const newBookingDetailRes = await axiosClient.get('/bookings');
+          const newBooking = newBookingDetailRes.data.find(b => b.id === res.data.id);
+          if (newBooking) {
+             setPrintingBooking(newBooking);
+             setTimeout(() => window.print(), 500);
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      luxurySwal.fire('Lỗi', err.response?.data?.message || 'Không thể tạo đơn.', 'error');
+    }
+  };
+
   const renderStatus = (status) => {
     const config = {
       pending: { color: 'text-amber-400 border-amber-500/20 bg-amber-500/5', icon: <Clock size={12}/>, text: 'Đang chờ' },
@@ -280,6 +423,20 @@ const ManageBookings = () => {
       <AdminLayout title="Quản lý lưu trú" subtitle="Kiểm duyệt đơn đặt, theo dõi doanh thu & lịch trình khách hàng">
         <div className="space-y-8 pb-10">
           
+          {/* Header Action */}
+          <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
+             <div className="text-xs text-slate-500 font-bold uppercase tracking-widest pl-2 font-sans flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Đồng bộ tự động
+             </div>
+             <button 
+                onClick={handleWalkInBooking}
+                className="px-6 py-3 bg-amber-500 text-slate-900 rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-luxury hover:bg-slate-900 hover:text-white transition-all flex items-center gap-2"
+             >
+                <Plus size={16} strokeWidth={3} />
+                Đặt Phòng Tại Quầy
+             </button>
+          </div>
+
           {/* Summary Stats Bar */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[

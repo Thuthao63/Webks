@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import {
     User, Calendar, CreditCard, Clock, CheckCircle, XCircle, Edit2, LogOut, Shield,
-    Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Sparkles, MapPin, Camera, ChevronRight, Package
+    Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Sparkles, MapPin, Camera, ChevronRight, Package, Printer
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ const Profile = () => {
     const [myBookings, setMyBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('dashboard');
+    const [printingBooking, setPrintingBooking] = useState(null);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -456,6 +457,13 @@ const Profile = () => {
                                         <div className="flex flex-col items-center md:items-end gap-3">
                                             <span className="text-base font-bold text-slate-900">{Number(booking.totalPrice).toLocaleString()}đ</span>
                                             {renderStatusBadge(booking.status)}
+                                            <button 
+                                                onClick={(e) => { e.stopPropagation(); setPrintingBooking(booking); setTimeout(() => window.print(), 500); }}
+                                                className="px-4 py-2 mt-1 bg-slate-900 text-white rounded-xl flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"
+                                            >
+                                                <Printer size={12} />
+                                                In Phiếu Xác Nhận
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -601,6 +609,75 @@ const Profile = () => {
                     </div>
                 )}
             </div>
+
+            {/* 🖨️ INVOICE TEMPLATE (Chỉ hiển thị khi in) */}
+            {printingBooking && (
+                <div className="hidden print:block fixed inset-0 bg-white text-black z-[9999] p-12 font-sans overflow-visible">
+                    <div className="max-w-4xl mx-auto border border-gray-200 p-12 rounded-xl">
+                        {/* Invoice Header */}
+                        <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
+                            <div>
+                                <h1 className="text-4xl font-serif italic text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
+                                <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
+                            </div>
+                            <div className="text-right">
+                                <h2 className="text-3xl font-black uppercase tracking-widest text-slate-200">PHIẾU XÁC NHẬN</h2>
+                                <p className="text-sm text-slate-600 font-bold mt-2">Mã Đơn: #{String(printingBooking.id).toUpperCase()}</p>
+                                <p className="text-xs text-slate-500 mt-1">Ngày lập: {new Date().toLocaleDateString('vi-VN')}</p>
+                            </div>
+                        </div>
+
+                        {/* Customer & Booking Info */}
+                        <div className="flex justify-between mb-12">
+                            <div className="bg-slate-50 p-6 rounded-2xl w-[45%]">
+                                <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-2">Thông tin khách hàng</p>
+                                <p className="font-bold text-slate-900 text-lg">{user?.fullName || 'Khách hàng'}</p>
+                                <p className="text-sm text-slate-600 mt-1">{user?.email}</p>
+                                <p className="text-sm text-slate-600">{user?.phone}</p>
+                            </div>
+                            <div className="bg-amber-50/50 p-6 rounded-2xl w-[45%] text-right">
+                                <p className="text-[10px] uppercase font-black tracking-widest text-amber-500 mb-2">Chi tiết đặt phòng</p>
+                                <p className="font-bold text-slate-900 text-lg">Phòng {printingBooking.room?.roomNumber || '---'}</p>
+                                <p className="text-sm text-slate-600 mt-1">Check-in: {new Date(printingBooking.checkInDate).toLocaleDateString('vi-VN')}</p>
+                                <p className="text-sm text-slate-600">Check-out: {new Date(printingBooking.checkOutDate).toLocaleDateString('vi-VN')}</p>
+                            </div>
+                        </div>
+
+                        {/* Table */}
+                        <table className="w-full text-left mb-12">
+                            <thead>
+                                <tr className="border-b-2 border-slate-900">
+                                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900">Diễn giải dịch vụ</th>
+                                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900 text-right w-1/4">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border-b border-slate-100">
+                                    <td className="py-6">
+                                        <p className="text-sm font-bold text-slate-900">Phòng lưu trú hạng Sang (Room {printingBooking.room?.roomNumber})</p>
+                                        <p className="text-xs text-slate-500 mt-1">Trạng thái: {printingBooking.status === 'confirmed' ? 'Đã xác nhận' : printingBooking.status === 'pending' ? 'Đang chờ duyệt' : printingBooking.status === 'completed' ? 'Đã hoàn tất' : 'Đã hủy'}</p>
+                                    </td>
+                                    <td className="py-6 text-right text-sm font-black">{Number(printingBooking.totalPrice).toLocaleString('vi-VN')} đ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        {/* Total & Signature */}
+                        <div className="flex justify-between items-end mt-10">
+                            <div className="w-1/2">
+                                <p className="text-[10px] font-bold text-slate-400">Vui lòng xuất trình phiếu này khi làm thủ tục nhận phòng.</p>
+                                <p className="text-[10px] font-bold text-slate-400">Uy Nam Luxury hân hạnh được phục vụ quý khách!</p>
+                            </div>
+                            <div className="w-1/3">
+                                <div className="flex justify-between py-4 text-amber-600">
+                                    <span className="font-black uppercase tracking-widest text-lg">Tổng giá trị</span>
+                                    <span className="font-black text-2xl">{Number(printingBooking.totalPrice).toLocaleString('vi-VN')} đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

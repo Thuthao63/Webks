@@ -41,23 +41,24 @@ const ManageReviews = lazy(() => import('./pages/Admin/ManageReviews'));
 const ManageServices = lazy(() => import('./pages/Admin/ManageServices'));
 const ManageDiscounts = lazy(() => import('./pages/Admin/ManageDiscounts'));
 const ManageBlogs = lazy(() => import('./pages/Admin/ManageBlogs'));
+const GuestStats = lazy(() => import('./pages/Admin/GuestStats'));
 
 // --- 🛡️ HÀM KIỂM TRA QUYỀN TRUY CẬP ---
 const AuthGuard = ({ children, requireAdmin = false }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user) return <Navigate to="/login" replace />;
-  
+
   if (requireAdmin && user.role?.toLowerCase() !== 'admin') {
     return <Navigate to="/" replace />;
   }
-  return children; 
+  return children;
 };
 
 // --- 🕵️ BỘ ĐIỀU KHIỂN HIỂN THỊ (Để ẩn Navbar/Footer ở trang Admin) ---
 const AppContent = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  
+
   // Kiểm tra nếu đang ở trang Admin
   const isAdminPage = currentPath.startsWith('/admin');
   const isAuthPage = ['/login', '/register', '/verify', '/forgot-password', '/reset-password']
@@ -68,7 +69,7 @@ const AppContent = () => {
     <>
       {/* 1. Chỉ hiện Navbar nếu không phải trang admin */}
       {!isAdminPage && <Navbar />}
-      
+
       <main className={!isAdminPage ? "min-h-screen bg-paper" : ""}>
         <Suspense fallback={
           <div className="h-screen flex items-center justify-center bg-[#050505]">
@@ -91,7 +92,7 @@ const AppContent = () => {
             <Route path="/room/:roomId" element={<RoomDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            
+
             {/* CHỐT: Các Route xác thực */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/verify" element={<Verify />} />
@@ -112,6 +113,7 @@ const AppContent = () => {
             <Route path="/admin/services" element={<AuthGuard requireAdmin={true}><ManageServices /></AuthGuard>} />
             <Route path="/admin/discounts" element={<AuthGuard requireAdmin={true}><ManageDiscounts /></AuthGuard>} />
             <Route path="/admin/blogs" element={<AuthGuard requireAdmin={true}><ManageBlogs /></AuthGuard>} />
+            <Route path="/admin/guest-stats" element={<AuthGuard requireAdmin={true}><GuestStats /></AuthGuard>} />
 
             {/* --- 404 FALLBACK --- */}
             <Route path="/404" element={<NotFound />} />

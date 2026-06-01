@@ -88,3 +88,72 @@
 .admin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ========================================================
+   SWEETALERT2 LUXURY OVERRIDES
+======================================================== */
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 1.5rem !important;
+  padding: 2.5rem 2rem !important;
+  box-shadow: var(--shadow-luxury) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  font-family: var(--font-sans) !important;
+  background-color: #ffffff !important;
+}
+
+div:where(.swal2-container) h2:where(.swal2-title) {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  color: #0f172a !important; /* slate-900 */
+  font-size: 1.75rem !important;
+  padding: 0 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+div:where(.swal2-container) div:where(.swal2-html-container) {
+  color: #64748b !important; /* slate-500 */
+  font-size: 0.875rem !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-confirm) {
+  background-color: #0f172a !important; /* slate-900 */
+  color: white !important;
+  border-radius: 9999px !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 0.65rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-confirm):hover {
+  background-color: var(--color-amber-500) !important;
+  box-shadow: 0 10px 20px -10px rgba(181, 154, 109, 0.5) !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-cancel) {
+  background-color: #f8fafc !important; /* slate-50 */
+  color: #64748b !important; /* slate-500 */
+  border: 1px solid #e2e8f0 !important; /* slate-200 */
+  border-radius: 9999px !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 0.65rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-cancel):hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+div:where(.swal2-container) .swal2-icon {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}

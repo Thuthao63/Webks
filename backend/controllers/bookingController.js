@@ -127,10 +127,80 @@ const updateBookingStatus = async (req, res) => {
     }
 };
 
+// 5. Lễ tân tạo đơn cho Khách Vãng Lai tại quầy (Walk-in)
+const createWalkInBooking = async (req, res) => {
+    try {
+        const { guestName, guestPhone, guestEmail, roomId, checkInDate, checkOutDate, totalPrice } = req.body;
+
+        if (!guestPhone || !guestEmail) {
+            return res.status(400).json({ message: "Vui lòng cung cấp số điện thoại và email để liên hệ." });
+        }
+
+        // 1. Kiểm tra xem User với email này đã tồn tại chưa, nếu chưa thì tạo mới
+        let walkInUser = await User.findOne({ where: { email: guestEmail } });
+        if (!walkInUser) {
+            walkInUser = await User.create({
+                fullName: guestName || 'Khách vãng lai',
+                phone: guestPhone,
+                email: guestEmail,
+                password: 'walkin_password', // Không quan trọng
+                role: 'user'
+            });
+        }
+
+        // 2. Kiểm tra trùng lịch
+        const conflictingBooking = await Booking.findOne({
+            where: {
+                roomId,
+                status: { [Op.in]: ['pending', 'confirmed'] },
+                [Op.and]: [
+                    { checkInDate: { [Op.lt]: new Date(checkOutDate) } },
+                    { checkOutDate: { [Op.gt]: new Date(checkInDate) } }
+                ]
+            }
+        });
+
+        if (conflictingBooking) {
+            return res.status(400).json({ message: "Phòng đã có người đặt trong thời gian này." });
+        }
+
+        // 3. Khởi tạo đơn đặt phòng (Confirmed ngay lập tức vì tạo tại quầy)
+        const newBooking = await Booking.create({
+            roomId,
+            userId: walkInUser.id,
+            checkInDate,
+            checkOutDate,
+            totalPrice,
+            status: 'confirmed'
+        });
+
+        // 4. Đổi trạng thái phòng thành Occupied
+        await Room.update({ status: 'Occupied' }, { where: { id: roomId } });
+
+        // 5. Lấy lại Booking kèm thông tin chi tiết và Gửi Email Xác Nhận
+        const bookingWithDetails = await Booking.findByPk(newBooking.id, {
+            include: [
+                { model: User, as: 'user' },
+                { model: Room, as: 'room', include: [{ model: RoomType, as: 'roomType' }] }
+            ]
+        });
+        
+        if (bookingWithDetails && bookingWithDetails.user && bookingWithDetails.user.email) {
+            sendInvoiceEmail(bookingWithDetails.user.email, bookingWithDetails).catch(err => console.error("Lỗi gửi email ngầm", err));
+        }
+
+        res.status(201).json(bookingWithDetails || newBooking);
+    } catch (error) {
+        console.error("Lỗi tạo đơn tại quầy:", error);
+        res.status(500).json({ message: "Không thể tạo đơn tại quầy", error: error.message });
+    }
+};
+
 // QUAN TRỌNG: Export tất cả để Route nhìn thấy
 module.exports = {
     createBooking,
     getUserBookings,
     getAllBookings,
-    updateBookingStatus
+    updateBookingStatus,
+    createWalkInBooking
 };

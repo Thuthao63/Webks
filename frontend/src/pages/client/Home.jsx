@@ -198,33 +198,33 @@ const Home = () => {
             ) : featuredRooms.map(room => (
               <div
                 key={room.id}
-                className="group bg-white rounded-[3rem] overflow-hidden shadow-premium border border-gray-50 cursor-pointer hover:shadow-2xl transition-luxury"
+                className="group bg-white rounded-2xl overflow-hidden shadow-premium border border-gray-50 cursor-pointer hover:shadow-2xl transition-luxury flex flex-col"
                 onClick={() => navigate(`/room/${room.id}`)}
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={`/Hinh anh/Hinh${(room.id % 20) + 1}.png`}
                     className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                     alt={room.roomNumber}
                   />
-                  <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest text-slate-900 border border-white/20 shadow-xl">
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-900 border border-white/20 shadow-xl">
                     {t('home.room_prefix')} {room.roomNumber}
                   </div>
                 </div>
 
-                <div className="p-8 space-y-4">
-                  <div className="space-y-1">
-                    <h4 className="text-2xl font-serif italic text-slate-900 group-hover:text-amber-600 transition-luxury">{room.roomType?.name}</h4>
-                    <p className="text-sm text-slate-400 uppercase tracking-widest font-black italic">{t('home.signature_collection')}</p>
+                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                  <div className="space-y-0.5">
+                    <h4 className="text-[17px] font-serif italic text-slate-900 group-hover:text-amber-600 transition-luxury">{room.roomType?.name}</h4>
+                    <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black italic">{t('home.signature_collection')}</p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-50">
                     <div className="space-y-0.5">
-                      <p className="text-sm text-gray-300 uppercase tracking-widest font-black">{t('home.standard_price')}</p>
-                      <p className="text-2xl font-serif italic text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-xs text-gray-300 font-black not-italic ml-1">{t('home.currency')}</span></p>
+                      <p className="text-[9px] text-gray-300 uppercase tracking-widest font-black">{t('home.standard_price')}</p>
+                      <p className="text-[17px] font-serif italic text-amber-600">{Number(room.roomType?.price).toLocaleString()} <span className="text-[9px] text-gray-300 font-black not-italic ml-0.5">{t('home.currency')}</span></p>
                     </div>
-                    <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-amber-600 group-hover:border-amber-600 group-hover:text-white group-hover:shadow-lg transition-luxury">
-                      <ArrowRight size={20} />
+                    <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-amber-600 group-hover:border-amber-600 group-hover:text-white group-hover:shadow-lg transition-luxury">
+                      <ArrowRight size={16} />
                     </div>
                   </div>
                 </div>
@@ -261,7 +261,7 @@ const Home = () => {
       </section>
 
       {/* --- 5. NEWSLETTER - EXCLUSIVE MEMBERSHIP --- */}
-      <section className="py-24 md:py-32 bg-paper relative overflow-hidden">
+      <section className="py-16 md:py-20 bg-paper relative overflow-hidden">
          {/* Decorative elements */}
          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
             <div className="absolute top-20 left-10 w-72 h-72 bg-amber-500/5 rounded-full blur-[100px]"></div>
@@ -269,39 +269,39 @@ const Home = () => {
          </div>
          
          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <div className="group relative rounded-[3rem] md:rounded-[4rem] overflow-hidden shadow-2xl border border-gray-100/50 bg-white">
+            <div className="group relative rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100/50 bg-white">
                {/* Background Image with Parallax effect */}
                <div className="absolute inset-0 z-0">
                   <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80" alt="Newsletter Background" className="w-full h-full object-cover opacity-[0.15] group-hover:scale-110 transition-transform duration-[3000ms]" />
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-900/95 mix-blend-multiply"></div>
                </div>
                
-               <div className="relative z-10 p-12 md:p-24 flex flex-col items-center text-center">
-                   <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mb-8 backdrop-blur-md border border-amber-500/20 group-hover:scale-110 transition-transform duration-700">
-                      <Mail size={32} className="text-amber-500" />
+               <div className="relative z-10 p-10 md:p-16 flex flex-col items-center text-center">
+                   <div className="w-14 h-14 bg-amber-500/10 rounded-full flex items-center justify-center mb-6 backdrop-blur-md border border-amber-500/20 group-hover:scale-110 transition-transform duration-700">
+                      <Mail size={24} className="text-amber-500" />
                    </div>
                    
-                   <h2 className="text-4xl md:text-6xl md:leading-tight font-serif italic text-white mb-6 drop-shadow-md">
+                   <h2 className="text-3xl md:text-4xl md:leading-tight font-serif italic text-white mb-4 drop-shadow-md">
                       {t('home.join')} <span className="text-amber-400 font-bold not-italic">{t('home.elite')}</span>
                    </h2>
                    
-                   <p className="text-slate-300 max-w-2xl mx-auto text-xs md:text-sm tracking-[0.2em] leading-loose mb-12 uppercase font-black">
+                   <p className="text-slate-300 max-w-xl mx-auto text-[10px] md:text-xs tracking-[0.2em] leading-loose mb-8 uppercase font-black">
                       {t('home.newsletter')}
                    </p>
                    
-                   <form onSubmit={handleSubscribe} className="max-w-xl w-full flex flex-col sm:flex-row gap-4">
+                   <form onSubmit={handleSubscribe} className="max-w-lg w-full flex flex-col sm:flex-row gap-3">
                       <div className="relative flex-1 group/input">
-                         <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/input:text-amber-500 transition-colors z-10" />
+                         <Mail size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/input:text-amber-500 transition-colors z-10" />
                          <input 
                             type="email" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder={t('home.email_placeholder')}
-                            className="w-full bg-white/5 border border-white/20 rounded-2xl md:rounded-full pl-14 pr-6 py-4 md:py-5 text-white outline-none focus:border-amber-500 focus:bg-white/10 transition-all text-xs font-bold tracking-widest placeholder-slate-400 backdrop-blur-sm"
+                            className="w-full bg-white/5 border border-white/20 rounded-xl md:rounded-full pl-12 pr-5 py-3 text-white outline-none focus:border-amber-500 focus:bg-white/10 transition-all text-[11px] font-bold tracking-widest placeholder-slate-400 backdrop-blur-sm"
                          />
                       </div>
-                      <button type="submit" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-10 py-4 md:py-5 rounded-2xl md:rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2">
-                         {t('home.subscribe')} <ArrowRight size={16} />
+                      <button type="submit" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-8 py-3 rounded-xl md:rounded-full text-[11px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2">
+                         {t('home.subscribe')} <ArrowRight size={14} />
                       </button>
                    </form>
                </div>
