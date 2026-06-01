@@ -62,7 +62,7 @@ const Login = () => {
       image={loginBg}
       imageAlt="Luxury Hotel Lobby"
     >
-      <form onSubmit={handleLogin} className="space-y-6">
+      <form onSubmit={handleLogin} className="space-y-4">
         {/* Email */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -70,16 +70,16 @@ const Login = () => {
           transition={{ delay: 0.4 }}
           className="space-y-2"
         >
-          <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.email_label')}</label>
+          <label className="text-[9px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.email_label')}</label>
           <div className="relative group">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={14} />
             <input
               name="email"
               type="email"
               required
               placeholder={t('auth.email_placeholder')}
               autoComplete="username"
-              className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
+              className="w-full bg-slate-900/60 border border-slate-800 py-3 pl-9 px-4 rounded-xl text-xs text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
@@ -92,28 +92,28 @@ const Login = () => {
           transition={{ delay: 0.5 }}
           className="space-y-2"
         >
-          <label className="text-[10px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.password_label')}</label>
+          <label className="text-[9px] uppercase tracking-widest text-amber-500/80 font-black ml-1">{t('auth.password_label')}</label>
           <div className="relative group">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={18} />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={14} />
             <input
               name="password"
               type={showPassword ? "text" : "password"}
               required
               placeholder={t('auth.password_placeholder')}
               autoComplete="current-password"
-              className="w-full bg-slate-900/60 border border-slate-800 p-4 pl-12 pr-12 rounded-2xl text-sm text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
+              className="w-full bg-slate-900/60 border border-slate-800 py-3 pl-9 pr-10 rounded-xl text-xs text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors"
             >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
             </button>
           </div>
-          <div className="flex justify-end pt-1">
-            <Link to="/forgot-password" className="text-[11px] uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-colors font-bold">
+          <div className="flex justify-end">
+            <Link to="/forgot-password" className="text-[9px] uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-colors font-bold">
               {t('auth.forgot_password')}
             </Link>
           </div>
@@ -127,9 +127,9 @@ const Login = () => {
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black py-4 rounded-2xl mt-8 flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_0_20px_rgba(217,119,6,0.2)] hover:shadow-[0_0_30px_rgba(217,119,6,0.4)] uppercase text-xs tracking-widest"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black py-3 rounded-xl mt-6 flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_0_15px_rgba(217,119,6,0.2)] hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] uppercase text-[10px] tracking-widest"
         >
-          {loading ? <Loader2 className="animate-spin" size={18} /> : <LogIn size={18} />}
+          {loading ? <Loader2 className="animate-spin" size={14} /> : <LogIn size={14} />}
           {t('auth.login_btn')}
         </motion.button>
       </form>
@@ -138,11 +138,11 @@ const Login = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="text-center mt-12"
+        className="text-center mt-8"
       >
-        <p className="text-slate-500 text-xs uppercase tracking-widest font-bold">
+        <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">
           {t('auth.no_account')}
-          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-2 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.register')}</Link>
+          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.register')}</Link>
         </p>
       </motion.div>
     </AuthLayout>

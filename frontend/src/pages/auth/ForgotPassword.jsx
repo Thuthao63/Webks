@@ -49,23 +49,23 @@ const ForgotPassword = () => {
       image={loginBg}
       imageAlt="Luxury Hotel Lobby"
     >
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="space-y-1.5"
         >
-          <label className="text-xs uppercase tracking-wider text-amber-500/70 font-bold ml-1">Địa chỉ Email</label>
+          <label className="text-[9px] uppercase tracking-widest text-amber-500/80 font-black ml-1">Địa chỉ Email</label>
           <div className="relative group">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-amber-500 transition-colors" size={16} />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition-colors" size={14} />
             <input 
               name="email"
               type="email" 
               required 
               placeholder="guest@luxury.com"
               autoComplete="email"
-              className="w-full bg-white/[0.02] border border-white/10 p-4 pl-12 rounded-lg text-sm text-white focus:border-amber-500/50 focus:bg-white/[0.05] outline-none transition-all placeholder:text-gray-700"
+              className="w-full bg-slate-900/60 border border-slate-800 py-3 pl-9 px-4 rounded-xl text-xs text-white focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all placeholder:text-slate-600"
               onChange={(e) => setEmail(e.target.value)} 
             />
           </div>
@@ -75,13 +75,13 @@ const ForgotPassword = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="submit" 
           disabled={loading}
-          className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-lg transition-all duration-300 uppercase text-[12px] tracking-wider flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black py-3 rounded-xl mt-6 transition-all duration-300 uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(217,119,6,0.2)] hover:shadow-[0_0_20px_rgba(217,119,6,0.4)]"
         >
-          {loading ? <Loader2 className="animate-spin" size={18} /> : <><Send size={16} /> Gửi yêu cầu</>}
+          {loading ? <Loader2 className="animate-spin" size={14} /> : <><Send size={14} /> Gửi yêu cầu</>}
         </motion.button>
       </form>
 
@@ -89,10 +89,10 @@ const ForgotPassword = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
-        className="text-center mt-12"
+        className="text-center mt-8"
       >
-        <Link to="/login" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-wider font-bold">
-          <ArrowLeft size={14} /> Quay lại trang đăng nhập
+        <Link to="/login" className="inline-flex items-center gap-2 text-slate-500 hover:text-amber-500 transition-colors text-[10px] uppercase tracking-widest font-bold">
+          <ArrowLeft size={12} /> Quay lại trang đăng nhập
         </Link>
       </motion.div>
     </AuthLayout>

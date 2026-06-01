@@ -104,7 +104,7 @@ const Verify = () => {
       image={registerBg}
       imageAlt="Luxury Hotel Registration"
     >
-      <form onSubmit={handleVerify} className="space-y-10">
+      <form onSubmit={handleVerify} className="space-y-6">
         <div className="flex justify-between gap-2 md:gap-4">
           {otp.map((digit, index) => (
             <motion.div
@@ -112,14 +112,14 @@ const Verify = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index + 0.4 }}
-              className="flex-1 max-w-[60px]"
+              className="flex-1 max-w-[48px]"
             >
               <input
                 ref={(el) => (inputRefs.current[index] = el)}
                 type="text"
                 value={digit}
                 maxLength={1}
-                className="w-full h-16 bg-white/5 border border-white/10 text-center text-2xl font-bold text-amber-500 rounded-xl focus:border-amber-500/50 focus:bg-white/10 outline-none transition-all shadow-inner"
+                className="w-full h-12 bg-white/5 border border-white/10 text-center text-xl font-bold text-amber-500 rounded-xl focus:border-amber-500/50 focus:bg-white/10 outline-none transition-all shadow-inner"
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
               />
@@ -131,30 +131,30 @@ const Verify = () => {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ delay: 1 }}
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center gap-4 mt-4"
         >
             <button 
                 type="submit" 
                 disabled={loading || otp.join('').length < 6}
-                className="w-full bg-amber-600 hover:bg-amber-500 disabled:opacity-50 disabled:hover:bg-amber-600 text-black font-bold py-4 rounded-lg transition-all duration-300 uppercase text-[12px] tracking-wider flex items-center justify-center gap-3 shadow-xl shadow-amber-600/10"
+                className="w-full bg-gradient-to-r from-amber-600 to-amber-500 disabled:opacity-50 text-slate-950 font-black py-3 rounded-xl transition-all duration-300 uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(217,119,6,0.2)] hover:shadow-[0_0_20px_rgba(217,119,6,0.4)]"
             >
-                {loading ? <Loader2 className="animate-spin" size={18} /> : <><ShieldCheck size={18} /> Kích hoạt đặc quyền</>}
+                {loading ? <Loader2 className="animate-spin" size={14} /> : <><ShieldCheck size={14} /> Kích hoạt đặc quyền</>}
             </button>
 
-            <div className="text-center space-y-4">
-                <p className="text-gray-500 text-xs uppercase tracking-wider font-bold">
+            <div className="text-center space-y-3 mt-4">
+                <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">
                     Không nhận được mã? 
                     <button 
                         type="button" 
                         onClick={handleResend}
                         disabled={resending}
-                        className="text-amber-500 hover:text-amber-400 ml-2 transition-colors inline-flex items-center gap-1"
+                        className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors inline-flex items-center gap-1"
                     >
-                        {resending ? <RefreshCw className="animate-spin" size={12} /> : "Gửi lại ngay"}
+                        {resending ? <RefreshCw className="animate-spin" size={10} /> : "Gửi lại ngay"}
                     </button>
                 </p>
-                <Link to="/register" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-xs uppercase tracking-wider font-bold">
-                    <ArrowLeft size={14} /> Thay đổi Email
+                <Link to="/register" className="inline-flex items-center gap-2 text-slate-500 hover:text-amber-500 transition-colors text-[10px] uppercase tracking-widest font-bold">
+                    <ArrowLeft size={12} /> Thay đổi Email
                 </Link>
             </div>
         </motion.div>

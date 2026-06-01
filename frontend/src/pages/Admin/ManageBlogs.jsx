@@ -142,7 +142,7 @@ const ManageBlogs = () => {
                                                 <img src={getImageUrl(article.thumbnail)} alt={article.title} className="w-full h-full object-cover" />
                                             </div>
                                             <div>
-                                                <p className="text-slate-900 font-bold text-sm max-w-xs truncate">{article.title}</p>
+                                                <a href={`/blog/${article.slug}`} target="_blank" rel="noreferrer" className="text-slate-900 font-bold text-sm max-w-xs truncate hover:text-amber-600 transition-colors inline-block">{article.title}</a>
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">
@@ -155,6 +155,9 @@ const ManageBlogs = () => {
                                         </td>
                                         <td className="px-8 py-5 text-right">
                                             <div className="flex items-center justify-end gap-2 opacity-30 group-hover:opacity-100 transition-all">
+                                                <a href={`/blog/${article.slug}`} target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-400 hover:bg-blue-500 hover:text-white transition-all" title="Xem bài viết">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                </a>
                                                 <button onClick={() => handleEdit(article)} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 transition-all">
                                                     <Edit size={16} />
                                                 </button>

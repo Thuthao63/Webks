@@ -67,23 +67,23 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
           className="w-full max-w-[480px] relative z-10"
         >
           {/* Header for Mobile */}
-          <div className="lg:hidden text-center mb-10">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-amber-500/30 mb-4 bg-white/5 backdrop-blur-sm">
-              <Bed className="text-amber-500 w-7 h-7" />
+          <div className="lg:hidden text-center mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-amber-500/30 mb-3 bg-white/5 backdrop-blur-sm">
+              <Bed className="text-amber-500 w-6 h-6" />
             </div>
-            <p className="text-amber-500/60 text-xs uppercase tracking-widest font-bold">{t('auth.brand_name')}</p>
+            <p className="text-amber-500/60 text-[10px] uppercase tracking-widest font-bold">{t('auth.brand_name')}</p>
           </div>
 
-          <div className="mb-10 text-center lg:text-left">
-            <Link to="/" className="inline-flex items-center gap-2 text-amber-500/70 hover:text-amber-500 text-xs font-bold uppercase tracking-widest mb-8 transition-colors group">
-              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+          <div className="mb-6 text-center lg:text-left">
+            <Link to="/" className="inline-flex items-center gap-2 text-amber-500/70 hover:text-amber-500 text-[10px] font-bold uppercase tracking-widest mb-4 transition-colors group">
+              <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" />
               {t('auth.back_to_home')}
             </Link>
             <motion.h2 
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-3xl md:text-4xl font-serif text-white mb-3 leading-tight tracking-tight break-words"
+              className="text-2xl md:text-3xl font-serif text-white mb-2 leading-tight tracking-tight break-words"
             >
               {title}
             </motion.h2>
@@ -91,7 +91,7 @@ const AuthLayout = ({ children, title, subtitle, image = loginBg, imageAlt = "Lu
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-gray-400 text-sm tracking-wide"
+              className="text-gray-400 text-xs tracking-wide"
             >
               {subtitle}
             </motion.p>
