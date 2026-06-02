@@ -29,7 +29,7 @@ const NotFound = () => {
 
                 {/* Text Content */}
                 <div className="space-y-6">
-                    <h2 className="text-4xl md:text-5xl font-medium font-sans">
+                    <h2 className="text-xl font-medium md:text-xl font-sans">
                         Hành trình <span className="text-amber-500 not-italic">bị gián đoạn</span>
                     </h2>
                     <p className="text-gray-500 text-xs md:text-sm uppercase tracking-[0.1em] leading-loose max-w-md mx-auto font-medium">

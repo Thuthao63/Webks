@@ -524,7 +524,7 @@ const ManageBookings = () => {
           
           {/* Header Action */}
           <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-             <div className="text-xs text-slate-500 font-bold  tracking-widest pl-2 font-sans flex items-center gap-2">
+             <div className="text-xs text-slate-500 font-medium  tracking-widest pl-2 font-sans flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Đồng bộ tự động
              </div>
              <button 
@@ -546,7 +546,7 @@ const ManageBookings = () => {
               <div key={i} className="bg-white border border-slate-100 p-5 rounded-3xl flex items-center justify-between">
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold  tracking-widest">{stat.label}</p>
-                  <p className="text-2xl font-medium font-sans text-slate-900 leading-none mt-2">{stat.value}</p>
+                  <p className="text-xl font-medium font-sans text-slate-900 leading-none mt-2">{stat.value}</p>
                 </div>
                 <div className={`w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400`}>
                    {stat.icon}
@@ -579,7 +579,7 @@ const ManageBookings = () => {
           <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
             <div className="overflow-x-auto admin-scrollbar">
               <table className="w-full text-left">
-                <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+                <thead className="text-[10px] text-slate-500  font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                   <tr>
                     <th className="px-8 py-6 whitespace-nowrap">Khách hàng</th>
                     <th className="px-6 py-6 whitespace-nowrap">Không gian</th>
@@ -706,7 +706,7 @@ const ManageBookings = () => {
 
              <div className="flex justify-between items-start border-b border-slate-200 pb-8 mb-8 relative z-10">
                <div>
-                  <h1 className="text-3xl font-medium font-sans text-amber-700 tracking-tight">Uy Nam Luxury</h1>
+                  <h1 className="text-xl font-medium font-sans text-amber-700 tracking-tight">Uy Nam Luxury</h1>
                   <p className="text-xs text-slate-500 mt-2 tracking-widest ">Hotels & Resorts</p>
                   <div className="mt-4 text-[11px] text-slate-500 space-y-1">
                      <p>123 Đại Lộ Ánh Sáng, Quận 1, TP. HCM</p>

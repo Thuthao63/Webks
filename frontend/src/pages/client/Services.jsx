@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
-import { Loader2, Gem, PhoneCall, Sparkles, MoveRight } from 'lucide-react';
+import { Loader2, Gem, PhoneCall, Star, MoveRight } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -110,7 +110,7 @@ const Services = () => {
                   <div className="flex items-center justify-center lg:justify-start gap-4 text-amber-500">
                     <span className="text-[10px] uppercase tracking-[0.2em] font-black font-sans">0{idx + 1}</span>
                     <div className="w-12 h-[1px] bg-amber-500"></div>
-                    <Sparkles size={14} />
+                    <Star size={14} />
                   </div>
 
                   <div>
@@ -128,7 +128,7 @@ const Services = () => {
                       <span className="text-amber-500 font-serif text-3xl md:text-4xl">
                         {Number(service.price).toLocaleString()}
                       </span>
-                      <span className="text-xs font-bold uppercase tracking-widest text-slate-300 font-sans">
+                      <span className="text-xs font-medium uppercase tracking-widest text-slate-300 font-sans">
                         {t('services_page.currency')}
                       </span>
                     </div>
@@ -142,7 +142,7 @@ const Services = () => {
         {services.length === 0 && (
           <div className="text-center py-40 border border-slate-100 bg-white rounded-[4rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] max-w-2xl mx-auto">
             <Loader2 size={40} className="text-amber-500/30 mx-auto mb-8 animate-spin" strokeWidth={1} />
-            <p className="text-slate-500 font-sans text-2xl">{t('services_page.loading_msg')}</p>
+            <p className="text-slate-500 font-sans text-xl font-medium">{t('services_page.loading_msg')}</p>
           </div>
         )}
       </section>

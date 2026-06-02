@@ -155,7 +155,7 @@ const ManageUsers = () => {
         <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div className="overflow-x-auto admin-scrollbar">
             <table className="w-full text-left">
-              <thead className="text-[10px] text-slate-500 font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+              <thead className="text-[10px] text-slate-500 font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                 <tr>
                   <th className="px-8 py-6">Nhân vật & Liên hệ</th>
                   <th className="px-6 py-6">Bộ phận / Chức vụ</th>

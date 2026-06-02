@@ -150,7 +150,7 @@ const GuestStats = () => {
                         {customer.name.charAt(0).toUpperCase()}
                      </div>
                      <div>
-                       <h3 className="text-lg font-bold text-slate-900 font-sans">{customer.name}</h3>
+                       <h3 className="text-lg font-medium text-slate-900 font-sans">{customer.name}</h3>
                        <p className="text-xs text-slate-500 font-medium mt-0.5">{customer.email !== 'N/A' ? customer.email : customer.phone}</p>
                      </div>
                   </div>
@@ -233,7 +233,7 @@ const GuestStats = () => {
              {/* Invoice Header */}
              <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
                <div>
-                 <h1 className="text-3xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
+                 <h1 className="text-xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
                  <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
                </div>
                <div className="text-right">

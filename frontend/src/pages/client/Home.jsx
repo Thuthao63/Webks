@@ -89,7 +89,7 @@ const Home = () => {
             <span className="block text-6xl md:text-[8rem] font-bold italic text-amber-600 drop-shadow-lg leading-none font-serif">{t('home.living')}</span>
           </h1>
 
-          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.15em] mb-12 max-w-2xl mx-auto leading-loose font-bold bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
+          <p className="text-gray-700 text-xs md:text-sm uppercase tracking-[0.15em] mb-12 max-w-2xl mx-auto leading-loose font-medium bg-white/50 backdrop-blur-md py-3 px-6 rounded-full inline-block border border-white/60 font-sans">
             {t('home.subtitle')}
           </p>
 
@@ -119,7 +119,7 @@ const Home = () => {
               />
               <div className="absolute -bottom-10 -right-10 bg-white p-10 shadow-2xl border border-gray-50 rounded-[2rem] hidden md:block z-20">
                 <p className="text-4xl font-serif text-amber-600 mb-2">100%</p>
-                <p className="text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">{t('home.satisfaction')}</p>
+                <p className="text-xs uppercase tracking-widest text-gray-400 font-medium font-sans">{t('home.satisfaction')}</p>
               </div>
             </div>
 
@@ -154,7 +154,7 @@ const Home = () => {
       <section className="py-24 md:py-32 bg-paper">
         <div className="max-w-7xl mx-auto px-6 text-center mb-16 md:mb-24">
            <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-6 block">{t('home.amenities_sup')}</span>
-           <h2 className="text-4xl md:text-7xl font-sans text-gray-900">
+           <h2 className="text-xl font-medium md:text-xl font-sans text-gray-900">
               {t('home.amenities_head')} <span className="text-amber-600 not-italic font-bold">{t('home.amenities_head_italic')}</span>
            </h2>
         </div>
@@ -281,7 +281,7 @@ const Home = () => {
                       <Mail size={24} className="text-amber-500" />
                    </div>
                    
-                   <h2 className="text-3xl md:text-4xl md:leading-tight font-sans text-white mb-4 drop-shadow-md">
+                   <h2 className="text-xl font-medium md:text-xl md:leading-tight font-sans text-white mb-4 drop-shadow-md">
                       {t('home.join')} <span className="text-amber-400 font-bold not-italic">{t('home.elite')}</span>
                    </h2>
                    

@@ -30,7 +30,7 @@ const Gallery = () => {
                 {/* Header */}
                 <div className="text-center mb-20 space-y-4">
                     <span className="text-amber-600 text-sm font-black uppercase tracking-[0.15em] block">Visual Journey</span>
-                    <h1 className="text-5xl md:text-7xl font-sans text-slate-900">
+                    <h1 className="text-xl font-medium md:text-xl font-sans text-slate-900">
                         Thư viện <span className="text-amber-600 not-italic font-bold">Hình Ảnh</span>
                     </h1>
                 </div>
@@ -95,7 +95,7 @@ const Gallery = () => {
                         />
                         <div className="absolute -bottom-16 left-0 w-full text-center">
                             <span className="text-amber-500 text-sm font-black uppercase tracking-widest block mb-2">{selectedImage.category}</span>
-                            <h2 className="text-2xl font-medium font-sans text-white">{selectedImage.title}</h2>
+                            <h2 className="text-xl font-medium font-sans text-white">{selectedImage.title}</h2>
                         </div>
                     </div>
                 </div>

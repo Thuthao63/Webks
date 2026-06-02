@@ -220,7 +220,7 @@ const Booking = () => {
               <div className="flex items-center gap-2 text-amber-600 uppercase tracking-wider text-sm font-semibold">
                 <Star size={14} fill="currentColor" /> {t('booking.premium_room')}
               </div>
-              <h1 className="text-2xl md:text-3xl font-medium font-sans text-gray-900">
+              <h1 className="text-xl font-medium md:text-xl font-sans text-gray-900">
                 {t('booking.room_title')} <span className="text-amber-600 not-italic">{room?.roomNumber}</span>
               </h1>
             </div>
@@ -262,7 +262,7 @@ const Booking = () => {
                           {isSelected && <CheckCircle2 size={14} />}
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-bold text-gray-900 font-sans">{service.name}</h4>
+                          <h4 className="font-medium text-gray-900 font-sans">{service.name}</h4>
                           <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{service.description}</p>
                           <p className="text-sm font-semibold text-amber-600 mt-2">{formatCurrency(service.price)} <span className="text-[10px] text-gray-400 font-normal">/ {service.unit || 'khách'}</span></p>
                         </div>
@@ -293,7 +293,7 @@ const Booking = () => {
 
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <label className="text-xs uppercase tracking-widest text-gray-400 font-bold ml-4 font-sans">{t('booking.dates_label')}</label>
+                  <label className="text-xs uppercase tracking-widest text-gray-400 font-medium ml-4 font-sans">{t('booking.dates_label')}</label>
                   <div className="relative grid grid-cols-2 gap-4">
                     <div className="relative group">
                       <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600 z-10" size={16} />
@@ -329,22 +329,22 @@ const Booking = () => {
                 </div>
 
                 <div className="pt-6 border-t border-gray-50 space-y-3">
-                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">
+                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-medium font-sans">
                     <span>{t('booking.duration')}</span>
                     <span className="text-gray-900">{days} {t('booking.nights')}</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-bold font-sans">
+                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-medium font-sans">
                     <span>{t('booking.unit_price')}</span>
                     <span className="text-gray-900">{formatCurrency(room?.roomType?.price || 0)} {t('booking.per_night')}</span>
                   </div>
                   {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
-                    <div className="flex justify-between items-center text-xs uppercase tracking-widest text-rose-500 font-bold font-sans">
+                    <div className="flex justify-between items-center text-xs uppercase tracking-widest text-rose-500 font-medium font-sans">
                       <span>{t('booking.discount_applied')}</span>
                       <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
                     </div>
                   )}
                   {Object.keys(selectedServices).length > 0 && (
-                    <div className="flex justify-between items-start text-xs uppercase tracking-widest text-amber-600 font-bold font-sans">
+                    <div className="flex justify-between items-start text-xs uppercase tracking-widest text-amber-600 font-medium font-sans">
                       <span className="flex flex-col gap-1">{t('booking.included_services')}</span>
                       <span className="text-right">
                         +{formatCurrency(Object.entries(selectedServices).reduce((sum, [id, qty]) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
-import { Plus, Edit, Trash2, Bed, X, Loader2, Calendar, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit, Trash2, Bed, X, Loader2, Calendar, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -220,7 +220,7 @@ const ManageRooms = () => {
         <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div className="overflow-x-auto admin-scrollbar">
             <table className="w-full text-left">
-              <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+              <thead className="text-[10px] text-slate-500  font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                 <tr>
                   <th className="px-8 py-6">Mã Số Phòng</th>
                   <th className="px-6 py-6">Định dạng / Hạng phòng</th>
@@ -253,7 +253,7 @@ const ManageRooms = () => {
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                       <span className="text-slate-700 font-bold text-sm font-sans group-hover:text-amber-500 transition-colors">
+                       <span className="text-slate-700 font-medium text-sm font-sans group-hover:text-amber-500 transition-colors">
                          {room.roomType?.typeName || room.typeDetails?.name || room.name || '---'}
                        </span>
                     </td>
@@ -301,7 +301,7 @@ const ManageRooms = () => {
                   <X size={20} />
                </button>
 
-               <h2 className="text-2xl font-medium font-sans text-slate-900 mb-2">
+               <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
                   {isEdit ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">{isEdit ? 'Thông tin phòng' : 'Phòng Mới'}</span>
                </h2>
                <p className="text-[10px] text-slate-500 tracking-[0.2em] font-bold mb-10">Cung cấp các thông số định danh thiết yếu</p>

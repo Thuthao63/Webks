@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
-import { Plus, Trash2, Sparkles, Calendar, Tag, Loader2, X, Percent, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, Tag, Calendar, Loader2, X, Percent, AlertCircle } from "lucide-react";
 import Swal from 'sweetalert2';
 
 const ManageDiscounts = () => {
@@ -125,7 +125,7 @@ const ManageDiscounts = () => {
                 <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto admin-scrollbar">
                         <table className="w-full text-left">
-                            <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+                            <thead className="text-[10px] text-slate-500  font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                                 <tr>
                                     <th className="px-8 py-6">Đối tượng / Hạng phòng</th>
                                     <th className="px-6 py-6">Mức giảm</th>
@@ -147,7 +147,7 @@ const ManageDiscounts = () => {
                                                         <Tag size={18} />
                                                     </div>
                                                     <div>
-                                                        <p className="text-slate-700 font-bold text-sm font-sans">{discount.roomType?.name || 'Tất cả phòng'}</p>
+                                                        <p className="text-slate-700 font-medium text-sm font-sans">{discount.roomType?.name || 'Tất cả phòng'}</p>
                                                         <p className="text-[9px] text-slate-500 font-bold  tracking-widest">{discount.description || 'Chương trình khuyến mãi'}</p>
                                                     </div>
                                                 </div>
@@ -199,7 +199,7 @@ const ManageDiscounts = () => {
 
                 {discounts.length === 0 && (
                     <div className="py-20 text-center border border-dashed border-slate-100 rounded-[2.5rem] bg-slate-50/50 font-sans">
-                        <Sparkles size={40} className="mx-auto mb-4 text-slate-300" />
+                        <Tag size={40} className="mx-auto mb-4 text-slate-300" />
                         <p className="text-slate-500 text-[10px] font-bold tracking-[0.2em] ">Chưa có chương trình ưu đãi nào</p>
                     </div>
                 )}
@@ -213,7 +213,7 @@ const ManageDiscounts = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2 className="text-2xl font-medium font-sans text-slate-900 mb-2">
+                            <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
                                 Thiết lập <span className="text-amber-500">Giảm giá</span>
                             </h2>
                             <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>
@@ -309,6 +309,6 @@ const ManageDiscounts = () => {
 };
 
 // Import thiếu icon
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from "lucide-react";
 
 export default ManageDiscounts;

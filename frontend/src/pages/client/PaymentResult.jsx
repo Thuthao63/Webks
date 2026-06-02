@@ -60,7 +60,7 @@ const PaymentResult = () => {
                         <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center">
                             <CheckCircle2 size={48} className="text-emerald-500" />
                         </div>
-                        <h2 className="text-2xl font-medium font-sans text-slate-900">
+                        <h2 className="text-xl font-medium font-sans text-slate-900">
                             Giao dịch thành công
                         </h2>
                         <p className="text-slate-500 text-sm font-medium leading-relaxed">
@@ -80,7 +80,7 @@ const PaymentResult = () => {
                         <div className="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center">
                             <XCircle size={48} className="text-rose-500" />
                         </div>
-                        <h2 className="text-2xl font-medium font-sans text-slate-900">
+                        <h2 className="text-xl font-medium font-sans text-slate-900">
                             Giao dịch thất bại
                         </h2>
                         <p className="text-slate-500 text-sm font-medium leading-relaxed">

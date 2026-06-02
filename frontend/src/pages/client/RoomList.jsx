@@ -144,7 +144,7 @@ const RoomList = () => {
           {/* Header Section */}
           <div className="text-center mb-8 space-y-2">
             <span className="text-amber-500 text-sm font-black uppercase tracking-wider block font-sans">Exclusive Stay</span>
-            <h2 className="text-3xl md:text-3xl font-medium font-sans text-slate-900">{t('roomList.header')}</h2>
+            <h2 className="text-xl font-medium md:text-xl font-sans text-slate-900">{t('roomList.header')}</h2>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
@@ -266,7 +266,7 @@ const RoomList = () => {
                       <div className={`w-9 h-5 rounded-full transition-luxury ${filters.status === 'Available' ? 'bg-amber-500' : 'bg-slate-200'}`}></div>
                       <div className={`absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-luxury ${filters.status === 'Available' ? 'translate-x-4' : ''}`}></div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.available')}</span>
+                    <span className="text-[11px] font-medium text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.available')}</span>
                   </label>
                 </div>
                 
@@ -284,7 +284,7 @@ const RoomList = () => {
                       <div className={`w-9 h-5 rounded-full transition-luxury ${filters.hasDiscount ? 'bg-amber-500' : 'bg-slate-200'}`}></div>
                       <div className={`absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-luxury ${filters.hasDiscount ? 'translate-x-4' : ''}`}></div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.on_sale', 'Đang giảm giá')}</span>
+                    <span className="text-[11px] font-medium text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.on_sale', 'Đang giảm giá')}</span>
                   </label>
                 </div>
               </div>
@@ -347,7 +347,7 @@ const RoomList = () => {
                  return displayedRooms.length === 0 ? (
                 <div className="bg-white rounded-2xl p-16 text-center border border-slate-100 shadow-premium">
                   <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
-                  <h3 className="text-3xl font-medium font-sans text-slate-900 mb-6">{t('roomList.no_results')}</h3>
+                  <h3 className="text-xl font-medium font-sans text-slate-900 mb-6">{t('roomList.no_results')}</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
                     {t('roomList.reset_filters')}
                   </p>

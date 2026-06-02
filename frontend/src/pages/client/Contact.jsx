@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare, User as UserIcon, HelpCircle, Sparkles, MoveRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageSquare, User as UserIcon, HelpCircle, Star, MoveRight } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
@@ -141,7 +141,7 @@ const Contact = () => {
                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                   <div className="mb-12">
                      <h3 className="text-3xl font-serif text-white mb-3 flex items-center gap-3">
-                       {t('contact.leave_message')} <Sparkles size={18} className="text-amber-500" />
+                       {t('contact.leave_message')} <Star size={18} className="text-amber-500" />
                      </h3>
                      <p className="text-xs text-slate-400 uppercase tracking-widest">{t('contact.leave_message_desc')}</p>
                   </div>

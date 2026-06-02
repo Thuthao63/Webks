@@ -126,7 +126,7 @@ const ManageBlogs = () => {
                 <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
                     <div className="overflow-x-auto admin-scrollbar">
                         <table className="w-full text-left">
-                            <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+                            <thead className="text-[10px] text-slate-500  font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                                 <tr>
                                     <th className="px-8 py-6">Bài viết</th>
                                     <th className="px-6 py-6">Chủ đề (Tags)</th>
@@ -189,7 +189,7 @@ const ManageBlogs = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2 className="text-2xl font-medium font-sans text-slate-900 mb-2">
+                            <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
                                 {editId ? 'Cập nhật' : 'Soạn'} <span className="text-amber-500">{editId ? 'Bài Viết' : 'Bài Mới'}</span>
                             </h2>
                             <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Lan tỏa phong cách sống thượng lưu</p>

@@ -72,7 +72,7 @@ const ContactFab = () => {
                 <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
                    <MessageSquare className="text-amber-500" size={28} />
                 </div>
-                <h3 className="text-2xl font-medium font-sans text-slate-900 mb-2">{t('contact_fab.send_message')}</h3>
+                <h3 className="text-xl font-medium font-sans text-slate-900 mb-2">{t('contact_fab.send_message')}</h3>
                 <p className="text-xs uppercase tracking-widest text-slate-400 font-bold">{t('contact_fab.leave_info')}</p>
               </div>
 

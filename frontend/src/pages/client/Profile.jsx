@@ -2,10 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
-import {
-    User, Calendar, CreditCard, Clock, CheckCircle, XCircle, Edit2, LogOut, Shield,
-    Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Sparkles, MapPin, Camera, ChevronRight, Package, Printer
-} from 'lucide-react';
+import { User, Calendar, CreditCard, Clock, CheckCircle, XCircle, Edit2, LogOut, Shield, Award, Bell, Settings, Heart, History, LayoutDashboard, ArrowUpRight, Star, MapPin, Camera, ChevronRight, Package, Printer } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -337,15 +334,15 @@ const Profile = () => {
                     </button>
                 </div>
                 
-                <h1 className="text-2xl md:text-2xl font-medium font-sans text-slate-900 mt-4 mb-1 drop-shadow-sm">
+                <h1 className="text-xl font-medium md:text-xl font-sans text-slate-900 mt-4 mb-1 drop-shadow-sm">
                     {user?.fullName}
                 </h1>
                 
                 <div className="flex items-center justify-center gap-4 mt-3">
-                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest font-sans">Member Since 2024</span>
+                    <span className="text-[10px] text-slate-400 uppercase font-medium tracking-widest font-sans">Member Since 2024</span>
                     <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
                     <span className="flex items-center gap-1.5 text-amber-600 font-bold uppercase tracking-widest text-[10px]">
-                        <Sparkles size={12} /> Platinum Elite
+                        <Star size={12} /> Platinum Elite
                     </span>
                 </div>
             </div>
@@ -399,7 +396,7 @@ const Profile = () => {
                                         <stat.icon size={18} strokeWidth={1} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1">{stat.label}</p>
+                                        <p className="text-[10px] font-medium uppercase text-slate-400 tracking-widest font-sans mb-1">{stat.label}</p>
                                         <p className="text-xl font-medium font-sans text-slate-900 leading-none">{stat.value}</p>
                                     </div>
                                 </div>
@@ -431,8 +428,8 @@ const Profile = () => {
                                     <div className="flex-1 space-y-6 w-full">
                                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                                             <div>
-                                                <h4 className="text-2xl font-bold text-slate-900 mb-2 font-sans">Luxury Suite #{myBookings[0].room?.roomNumber}</h4>
-                                                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold font-sans flex items-center gap-2">
+                                                <h4 className="text-xl font-medium text-slate-900 mb-2 font-sans">Luxury Suite #{myBookings[0].room?.roomNumber}</h4>
+                                                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-medium font-sans flex items-center gap-2">
                                                     <MapPin size={12} className="text-amber-500" /> {t('profile.danang_vietnam', 'Đà Nẵng, Việt Nam')}
                                                 </p>
                                             </div>
@@ -471,7 +468,7 @@ const Profile = () => {
                                 <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.stay_history')}</h3>
                                 <p className="text-xs text-slate-500 mt-1 font-medium">{t('profile.discover_moments')}</p>
                             </div>
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
+                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
                         </div>
 
                         <div className="grid gap-4">
@@ -483,8 +480,8 @@ const Profile = () => {
                                     </div>
                                     <div className="flex-1 flex flex-col md:flex-row justify-between items-center gap-6 w-full">
                                         <div className="text-center md:text-left space-y-2">
-                                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> {t('profile.danang', 'ĐÀ NẴNG')}</p>
-                                            <h4 className="text-xl font-bold text-slate-900 font-sans group-hover:text-amber-600 transition-colors">{t('profile.room_prefix', 'Phòng ')}{booking.room?.roomNumber}</h4>
+                                            <p className="text-[9px] text-slate-400 font-medium uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> {t('profile.danang', 'ĐÀ NẴNG')}</p>
+                                            <h4 className="text-xl font-medium text-slate-900 font-sans group-hover:text-amber-600 transition-colors">{t('profile.room_prefix', 'Phòng ')}{booking.room?.roomNumber}</h4>
                                             <p className="text-xs text-slate-500 font-medium font-sans">{t('profile.check_in_label')}: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
                                         </div>
                                         <div className="flex flex-col items-center md:items-end gap-3">
@@ -504,7 +501,7 @@ const Profile = () => {
                             {myBookings.length === 0 && (
                                 <div className="text-center py-24 bg-white border border-dashed border-slate-200 rounded-[3rem]">
                                     <Package size={48} className="mx-auto text-slate-300 mb-6" strokeWidth={1} />
-                                    <p className="text-slate-500 font-sans text-2xl">{t('profile.new_journeys')}</p>
+                                    <p className="text-slate-500 font-sans text-xl font-medium">{t('profile.new_journeys')}</p>
                                 </div>
                             )}
                         </div>
@@ -516,7 +513,7 @@ const Profile = () => {
                     <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
                         <div className="border-b border-slate-100 pb-6 mb-6 text-center">
                             <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.account_settings')}</h3>
-                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-2 font-sans">{t('profile.manage_identity')}</p>
+                            <p className="text-[11px] text-slate-400 font-medium uppercase tracking-widest mt-2 font-sans">{t('profile.manage_identity')}</p>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
@@ -530,14 +527,14 @@ const Profile = () => {
                                         { label: t('profile.address'), value: user?.address || t('profile.not_provided') }
                                     ].map((item, i) => (
                                         <div key={i}>
-                                            <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 font-sans mb-1.5">{item.label}</p>
-                                            <p className="text-sm font-bold text-slate-900 font-sans">{item.value}</p>
+                                            <p className="text-[10px] uppercase tracking-widest font-medium text-slate-400 font-sans mb-1.5">{item.label}</p>
+                                            <p className="text-sm font-medium text-slate-900 font-sans">{item.value}</p>
                                         </div>
                                     ))}
                                 </div>
                                 <button 
                                     onClick={handleEditProfile}
-                                    className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm font-sans mt-4"
+                                    className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-medium uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm font-sans mt-4"
                                 >
                                     {t('profile.edit_info')}
                                 </button>
@@ -550,7 +547,7 @@ const Profile = () => {
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm"><Shield size={16} /></div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.password_security')}</p>
+                                                <p className="text-xs font-medium text-slate-900 font-sans">{t('profile.password_security')}</p>
                                                 <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.update_password_desc')}</p>
                                             </div>
                                         </div>
@@ -561,7 +558,7 @@ const Profile = () => {
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-500 shadow-sm"><Bell size={16} /></div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.notification_options')}</p>
+                                                <p className="text-xs font-medium text-slate-900 font-sans">{t('profile.notification_options')}</p>
                                                 <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.email_sms_settings')}</p>
                                             </div>
                                         </div>
@@ -574,7 +571,7 @@ const Profile = () => {
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                                             </div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-900 font-sans">{t('profile.language_currency')}</p>
+                                                <p className="text-xs font-medium text-slate-900 font-sans">{t('profile.language_currency')}</p>
                                                 <p className="text-[11px] text-slate-500 font-medium mt-0.5">{t('profile.vietnamese_vnd')}</p>
                                             </div>
                                         </div>
@@ -599,22 +596,22 @@ const Profile = () => {
                                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-200/10 blur-[60px] rounded-full pointer-events-none"></div>
                                     
                                     <div className="flex justify-between items-start relative z-10 text-amber-500">
-                                        <span className="text-2xl font-medium font-sans">Uy Nam</span>
-                                        <Sparkles size={24} className="animate-pulse" />
+                                        <span className="text-xl font-medium font-sans">Uy Nam</span>
+                                        <Star size={24} className="animate-pulse" />
                                     </div>
                                     <div className="relative z-10 text-white">
-                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-1 font-sans">{t('profile.member_identity')}</p>
+                                        <p className="text-[10px] uppercase font-medium tracking-[0.2em] opacity-60 mb-1 font-sans">{t('profile.member_identity')}</p>
                                         <p className="text-2xl font-serif leading-none tracking-widest drop-shadow-md text-amber-50">{user?.fullName}</p>
                                         
                                         <div className="w-full h-[1px] bg-gradient-to-r from-amber-500/50 to-transparent my-6"></div>
                                         
                                         <div className="flex justify-between items-end">
                                             <div>
-                                                <p className="text-[11px] font-bold uppercase tracking-widest text-amber-500 font-sans mb-1">Platinum Elite</p>
+                                                <p className="text-[11px] font-medium uppercase tracking-widest text-amber-500 font-sans mb-1">Platinum Elite</p>
                                                 <p className="text-[9px] text-slate-400 font-medium">{t('profile.valid_thru')}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-[9px] uppercase font-bold opacity-60 font-sans mb-1 text-slate-400">{t('profile.total_points')}</p>
+                                                <p className="text-[9px] uppercase font-medium opacity-60 font-sans mb-1 text-slate-400">{t('profile.total_points')}</p>
                                                 <p className="text-xl font-serif text-white">12,450</p>
                                             </div>
                                         </div>
@@ -626,7 +623,7 @@ const Profile = () => {
                         {/* PERKS LIST */}
                         <div className="grid md:grid-cols-3 gap-4">
                             {[
-                                { icon: Sparkles, title: t('profile.priority_upgrade'), desc: t('profile.priority_upgrade_desc') },
+                                { icon: Star, title: t('profile.priority_upgrade'), desc: t('profile.priority_upgrade_desc') },
                                 { icon: Clock, title: t('profile.flexible_time'), desc: t('profile.flexible_time_desc') },
                                 { icon: Award, title: t('profile.double_points'), desc: t('profile.double_points_desc') }
                             ].map((perk, i) => (
@@ -634,7 +631,7 @@ const Profile = () => {
                                     <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-amber-600 mx-auto mb-4 shadow-sm">
                                         <perk.icon size={18} />
                                     </div>
-                                    <h4 className="text-xs font-bold text-slate-900 mb-2 font-sans">{perk.title}</h4>
+                                    <h4 className="text-xs font-medium text-slate-900 mb-2 font-sans">{perk.title}</h4>
                                     <p className="text-[10px] text-slate-500 leading-relaxed font-medium">{perk.desc}</p>
                                 </div>
                             ))}
@@ -650,7 +647,7 @@ const Profile = () => {
                         {/* Invoice Header */}
                         <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
                             <div>
-                                <h1 className="text-3xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
+                                <h1 className="text-xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
                                 <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
                             </div>
                             <div className="text-right">

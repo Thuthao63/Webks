@@ -172,7 +172,7 @@ const ManageServices = () => {
                     <X size={20} />
                 </button>
 
-                <h2 className="text-2xl font-medium font-sans text-slate-900 mb-2">
+                <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
                    {editingId ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">Dịch vụ</span>
                 </h2>
                 <p className="text-[10px] text-slate-500 tracking-[0.2em] font-bold mb-10">Thiết lập tham số cho hạng mục tiện ích</p>

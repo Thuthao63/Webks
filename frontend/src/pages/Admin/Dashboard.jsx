@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
-import { 
-  Bed, CalendarCheck, DollarSign, Loader2, TrendingUp, Clock, 
-  CheckCircle, XCircle, ChevronRight, Package, Activity, 
-  Users, Wallet, PieChart as PieChartIcon, BarChart3, TrendingDown,
-  ArrowUpRight, ArrowDownRight, Sparkles, CheckSquare
-} from 'lucide-react';
+import { Bed, CalendarCheck, DollarSign, Loader2, TrendingUp, Clock, CheckCircle, XCircle, ChevronRight, Package, Activity, Users, Wallet, PieChart as PieChartIcon, BarChart3, TrendingDown, ArrowUpRight, ArrowDownRight, Star, CheckSquare } from "lucide-react";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, BarChart, Bar, Legend
@@ -178,8 +173,8 @@ const Dashboard = () => {
                </div>
                
                <div className="flex flex-col relative z-10">
-                  <h4 className="text-2xl font-medium font-sans text-slate-900 mb-1">{item.value}</h4>
-                  <p className="text-[10px] text-slate-500 font-bold  tracking-widest flex items-center gap-1 font-sans">
+                  <h4 className="text-xl font-medium font-sans text-slate-900 mb-1">{item.value}</h4>
+                  <p className="text-[10px] text-slate-500 font-medium  tracking-widest flex items-center gap-1 font-sans">
                      <ArrowUpRight size={12} className="text-emerald-500" /> {item.trend}
                   </p>
                </div>
@@ -194,7 +189,7 @@ const Dashboard = () => {
           <div className="lg:col-span-2 bg-white border border-slate-100 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-soft transition-luxury">
             <div className="flex items-center justify-between mb-8">
                <div>
-                  <h3 className="text-xl font-bold font-sans text-slate-900 flex items-center gap-3">
+                  <h3 className="text-xl font-medium font-sans text-slate-900 flex items-center gap-3">
                     <TrendingUp className="text-amber-500" size={20} />
                     Biểu đồ doanh thu
                   </h3>
@@ -254,7 +249,7 @@ const Dashboard = () => {
 
           {/* Status Pie Chart */}
           <div className="bg-white border border-slate-100 p-8 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-soft transition-luxury">
-              <h3 className="text-xl font-bold font-sans text-slate-900 flex items-center gap-3 mb-8">
+              <h3 className="text-xl font-medium font-sans text-slate-900 flex items-center gap-3 mb-8">
                 <PieChartIcon className="text-emerald-500" size={20} />
                 Trạng thái đơn
               </h3>
@@ -292,7 +287,7 @@ const Dashboard = () => {
                    <div key={idx} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></div>
-                        <span className="text-xs text-slate-500 font-bold  tracking-widest font-sans">{item.name}</span>
+                        <span className="text-xs text-slate-500 font-medium  tracking-widest font-sans">{item.name}</span>
                       </div>
                       <span className="text-xs font-black text-slate-900 font-sans">{item.value} đơn</span>
                    </div>
@@ -308,8 +303,8 @@ const Dashboard = () => {
            {/* Recent Transactions */}
            <div className="bg-white border border-slate-100 p-8 pb-4 rounded-[2.5rem] shadow-sm hover:shadow-soft transition-luxury">
               <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-6">
-                <h3 className="text-xl font-bold font-sans text-slate-900 flex items-center gap-3">
-                  <Sparkles className="text-amber-500" size={20} />
+                <h3 className="text-xl font-medium font-sans text-slate-900 flex items-center gap-3">
+                  <Star className="text-amber-500" size={20} />
                   Giao dịch mới
                 </h3>
                 <button className="text-[10px] text-amber-600 hover:text-amber-500  font-black tracking-widest transition-all font-sans">Tất cả</button>
@@ -323,14 +318,14 @@ const Dashboard = () => {
                            {(b.user?.fullName || b.customer?.fullName || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                           <p className="text-xs font-bold text-slate-900 truncate max-w-[120px] font-sans">{b.user?.fullName || 'Khách vãng lai'}</p>
-                           <p className="text-[10px] text-slate-500 font-bold tracking-widest mt-0.5 font-sans">P.{b.room?.roomNumber || '---'}</p>
+                           <p className="text-xs font-medium text-slate-900 truncate max-w-[120px] font-sans">{b.user?.fullName || 'Khách vãng lai'}</p>
+                           <p className="text-[10px] text-slate-500 font-medium tracking-widest mt-0.5 font-sans">P.{b.room?.roomNumber || '---'}</p>
                         </div>
                      </div>
                      <div className="text-right flex items-center gap-6">
                         <div>
                            <p className="text-xs font-black text-slate-900 font-sans">{Number(b.totalPrice || 0).toLocaleString()} <span className="text-[9px] text-slate-400">Đ</span></p>
-                           <p className="text-[9px] text-slate-400 font-bold  tracking-widest mt-0.5 font-sans">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
+                           <p className="text-[9px] text-slate-400 font-medium  tracking-widest mt-0.5 font-sans">{new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
                         </div>
                         <div className="w-24 flex justify-end">
                           {renderStatus(b)}
@@ -343,7 +338,7 @@ const Dashboard = () => {
 
            {/* Weekly Counts Bar Chart */}
            <div className="bg-white border border-slate-100 p-8 rounded-[2.5rem] shadow-sm hover:shadow-soft transition-luxury">
-              <h3 className="text-xl font-bold font-sans text-slate-900 flex items-center gap-3 mb-8">
+              <h3 className="text-xl font-medium font-sans text-slate-900 flex items-center gap-3 mb-8">
                 <BarChart3 className="text-purple-500" size={20} />
                 Mật độ đặt phòng
               </h3>

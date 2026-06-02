@@ -69,7 +69,7 @@ const ManageContacts = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-100 p-4 rounded-3xl">
           <div className="flex items-center gap-6 pl-2">
              <div className="flex items-center gap-2">
-                <span className="text-3xl font-medium font-sans text-amber-500 leading-none drop-shadow-md">
+                <span className="text-xl font-medium font-sans text-amber-500 leading-none drop-shadow-md">
                   {contacts.filter(c => c.status === 'Pending').length}
                 </span>
                 <div className="flex flex-col">

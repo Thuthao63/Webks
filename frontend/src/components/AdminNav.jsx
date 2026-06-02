@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Bed, CalendarCheck, MessageSquare,
-  LogOut, Users, Star, Coffee, Sparkles, X, ChevronRight,
+  LogOut, Users, Star, Coffee, Tag, X, ChevronRight,
   Settings, ShieldCheck, FileText
 } from 'lucide-react';
 import { AuthContext } from "../context/AuthContext";
@@ -25,9 +25,9 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
     { name: 'Đơn hàng', path: '/admin/bookings', icon: <CalendarCheck size={18} /> },
     { name: 'Đánh giá', path: '/admin/reviews', icon: <Star size={18} /> },
     { name: 'Bài viết', path: '/admin/blogs', icon: <FileText size={18} /> },
-    { name: 'Giảm giá', path: '/admin/discounts', icon: <Sparkles size={18} /> },
+    { name: 'Giảm giá', path: '/admin/discounts', icon: <Tag size={18} /> },
     { name: 'Hộp thư', path: '/admin/contacts', icon: <MessageSquare size={18} /> },
-    { name: 'Khách hàng', path: '/admin/users', icon: <Users size={18} /> },
+    { name: 'Người dùng', path: '/admin/users', icon: <Users size={18} /> },
     { name: 'Hóa đơn', path: '/admin/guest-stats', icon: <FileText size={18} /> },
   ];
 
@@ -81,7 +81,7 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
 
               {isActive ? (
                 <div className="w-3.5 h-3.5 rounded-full bg-amber-500/20 flex items-center justify-center">
-                   <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
                 </div>
               ) : (
                 <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-slate-300" />
@@ -92,9 +92,9 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
 
         <div className="pt-8 mt-8 border-t border-slate-100">
           <p className="text-[10px] text-slate-400 font-black tracking-widest px-4 mb-4 font-sans">Hệ thống</p>
-          <button 
-             onClick={() => Swal.fire({ title: 'Đang phát triển', text: 'Tính năng Cài đặt chung đang được hoàn thiện và sẽ ra mắt trong bản cập nhật tới!', icon: 'info' })}
-             className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-luxury font-bold text-xs tracking-wide font-sans group"
+          <button
+            onClick={() => Swal.fire({ title: 'Đang phát triển', text: 'Tính năng Cài đặt chung đang được hoàn thiện và sẽ ra mắt trong bản cập nhật tới!', icon: 'info' })}
+            className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-luxury font-medium text-xs tracking-wide font-sans group"
           >
             <Settings size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
             <span>Cài đặt chung</span>
@@ -106,18 +106,18 @@ const AdminNav = ({ isOpen, setIsOpen }) => {
       <div className="p-4 border-t border-slate-100 bg-slate-50/50">
         <div className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-slate-100 mb-4 group shadow-sm cursor-default">
           <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-900 relative overflow-hidden font-black">
-             {(user?.fullName || 'A').charAt(0).toUpperCase()}
+            {(user?.fullName || 'A').charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-xs font-bold text-slate-900 truncate font-sans">{user?.fullName || 'Admin User'}</p>
+            <p className="text-xs font-medium text-slate-900 truncate font-sans">{user?.fullName || 'Admin User'}</p>
             <div className="flex items-center gap-1 mt-0.5">
-               <ShieldCheck size={10} className="text-emerald-500" />
-               <p className="text-[9px] text-slate-400  font-black tracking-widest">Quyền Quản Trị</p>
+              <ShieldCheck size={10} className="text-emerald-500" />
+              <p className="text-[9px] text-slate-400  font-black tracking-widest">Quyền Quản Trị</p>
             </div>
           </div>
         </div>
 
-        <button 
+        <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900 text-white hover:bg-rose-600 transition-luxury text-[11px] font-black  tracking-widest shadow-lg shadow-slate-900/10 font-sans"
         >
