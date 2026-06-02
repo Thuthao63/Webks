@@ -26,10 +26,10 @@ const ManageUsers = () => {
     backdrop: 'rgba(15,23,42,0.4)',
     customClass: {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
-      title: 'font-serif italic text-amber-500 text-2xl',
+      title: 'font-sans text-amber-500 text-2xl',
       htmlContainer: 'text-slate-400 text-sm',
-      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold  tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
+      cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
     }
   });
 
@@ -85,35 +85,38 @@ const ManageUsers = () => {
             <div class="p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors">
               <div class="flex justify-between items-start mb-2">
                  <p class="text-sm font-black text-slate-800">Đơn #${b.id}</p>
-                 <span class="text-[9px] font-bold  tracking-widest px-2 py-1 rounded-md ${b.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : b.status === 'cancelled' ? 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-amber-600'}">
+                 <span class="text-[9px] font-bold tracking-widest px-2 py-1 rounded-md ${b.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : b.status === 'cancelled' ? 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-amber-600'}">
                    ${b.status === 'completed' ? 'Hoàn tất' : b.status === 'cancelled' ? 'Đã hủy' : b.status === 'confirmed' ? 'Đã cọc' : 'Chờ duyệt'}
                  </span>
               </div>
               <p class="text-xs font-bold text-slate-700">Phòng ${b.room?.roomNumber || '---'} (Tiêu chuẩn Luxury)</p>
-              <p class="text-[10px] text-slate-500 mt-1">Từ ${new Date(b.checkInDate).toLocaleDateString('vi-VN')} đến ${new Date(b.checkOutDate).toLocaleDateString('vi-VN')}</p>
-              <p class="text-[11px] font-black text-amber-600 mt-2">${Number(b.totalPrice).toLocaleString()} VNĐ</p>
+              <div class="mt-2 text-[10px] text-slate-500 space-y-1">
+                 <p>Check-in: ${new Date(b.checkInDate).toLocaleDateString('vi-VN')}</p>
+                 <p>Check-out: ${new Date(b.checkOutDate).toLocaleDateString('vi-VN')}</p>
+                 <p class="font-black text-slate-800 mt-2">Tổng chi phí: ${Number(b.totalPrice).toLocaleString()} VNĐ</p>
+              </div>
             </div>
           `).join('')}
         </div>
       `;
 
       luxurySwal.fire({
-        title: `Lịch sử đặt phòng`,
+        title: 'Lịch sử lưu trú',
         html: historyHtml,
-        showConfirmButton: true,
-        confirmButtonText: 'Đóng lại',
-        customClass: { popup: 'rounded-[2rem] border border-slate-100 shadow-xl' }
+        width: '500px',
+        showConfirmButton: false,
+        showCloseButton: true
       });
 
     } catch (err) {
-      luxurySwal.fire('Lỗi', 'Không thể lấy dữ liệu lịch sử đặt phòng', 'error');
+      luxurySwal.fire('Lỗi', 'Không thể lấy dữ liệu lịch sử.', 'error');
     }
   };
 
   if (loading) return (
     <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-amber-500" size={40} />
-      <p className="text-slate-500 text-[10px] tracking-[0.3em]  font-bold animate-pulse">Đang liệt kê hồ sơ...</p>
+      <p className="text-slate-500 text-[10px] tracking-[0.3em] font-bold animate-pulse">Đang nạp hồ sơ nhân sự...</p>
     </div>
   );
 
@@ -126,7 +129,7 @@ const ManageUsers = () => {
           <div className="flex items-center gap-6 pl-2">
              <div className="flex -space-x-3">
                 {users.slice(0, 5).map((u, i) => (
-                  <div key={i} className="w-9 h-9 rounded-full border-2 border-black bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-[10px] font-black  text-slate-900">
+                  <div key={i} className="w-9 h-9 rounded-full border-2 border-black bg-gradient-to-tr from-gray-800 to-gray-700 flex items-center justify-center text-[10px] font-black text-slate-900">
                     {u.fullName?.charAt(0)}
                   </div>
                 ))}
@@ -137,12 +140,12 @@ const ManageUsers = () => {
                 )}
              </div>
              <div>
-                <p className="text-[10px] text-slate-500 font-bold  tracking-widest">Tổng hồ sơ định danh</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{users.length} tài khoản người dùng</p>
+                <p className="text-[10px] text-slate-500 font-bold tracking-widest">Tổng hồ sơ định danh</p>
+                <p className="text-base font-medium font-sans text-slate-900 leading-none mt-1">{users.length} tài khoản người dùng</p>
              </div>
           </div>
           
-          <button onClick={fetchUsers} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-2xl transition-all flex items-center justify-center gap-2 text-[10px] font-bold  tracking-widest">
+          <button onClick={fetchUsers} className="w-full sm:w-auto px-6 py-3 bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-2xl transition-all flex items-center justify-center gap-2 text-[10px] font-bold tracking-widest">
             <RefreshCw size={14} className="hover:animate-spin" />
             Làm mới danh sách
           </button>
@@ -152,7 +155,7 @@ const ManageUsers = () => {
         <div className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl">
           <div className="overflow-x-auto admin-scrollbar">
             <table className="w-full text-left">
-              <thead className="text-[10px] text-slate-500  font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
+              <thead className="text-[10px] text-slate-500 font-bold tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                 <tr>
                   <th className="px-8 py-6">Nhân vật & Liên hệ</th>
                   <th className="px-6 py-6">Bộ phận / Chức vụ</th>
@@ -173,7 +176,7 @@ const ManageUsers = () => {
                              <span className="font-semibold text-slate-800 text-[15px] group-hover:text-amber-600 transition-colors capitalize">
                                {(userItem.fullName || '').toLowerCase()}
                              </span>
-                             {currentUser?.id === userItem.id && <span className="text-[9px] bg-slate-900 text-white px-2 py-0.5 rounded-full  font-bold tracking-widest shadow-sm">Bạn</span>}
+                             {currentUser?.id === userItem.id && <span className="text-[9px] bg-slate-900 text-white px-2 py-0.5 rounded-full font-bold tracking-widest shadow-sm">Bạn</span>}
                           </div>
                           <div className="flex items-center gap-4 mt-1.5 text-[11px] text-slate-500">
                              <span className="flex items-center gap-1.5"><Mail size={12} className="text-slate-400"/> {userItem.email}</span>
@@ -184,7 +187,7 @@ const ManageUsers = () => {
                     </td>
                     <td className="px-6 py-5">
                        <select 
-                          className={`bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 text-[10px] font-black  tracking-widest outline-none cursor-pointer hover:bg-slate-100 transition-all ${userItem.role === 'Admin' ? 'text-rose-400' : userItem.role === 'Receptionist' ? 'text-amber-400' : 'text-emerald-400'}`}
+                          className={`bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 text-[10px] font-black tracking-widest outline-none cursor-pointer hover:bg-slate-100 transition-all ${userItem.role === 'Admin' ? 'text-rose-400' : userItem.role === 'Receptionist' ? 'text-amber-400' : 'text-emerald-400'}`}
                           value={userItem.role}
                           onChange={(e) => handleChangeRole(userItem.id, e.target.value, userItem.role)}
                           disabled={currentUser?.id === userItem.id}
@@ -196,11 +199,11 @@ const ManageUsers = () => {
                     </td>
                     <td className="px-6 py-5">
                        {userItem.isVerified ? (
-                          <span className="inline-flex items-center gap-2 text-emerald-400 text-[9px] font-black  tracking-widest">
+                          <span className="inline-flex items-center gap-2 text-emerald-400 text-[9px] font-black tracking-widest">
                              <CheckCircle size={12} /> <span className="opacity-60">Đã xác thực</span>
                           </span>
                        ) : (
-                          <span className="inline-flex items-center gap-2 text-rose-400 text-[9px] font-black  tracking-widest animate-pulse">
+                          <span className="inline-flex items-center gap-2 text-rose-400 text-[9px] font-black tracking-widest animate-pulse">
                              <XCircle size={12} /> <span className="opacity-60">Chưa xác thực</span>
                           </span>
                        )}

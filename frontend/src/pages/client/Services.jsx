@@ -142,7 +142,7 @@ const Services = () => {
         {services.length === 0 && (
           <div className="text-center py-40 border border-slate-100 bg-white rounded-[4rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] max-w-2xl mx-auto">
             <Loader2 size={40} className="text-amber-500/30 mx-auto mb-8 animate-spin" strokeWidth={1} />
-            <p className="text-slate-500 font-serif italic text-2xl">{t('services_page.loading_msg')}</p>
+            <p className="text-slate-500 font-sans text-2xl">{t('services_page.loading_msg')}</p>
           </div>
         )}
       </section>

@@ -352,7 +352,7 @@ const ManageBookings = () => {
         `,
         customClass: {
           popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
-          title: 'font-serif italic text-slate-900 text-3xl text-left w-full border-b border-slate-100 pb-4',
+          title: 'font-sans text-slate-900 text-3xl text-left w-full border-b border-slate-100 pb-4',
           confirmButton: 'bg-amber-500 text-slate-900 hover:bg-slate-900 hover:text-white px-8 py-3.5 rounded-xl font-black text-[11px]  tracking-wider transition-all shadow-md font-sans w-full sm:w-auto',
           cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px]  tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans w-full sm:w-auto',
           actions: 'w-full flex flex-col sm:flex-row justify-end gap-3 mt-8',
@@ -546,7 +546,7 @@ const ManageBookings = () => {
               <div key={i} className="bg-white border border-slate-100 p-5 rounded-3xl flex items-center justify-between">
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold  tracking-widest">{stat.label}</p>
-                  <p className="text-3xl font-serif italic text-slate-900 leading-none mt-2">{stat.value}</p>
+                  <p className="text-2xl font-medium font-sans text-slate-900 leading-none mt-2">{stat.value}</p>
                 </div>
                 <div className={`w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400`}>
                    {stat.icon}
@@ -701,12 +701,12 @@ const ManageBookings = () => {
              
              {/* Watermark Logo */}
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none">
-                <span className="text-[200px] font-serif italic text-amber-900">U N</span>
+                <span className="text-[200px] font-sans text-amber-900">U N</span>
              </div>
 
              <div className="flex justify-between items-start border-b border-slate-200 pb-8 mb-8 relative z-10">
                <div>
-                  <h1 className="text-4xl font-serif italic text-amber-700 tracking-tight">Uy Nam Luxury</h1>
+                  <h1 className="text-3xl font-medium font-sans text-amber-700 tracking-tight">Uy Nam Luxury</h1>
                   <p className="text-xs text-slate-500 mt-2 tracking-widest ">Hotels & Resorts</p>
                   <div className="mt-4 text-[11px] text-slate-500 space-y-1">
                      <p>123 Đại Lộ Ánh Sáng, Quận 1, TP. HCM</p>

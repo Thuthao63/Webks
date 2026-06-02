@@ -24,7 +24,7 @@ const ManageDiscounts = () => {
         backdrop: 'rgba(15,23,42,0.4)',
         customClass: {
             popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
-            title: 'font-serif italic text-amber-500 text-2xl',
+            title: 'font-sans text-amber-500 text-2xl',
             htmlContainer: 'text-slate-400 text-sm',
             confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
             cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold  tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
@@ -108,7 +108,7 @@ const ManageDiscounts = () => {
                         </div>
                         <div>
                             <p className="text-[10px] text-slate-500 font-bold  tracking-widest">Chiến dịch hiện hữu</p>
-                            <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{discounts.length} chương trình</p>
+                            <p className="text-base font-medium font-sans text-slate-900 leading-none mt-1">{discounts.length} chương trình</p>
                         </div>
                     </div>
 
@@ -154,7 +154,7 @@ const ManageDiscounts = () => {
                                             </td>
                                             <td className="px-6 py-5">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-2xl font-serif italic text-amber-500">
+                                                    <span className="text-xl font-medium font-sans text-amber-500">
                                                         -{Math.floor(discount.discountPercent)}%
                                                     </span>
                                                 </div>
@@ -213,7 +213,7 @@ const ManageDiscounts = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
+                            <h2 className="text-2xl font-medium font-sans text-slate-900 mb-2">
                                 Thiết lập <span className="text-amber-500">Giảm giá</span>
                             </h2>
                             <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>

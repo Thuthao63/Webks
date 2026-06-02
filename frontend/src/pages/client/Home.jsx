@@ -154,7 +154,7 @@ const Home = () => {
       <section className="py-24 md:py-32 bg-paper">
         <div className="max-w-7xl mx-auto px-6 text-center mb-16 md:mb-24">
            <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-6 block">{t('home.amenities_sup')}</span>
-           <h2 className="text-4xl md:text-7xl font-serif italic text-gray-900">
+           <h2 className="text-4xl md:text-7xl font-sans text-gray-900">
               {t('home.amenities_head')} <span className="text-amber-600 not-italic font-bold">{t('home.amenities_head_italic')}</span>
            </h2>
         </div>
@@ -214,7 +214,7 @@ const Home = () => {
 
                 <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                   <div className="space-y-0.5">
-                    <h4 className="text-[17px] font-serif italic text-slate-900 group-hover:text-amber-600 transition-luxury">{room.roomType?.name}</h4>
+                    <h4 className="text-[17px] font-sans text-slate-900 group-hover:text-amber-600 transition-luxury">{room.roomType?.name}</h4>
                     <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black italic">{t('home.signature_collection')}</p>
                   </div>
 
@@ -281,7 +281,7 @@ const Home = () => {
                       <Mail size={24} className="text-amber-500" />
                    </div>
                    
-                   <h2 className="text-3xl md:text-4xl md:leading-tight font-serif italic text-white mb-4 drop-shadow-md">
+                   <h2 className="text-3xl md:text-4xl md:leading-tight font-sans text-white mb-4 drop-shadow-md">
                       {t('home.join')} <span className="text-amber-400 font-bold not-italic">{t('home.elite')}</span>
                    </h2>
                    

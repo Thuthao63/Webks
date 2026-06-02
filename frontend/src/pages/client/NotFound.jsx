@@ -17,7 +17,7 @@ const NotFound = () => {
                 
                 {/* 404 Visual */}
                 <div className="relative inline-block">
-                    <h1 className="text-[12rem] md:text-[20rem] font-serif italic leading-none opacity-10 select-none">
+                    <h1 className="text-[12rem] md:text-[20rem] font-sans leading-none opacity-10 select-none">
                         404
                     </h1>
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -29,7 +29,7 @@ const NotFound = () => {
 
                 {/* Text Content */}
                 <div className="space-y-6">
-                    <h2 className="text-4xl md:text-6xl font-serif italic">
+                    <h2 className="text-4xl md:text-5xl font-medium font-sans">
                         Hành trình <span className="text-amber-500 not-italic">bị gián đoạn</span>
                     </h2>
                     <p className="text-gray-500 text-xs md:text-sm uppercase tracking-[0.1em] leading-loose max-w-md mx-auto font-medium">

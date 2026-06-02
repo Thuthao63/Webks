@@ -47,7 +47,7 @@ const Privacy = () => {
             <Shield size={32} />
           </div>
           <p className="text-amber-500 text-xs font-black uppercase tracking-[0.2em] mb-4">Uy Nam Luxury</p>
-          <h1 className="text-4xl md:text-6xl font-serif italic text-slate-900 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-medium font-sans text-slate-900 mb-6 leading-tight">
             Chính sách <span className="text-amber-500 not-italic font-bold">Bảo mật</span>
           </h1>
           <p className="text-slate-500 max-w-2xl mx-auto leading-loose text-sm md:text-base">

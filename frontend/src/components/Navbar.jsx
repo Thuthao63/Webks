@@ -301,7 +301,7 @@ const Navbar = () => {
           <div className="space-y-12 mt-10">
             <div className="space-y-2 border-b border-white/10 pb-6">
               <p className="text-amber-500 text-[12px] uppercase font-bold tracking-widest">{t('nav.category')}</p>
-              <h4 className="text-white font-serif italic text-3xl">{t('nav.menu')}</h4>
+              <h4 className="text-white font-sans text-3xl">{t('nav.menu')}</h4>
             </div>
 
             <div className="flex flex-col gap-8">
@@ -327,7 +327,7 @@ const Navbar = () => {
 
           <div className="space-y-6 pt-10 border-t border-white/5">
             <p className="text-xs text-gray-500 tracking-widest uppercase font-bold">{t('nav.booking_contact')}</p>
-            <p className="text-white font-serif italic text-xl">0123.456.789</p>
+            <p className="text-white font-sans text-xl">0123.456.789</p>
           </div>
         </div>
       </div>

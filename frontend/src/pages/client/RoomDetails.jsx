@@ -99,7 +99,7 @@ const RoomDetails = () => {
     if (!room) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center flex-col gap-8">
-                <p className="text-slate-900 text-xl font-serif italic font-sans">{t('room_details.not_found')}</p>
+                <p className="text-slate-900 text-lg font-medium font-sans font-sans">{t('room_details.not_found')}</p>
                 <button onClick={() => navigate('/rooms')} className="bg-slate-900 text-white px-10 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-amber-500 transition-luxury shadow-lg font-sans">{t('room_details.back_to_list')}</button>
             </div>
         );
@@ -125,7 +125,7 @@ const RoomDetails = () => {
                             <div className="flex items-center gap-2 text-amber-500 uppercase tracking-[0.15em] text-[10px] font-black italic font-sans">
                                 <Star size={12} fill="currentColor" /> Luxury Collection
                             </div>
-                            <h1 className="text-3xl md:text-4xl font-serif italic text-slate-900 leading-tight">
+                            <h1 className="text-3xl md:text-3xl font-medium font-sans text-slate-900 leading-tight">
                                 {t('room_details.room_prefix')} <span className="text-amber-500 not-italic">{room.roomNumber}</span>
                             </h1>
                             <p className="text-slate-500 text-sm leading-relaxed font-medium italic font-sans">
@@ -156,11 +156,11 @@ const RoomDetails = () => {
                                 </p>
                                 <div className="flex items-baseline gap-3">
                                     {discount && (
-                                        <p className="text-lg text-slate-300 line-through font-serif italic font-sans">
+                                        <p className="text-lg text-slate-300 line-through font-sans font-sans">
                                             {Number(details.price || 0).toLocaleString()}
                                         </p>
                                     )}
-                                    <p className="text-3xl text-amber-500 font-serif italic">
+                                    <p className="text-3xl text-amber-500 font-sans">
                                         {(Number(details.price || 0) * (discount ? (1 - discount.discountPercent / 100) : 1)).toLocaleString()}
                                         <span className="text-[10px] text-slate-400 not-italic uppercase font-black tracking-widest ml-3 font-sans">{t('room_details.currency_per_night')}</span>
                                     </p>
@@ -217,7 +217,7 @@ const RoomDetails = () => {
                     <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-50 pb-4 mb-6 gap-4">
                         <div className="space-y-2">
                             <span className="text-amber-500 text-[10px] font-black uppercase tracking-[0.15em] block font-sans">{t('room_details.customer_reviews')}</span>
-                            <h3 className="text-2xl md:text-3xl font-serif italic text-slate-900">
+                            <h3 className="text-2xl md:text-2xl font-medium font-sans text-slate-900">
                                 {t('room_details.inspiration')} <span className="not-italic text-amber-500">{t('room_details.stay')}</span>
                             </h3>
                             <p className="text-slate-400 text-[10px] uppercase tracking-widest font-black italic flex items-center gap-2 font-sans">
@@ -227,7 +227,7 @@ const RoomDetails = () => {
                         </div>
                         {reviews.length > 0 && (
                             <div className="bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 flex items-center gap-4 shadow-sm">
-                                <span className="text-2xl text-amber-500 font-serif italic leading-none">
+                                <span className="text-2xl text-amber-500 font-sans leading-none">
                                     {(reviews.reduce((a, b) => a + b.rating, 0) / reviews.length).toFixed(1)}
                                 </span>
                                 <div className="border-l border-amber-500/20 pl-4 space-y-0.5">
@@ -274,7 +274,7 @@ const RoomDetails = () => {
                     <div className="mt-6 pt-6 border-t border-slate-100">
                         {user ? (
                             <form onSubmit={handleReviewSubmit} className="bg-cream p-5 md:p-6 rounded-xl border border-slate-100 shadow-sm space-y-4">
-                                <h4 className="text-lg font-serif italic text-slate-900 mb-2">
+                                <h4 className="text-base font-medium font-sans text-slate-900 mb-2">
                                     {t('room_details.share_experience')}
                                 </h4>
                                 <div className="space-y-1.5">

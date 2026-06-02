@@ -220,7 +220,7 @@ const Booking = () => {
               <div className="flex items-center gap-2 text-amber-600 uppercase tracking-wider text-sm font-semibold">
                 <Star size={14} fill="currentColor" /> {t('booking.premium_room')}
               </div>
-              <h1 className="text-2xl md:text-4xl font-serif italic text-gray-900">
+              <h1 className="text-2xl md:text-3xl font-medium font-sans text-gray-900">
                 {t('booking.room_title')} <span className="text-amber-600 not-italic">{room?.roomNumber}</span>
               </h1>
             </div>
@@ -243,7 +243,7 @@ const Booking = () => {
 
             {/* DỊCH VỤ ĐI KÈM */}
             <div className="p-10 bg-white border border-gray-100 rounded-3xl shadow-sm">
-              <h3 className="text-xl font-serif italic text-gray-900 mb-6">{t('booking.services_title')}</h3>
+              <h3 className="text-lg font-medium font-sans text-gray-900 mb-6">{t('booking.services_title')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {availableServices.map(service => {
                   const qty = selectedServices[service.id] || 0;
@@ -289,7 +289,7 @@ const Booking = () => {
           {/* PHẢI: FORM CHỌN NGÀY */}
           <div className="lg:col-span-5">
             <div className="bg-white border border-gray-100 p-6 md:p-8 rounded-2xl md:rounded-[2rem] md:sticky md:top-28 shadow-sm">
-              <h3 className="text-xl md:text-2xl font-serif italic mb-6 text-center text-gray-900">{t('booking.your_schedule')}</h3>
+              <h3 className="text-xl md:text-xl font-medium font-sans mb-6 text-center text-gray-900">{t('booking.your_schedule')}</h3>
 
               <div className="space-y-4">
                 <div className="space-y-3">
@@ -368,7 +368,7 @@ const Booking = () => {
                             }, 0))}
                          </div>
                       )}
-                      <div className="text-xl md:text-2xl font-sans font-semibold tracking-tight text-gray-900">{formatCurrency(totalPrice)}</div>
+                      <div className="text-xl md:text-xl font-medium font-sans font-semibold tracking-tight text-gray-900">{formatCurrency(totalPrice)}</div>
                     </div>
                   </div>
                 </div>
@@ -398,7 +398,7 @@ const Booking = () => {
           <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             {/* Header */}
             <div className="bg-slate-50 p-8 text-center border-b border-slate-100 relative">
-              <h3 className="text-2xl font-serif italic text-slate-900">{t('booking.secure_payment')}</h3>
+              <h3 className="text-xl font-medium font-sans text-slate-900">{t('booking.secure_payment')}</h3>
               <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">{t('booking.deposit_amount')} <span className="text-amber-600">{formatCurrency(depositAmount)}</span></p>
             </div>
             

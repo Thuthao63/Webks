@@ -233,7 +233,7 @@ const GuestStats = () => {
              {/* Invoice Header */}
              <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
                <div>
-                 <h1 className="text-4xl font-serif italic text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
+                 <h1 className="text-3xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
                  <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
                </div>
                <div className="text-right">
@@ -284,7 +284,7 @@ const GuestStats = () => {
              <div className="flex justify-between items-end">
                 <div className="w-1/2">
                   <div className="w-40 h-24 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center mb-2">
-                     <p className="text-slate-300 font-serif italic transform -rotate-12">Dấu đã thu tiền</p>
+                     <p className="text-slate-300 font-sans transform -rotate-12">Dấu đã thu tiền</p>
                   </div>
                   <p className="text-[10px] font-bold text-slate-400">Cảm ơn quý khách đã lựa chọn Uy Nam Luxury!</p>
                 </div>

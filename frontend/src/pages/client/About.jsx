@@ -55,7 +55,7 @@ const About = () => {
                             <div className="w-12 h-[1px] bg-amber-600"></div>
                             <span className="text-amber-600 text-xs font-black uppercase tracking-[0.1em]">{t('about.est')}</span>
                         </div>
-                        <h1 className="text-6xl md:text-8xl leading-tight mb-8 font-serif italic">
+                        <h1 className="text-6xl md:text-8xl leading-tight mb-8 font-sans">
                             {t('about.hero_title')} <br /> 
                             <span className="text-amber-600 not-italic font-bold">{t('about.hero_highlight')}</span>
                         </h1>
@@ -101,7 +101,7 @@ const About = () => {
                             </div>
                             <div className="absolute -bottom-10 -right-10 bg-amber-600 text-white p-12 rounded-[2rem] shadow-2xl z-20 hidden md:block">
                                 <Sparkles size={32} className="mb-4" />
-                                <p className="text-3xl font-serif italic mb-1">05+</p>
+                                <p className="text-2xl font-medium font-sans mb-1">05+</p>
                                 <p className="text-sm uppercase tracking-widest font-black opacity-80">{t('about.years_heritage')}</p>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ const About = () => {
                             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600 text-sm font-black uppercase tracking-widest">
                                 <Building size={12} /> {t('about.journey')}
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-serif italic leading-tight">
+                            <h2 className="text-4xl md:text-4xl font-medium font-sans leading-tight">
                                 {t('about.story_title')} <br />
                                 <span className="text-amber-600">{t('about.story_highlight')}</span>
                             </h2>
@@ -133,7 +133,7 @@ const About = () => {
             {/* 3. TEAM - NEW LEADERSHIP SECTION */}
             <section id="team" className="py-32 bg-paper">
                 <div className="container mx-auto px-6 text-center mb-20">
-                     <h3 className="text-3xl md:text-5xl font-serif italic text-amber-600 mb-4">{t('about.leaders')}</h3>
+                     <h3 className="text-3xl md:text-4xl font-medium font-sans text-amber-600 mb-4">{t('about.leaders')}</h3>
                      <p className="text-xs uppercase tracking-[0.1em] text-gray-400 font-bold">{t('about.team_desc')}</p>
                 </div>
 
@@ -161,7 +161,7 @@ const About = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-20 items-end mb-24">
                        <div className="max-w-2xl">
-                          <h3 className="text-4xl md:text-6xl font-serif italic mb-6">
+                          <h3 className="text-4xl md:text-5xl font-medium font-sans mb-6">
                             {t('about.core_values')} <br /> <span className="text-amber-600">{t('about.core_highlight')}</span>
                           </h3>
                        </div>
@@ -196,7 +196,7 @@ const About = () => {
                 <div className="container mx-auto px-6 text-center relative z-10">
                    <div className={`transition-all duration-1000 ${isVisible['quote'] ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
                       <Quote size={64} className="mx-auto mb-10 text-amber-500 opacity-50" />
-                      <h2 className="text-4xl md:text-6xl font-serif italic leading-tight max-w-4xl mx-auto">
+                      <h2 className="text-4xl md:text-5xl font-medium font-sans leading-tight max-w-4xl mx-auto">
                         {t('about.quote')}
                       </h2>
                       <div className="w-20 h-1 bg-amber-600 mx-auto mt-12 rounded-full"></div>
@@ -210,7 +210,7 @@ const About = () => {
                   <div className={`bg-white border border-gray-100 rounded-[3rem] p-12 md:p-24 text-center shadow-2xl relative overflow-hidden transition-all duration-1000 ${isVisible['cta'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
                      <div className="absolute top-0 left-0 w-32 h-32 bg-amber-500/5 rounded-full -ml-16 -mt-16"></div>
                      <span className="text-amber-600 text-xs font-black uppercase tracking-[0.15em] mb-6 block">{t('about.plan_trip')}</span>
-                     <h2 className="text-4xl md:text-7xl font-serif italic mb-12">
+                     <h2 className="text-4xl md:text-7xl font-sans mb-12">
                          {t('about.ready')} <br /> <span className="text-amber-600">{t('about.new_level')}</span>
                      </h2>
                      <div className="flex flex-col sm:flex-row items-center justify-center gap-6">

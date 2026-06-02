@@ -62,7 +62,7 @@ const Profile = () => {
             cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
-                title: 'font-serif italic text-slate-900 text-3xl',
+                title: 'font-sans text-slate-900 text-3xl',
                 confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
                 cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
             },
@@ -109,7 +109,7 @@ const Profile = () => {
             cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
-                title: 'font-serif italic text-slate-900 text-3xl',
+                title: 'font-sans text-slate-900 text-3xl',
                 confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
                 cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
             },
@@ -163,7 +163,7 @@ const Profile = () => {
             cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
-                title: 'font-serif italic text-slate-900 text-3xl',
+                title: 'font-sans text-slate-900 text-3xl',
                 confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
                 cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
             },
@@ -208,7 +208,7 @@ const Profile = () => {
             cancelButtonText: t('profile.swal.go_back'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8',
-                title: 'font-serif italic text-slate-900 text-3xl',
+                title: 'font-sans text-slate-900 text-3xl',
                 confirmButton: 'bg-slate-900 text-white hover:bg-amber-600 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all shadow-md font-sans',
                 cancelButton: 'bg-white text-slate-500 px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider border border-slate-200 hover:bg-slate-50 transition-colors font-sans'
             }
@@ -231,7 +231,7 @@ const Profile = () => {
             cancelButtonText: t('profile.swal.stay_with_us'),
             customClass: {
                 popup: 'rounded-[2rem] border border-slate-100 shadow-xl',
-                title: 'font-serif italic text-2xl text-slate-900',
+                title: 'font-sans text-2xl text-slate-900',
                 confirmButton: 'rounded-xl px-8 py-3 font-sans text-[11px] uppercase tracking-widest font-bold shadow-md bg-slate-900 text-white hover:bg-rose-600 transition-colors',
                 cancelButton: 'rounded-xl px-8 py-3 font-sans text-[11px] uppercase tracking-widest font-bold bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 shadow-sm'
             }
@@ -337,7 +337,7 @@ const Profile = () => {
                     </button>
                 </div>
                 
-                <h1 className="text-2xl md:text-3xl font-serif italic text-slate-900 mt-4 mb-1 drop-shadow-sm">
+                <h1 className="text-2xl md:text-2xl font-medium font-sans text-slate-900 mt-4 mb-1 drop-shadow-sm">
                     {user?.fullName}
                 </h1>
                 
@@ -400,7 +400,7 @@ const Profile = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1">{stat.label}</p>
-                                        <p className="text-2xl font-serif italic text-slate-900 leading-none">{stat.value}</p>
+                                        <p className="text-xl font-medium font-sans text-slate-900 leading-none">{stat.value}</p>
                                     </div>
                                 </div>
                             ))}
@@ -409,7 +409,7 @@ const Profile = () => {
                         {/* WIDE LATEST ACTIVITY CARD */}
                         <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative overflow-hidden">
                             <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-50">
-                                <h3 className="text-xl font-serif italic text-slate-900">{t('profile.latest_trip')}</h3>
+                                <h3 className="text-lg font-medium font-sans text-slate-900">{t('profile.latest_trip')}</h3>
                                 <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
                                     {t('profile.view_history')} <ArrowUpRight size={14} />
                                 </button>
@@ -425,7 +425,7 @@ const Profile = () => {
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                         <div className="absolute bottom-6 left-6 text-white">
-                                            <p className="text-2xl font-serif italic drop-shadow-md">Uy Nam Retreat</p>
+                                            <p className="text-xl font-medium font-sans drop-shadow-md">Uy Nam Retreat</p>
                                         </div>
                                     </div>
                                     <div className="flex-1 space-y-6 w-full">
@@ -456,7 +456,7 @@ const Profile = () => {
                             ) : (
                                 <div className="text-center py-20 bg-slate-50/50 rounded-[2rem] border border-dashed border-slate-200">
                                     <Package size={48} className="mx-auto text-slate-300 mb-4" strokeWidth={1} />
-                                    <p className="text-slate-500 font-serif italic text-xl">{t('profile.no_trips')}</p>
+                                    <p className="text-slate-500 font-sans text-xl">{t('profile.no_trips')}</p>
                                 </div>
                             )}
                         </div>
@@ -468,7 +468,7 @@ const Profile = () => {
                     <div className="space-y-8 max-w-4xl mx-auto">
                         <div className="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
                             <div>
-                                <h3 className="text-2xl font-serif italic text-slate-900">{t('profile.stay_history')}</h3>
+                                <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.stay_history')}</h3>
                                 <p className="text-xs text-slate-500 mt-1 font-medium">{t('profile.discover_moments')}</p>
                             </div>
                             <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
@@ -504,7 +504,7 @@ const Profile = () => {
                             {myBookings.length === 0 && (
                                 <div className="text-center py-24 bg-white border border-dashed border-slate-200 rounded-[3rem]">
                                     <Package size={48} className="mx-auto text-slate-300 mb-6" strokeWidth={1} />
-                                    <p className="text-slate-500 font-serif italic text-2xl">{t('profile.new_journeys')}</p>
+                                    <p className="text-slate-500 font-sans text-2xl">{t('profile.new_journeys')}</p>
                                 </div>
                             )}
                         </div>
@@ -515,7 +515,7 @@ const Profile = () => {
                 {activeTab === 'settings' && (
                     <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
                         <div className="border-b border-slate-100 pb-6 mb-6 text-center">
-                            <h3 className="text-2xl font-serif italic text-slate-900">{t('profile.account_settings')}</h3>
+                            <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.account_settings')}</h3>
                             <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-2 font-sans">{t('profile.manage_identity')}</p>
                         </div>
 
@@ -599,7 +599,7 @@ const Profile = () => {
                                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-200/10 blur-[60px] rounded-full pointer-events-none"></div>
                                     
                                     <div className="flex justify-between items-start relative z-10 text-amber-500">
-                                        <span className="text-3xl font-serif italic">Uy Nam</span>
+                                        <span className="text-2xl font-medium font-sans">Uy Nam</span>
                                         <Sparkles size={24} className="animate-pulse" />
                                     </div>
                                     <div className="relative z-10 text-white">
@@ -650,7 +650,7 @@ const Profile = () => {
                         {/* Invoice Header */}
                         <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
                             <div>
-                                <h1 className="text-4xl font-serif italic text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
+                                <h1 className="text-3xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
                                 <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
                             </div>
                             <div className="text-right">

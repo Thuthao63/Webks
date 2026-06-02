@@ -144,7 +144,7 @@ const RoomList = () => {
           {/* Header Section */}
           <div className="text-center mb-8 space-y-2">
             <span className="text-amber-500 text-sm font-black uppercase tracking-wider block font-sans">Exclusive Stay</span>
-            <h2 className="text-3xl md:text-4xl font-serif italic text-slate-900">{t('roomList.header')}</h2>
+            <h2 className="text-3xl md:text-3xl font-medium font-sans text-slate-900">{t('roomList.header')}</h2>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
@@ -347,7 +347,7 @@ const RoomList = () => {
                  return displayedRooms.length === 0 ? (
                 <div className="bg-white rounded-2xl p-16 text-center border border-slate-100 shadow-premium">
                   <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
-                  <h3 className="text-4xl font-serif italic text-slate-900 mb-6">{t('roomList.no_results')}</h3>
+                  <h3 className="text-3xl font-medium font-sans text-slate-900 mb-6">{t('roomList.no_results')}</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
                     {t('roomList.reset_filters')}
                   </p>
@@ -402,7 +402,7 @@ const RoomList = () => {
                             <div className="space-y-0.5">
                               <h4 
                                 onClick={() => navigate(`/room/${room.id}`)}
-                                className="text-[15px] font-serif italic text-slate-900 cursor-pointer hover:text-amber-500 transition-luxury line-clamp-1"
+                                className="text-[15px] font-sans text-slate-900 cursor-pointer hover:text-amber-500 transition-luxury line-clamp-1"
                                
                               >
                                 {details.name || 'Luxury Suite'}

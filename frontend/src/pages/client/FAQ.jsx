@@ -46,7 +46,7 @@ const FAQ = () => {
                     </div>
                     <div className="space-y-4">
                         <span className="text-amber-500 text-xs font-black uppercase tracking-[0.15em] block">Hỗ trợ khách hàng</span>
-                        <h1 className="text-5xl md:text-7xl font-serif italic">
+                        <h1 className="text-5xl md:text-7xl font-sans">
                             Câu hỏi <span className="text-amber-500 not-italic">thường gặp</span>
                         </h1>
                         <p className="text-gray-500 text-xs uppercase tracking-widest max-w-lg mx-auto leading-relaxed">
@@ -68,7 +68,7 @@ const FAQ = () => {
                                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
                                 className="w-full p-8 md:p-10 flex items-center justify-between gap-6 text-left"
                             >
-                                <span className={`text-lg md:text-xl font-serif italic transition-colors duration-500 ${
+                                <span className={`text-lg md:text-lg font-medium font-sans transition-colors duration-500 ${
                                     openIndex === index ? 'text-amber-500' : 'text-white'
                                 }`}>
                                     {faq.question}
@@ -98,7 +98,7 @@ const FAQ = () => {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-[80px] -mr-32 -mt-32"></div>
                     
                     <div className="space-y-4 relative z-10">
-                        <h3 className="text-3xl font-serif italic">Vẫn còn thắc mắc?</h3>
+                        <h3 className="text-2xl font-medium font-sans">Vẫn còn thắc mắc?</h3>
                         <p className="text-gray-500 text-xs uppercase tracking-widest font-bold">Đội ngũ đại sứ dịch vụ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
                     </div>
 
