@@ -270,13 +270,13 @@ const Profile = () => {
             Icon = Award;
         } else if (status === 'confirmed') {
             if (now < checkInDate) {
-                displayText = 'Đã đặt (Sắp tới)';
+                displayText = t('profile.status_booked_upcoming', 'Đã đặt (Sắp tới)');
                 displayColor = 'text-blue-600 bg-blue-50 border-blue-100';
             } else if (now >= checkInDate && now <= checkOutDate) {
-                displayText = 'Đang lưu trú';
+                displayText = t('profile.status_staying', 'Đang lưu trú');
                 displayColor = 'text-emerald-600 bg-emerald-50 border-emerald-100';
             } else {
-                displayText = 'Chờ hoàn tất';
+                displayText = t('profile.status_waiting_complete', 'Chờ hoàn tất');
                 displayColor = 'text-emerald-600 bg-emerald-50 border-emerald-100';
             }
         } else {
@@ -301,10 +301,10 @@ const Profile = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCFB] text-slate-900 font-sans pb-32">
+        <div className="min-h-screen bg-[#FDFCFB] text-slate-900 font-sans pb-16">
             
             {/* PANORAMIC HERO HEADER */}
-            <div className="relative h-[45vh] w-full overflow-hidden bg-white">
+            <div className="relative h-[30vh] w-full overflow-hidden bg-white">
                 {/* Background Image */}
                 <div 
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105" 
@@ -325,19 +325,19 @@ const Profile = () => {
             </div>
 
             {/* PROFILE INFO - CENTERED OVERLAPPING THE HERO */}
-            <div className="max-w-5xl mx-auto px-6 relative z-20 -mt-24 text-center flex flex-col items-center">
+            <div className="max-w-5xl mx-auto px-6 relative z-20 -mt-16 text-center flex flex-col items-center">
                 <div className="relative group">
-                    <div className="w-36 h-36 rounded-full bg-white p-2 shadow-xl overflow-hidden relative">
+                    <div className="w-24 h-24 rounded-full bg-white p-1.5 shadow-xl overflow-hidden relative">
                         <div className="w-full h-full rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-300">
-                            <User size={50} strokeWidth={1} />
+                            <User size={32} strokeWidth={1} />
                         </div>
                     </div>
-                    <button className="absolute bottom-1 right-1 w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-amber-600 transition-colors border-2 border-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100">
-                        <Camera size={16} />
+                    <button className="absolute bottom-0 right-0 w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-amber-600 transition-colors border-2 border-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100">
+                        <Camera size={14} />
                     </button>
                 </div>
                 
-                <h1 className="text-4xl md:text-5xl font-serif italic text-slate-900 mt-6 mb-2 drop-shadow-sm">
+                <h1 className="text-2xl md:text-3xl font-serif italic text-slate-900 mt-4 mb-1 drop-shadow-sm">
                     {user?.fullName}
                 </h1>
                 
@@ -351,8 +351,8 @@ const Profile = () => {
             </div>
 
             {/* HORIZONTAL NAVIGATION BAR */}
-            <div className="max-w-3xl mx-auto px-6 mt-16 border-b border-slate-200 relative z-30">
-                <div className="flex justify-between md:justify-center md:gap-16 overflow-x-auto no-scrollbar">
+            <div className="max-w-3xl mx-auto px-6 mt-8 border-b border-slate-200 relative z-30">
+                <div className="flex justify-between md:justify-center md:gap-8 overflow-x-auto no-scrollbar">
                     {[
                         { id: 'dashboard', label: t('profile.overview'), icon: LayoutDashboard },
                         { id: 'bookings', label: t('profile.trips'), icon: History },
@@ -365,7 +365,7 @@ const Profile = () => {
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`flex items-center gap-2.5 pb-5 border-b-2 transition-all duration-300 whitespace-nowrap px-2 ${
+                                className={`flex items-center gap-2 pb-3 border-b-2 transition-all duration-300 whitespace-nowrap px-2 ${
                                     isActive 
                                     ? 'border-slate-900 text-slate-900' 
                                     : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -382,7 +382,7 @@ const Profile = () => {
             </div>
 
             {/* MAIN CONTENT AREA - WIDE LAYOUT */}
-            <div className="max-w-5xl mx-auto px-6 mt-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="max-w-5xl mx-auto px-6 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 
                 {/* ----------------- DASHBOARD TAB ----------------- */}
                 {activeTab === 'dashboard' && (
@@ -394,22 +394,22 @@ const Profile = () => {
                                 { label: t('profile.planned'), value: myBookings.filter(b => b.status === 'confirmed').length, icon: Calendar },
                                 { label: t('profile.points'), value: '12,450', icon: Award }
                             ].map((stat, i) => (
-                                <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all group flex items-center gap-6">
-                                    <div className={`w-12 h-12 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center shrink-0 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500`}>
-                                        <stat.icon size={20} strokeWidth={1} />
+                                <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group flex items-center gap-4">
+                                    <div className={`w-10 h-10 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center shrink-0 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500`}>
+                                        <stat.icon size={18} strokeWidth={1} />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1.5">{stat.label}</p>
-                                        <p className="text-3xl font-serif italic text-slate-900 leading-none">{stat.value}</p>
+                                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest font-sans mb-1">{stat.label}</p>
+                                        <p className="text-2xl font-serif italic text-slate-900 leading-none">{stat.value}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
                         {/* WIDE LATEST ACTIVITY CARD */}
-                        <div className="bg-white rounded-[2.5rem] p-12 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] relative overflow-hidden">
-                            <div className="flex justify-between items-center mb-10 pb-8 border-b border-slate-50">
-                                <h3 className="text-3xl font-serif italic text-slate-900">{t('profile.latest_trip')}</h3>
+                        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative overflow-hidden">
+                            <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-50">
+                                <h3 className="text-xl font-serif italic text-slate-900">{t('profile.latest_trip')}</h3>
                                 <button onClick={() => setActiveTab('bookings')} className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
                                     {t('profile.view_history')} <ArrowUpRight size={14} />
                                 </button>
@@ -433,13 +433,13 @@ const Profile = () => {
                                             <div>
                                                 <h4 className="text-2xl font-bold text-slate-900 mb-2 font-sans">Luxury Suite #{myBookings[0].room?.roomNumber}</h4>
                                                 <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold font-sans flex items-center gap-2">
-                                                    <MapPin size={12} className="text-amber-500" /> Đà Nẵng, Việt Nam
+                                                    <MapPin size={12} className="text-amber-500" /> {t('profile.danang_vietnam', 'Đà Nẵng, Việt Nam')}
                                                 </p>
                                             </div>
                                             {renderStatusBadge(myBookings[0])}
                                         </div>
                                         <p className="text-sm text-slate-500 leading-relaxed font-medium font-sans max-w-lg">
-                                            Một trải nghiệm nghỉ dưỡng hoàn hảo được thiết kế riêng. Không gian riêng tư tuyệt đối hòa quyện cùng thiên nhiên.
+                                            {t('profile.trip_desc', 'Một trải nghiệm nghỉ dưỡng hoàn hảo được thiết kế riêng. Không gian riêng tư tuyệt đối hòa quyện cùng thiên nhiên.')}
                                         </p>
                                         <div className="flex flex-wrap gap-8 pt-6 border-t border-slate-50">
                                             <div>
@@ -466,25 +466,25 @@ const Profile = () => {
                 {/* ----------------- BOOKINGS TAB ----------------- */}
                 {activeTab === 'bookings' && (
                     <div className="space-y-8 max-w-4xl mx-auto">
-                        <div className="flex justify-between items-end border-b border-slate-200 pb-8 mb-8">
+                        <div className="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
                             <div>
-                                <h3 className="text-4xl font-serif italic text-slate-900">{t('profile.stay_history')}</h3>
-                                <p className="text-xs text-slate-500 mt-3 font-medium">{t('profile.discover_moments')}</p>
+                                <h3 className="text-2xl font-serif italic text-slate-900">{t('profile.stay_history')}</h3>
+                                <p className="text-xs text-slate-500 mt-1 font-medium">{t('profile.discover_moments')}</p>
                             </div>
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-4 py-2 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
                         </div>
 
-                        <div className="grid gap-6">
+                        <div className="grid gap-4">
                             {myBookings.map((booking) => (
-                                <div key={booking.id} className="group bg-white border border-slate-100 p-6 rounded-[2rem] hover:shadow-lg transition-all duration-500 flex flex-col md:flex-row gap-8 items-center cursor-pointer" onClick={() => navigate(`/room/${booking.roomId}`)}>
-                                    <div className="w-full md:w-48 h-32 rounded-[1.5rem] overflow-hidden relative shrink-0">
+                                <div key={booking.id} className="group bg-white border border-slate-100 p-4 rounded-2xl hover:shadow-md transition-all duration-300 flex flex-col md:flex-row gap-4 items-center cursor-pointer" onClick={() => navigate(`/room/${booking.roomId}`)}>
+                                    <div className="w-full md:w-32 h-24 rounded-xl overflow-hidden relative shrink-0">
                                         <img src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Room" />
                                         <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors"></div>
                                     </div>
                                     <div className="flex-1 flex flex-col md:flex-row justify-between items-center gap-6 w-full">
                                         <div className="text-center md:text-left space-y-2">
-                                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> ĐÀ NẴNG</p>
-                                            <h4 className="text-xl font-bold text-slate-900 font-sans group-hover:text-amber-600 transition-colors">Phòng {booking.room?.roomNumber}</h4>
+                                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest font-sans flex items-center justify-center md:justify-start gap-1"><MapPin size={10} /> {t('profile.danang', 'ĐÀ NẴNG')}</p>
+                                            <h4 className="text-xl font-bold text-slate-900 font-sans group-hover:text-amber-600 transition-colors">{t('profile.room_prefix', 'Phòng ')}{booking.room?.roomNumber}</h4>
                                             <p className="text-xs text-slate-500 font-medium font-sans">{t('profile.check_in_label')}: {new Date(booking.checkInDate).toLocaleDateString('vi-VN')}</p>
                                         </div>
                                         <div className="flex flex-col items-center md:items-end gap-3">
@@ -495,7 +495,7 @@ const Profile = () => {
                                                 className="px-4 py-2 mt-1 bg-slate-900 text-white rounded-xl flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"
                                             >
                                                 <Printer size={12} />
-                                                In Phiếu Xác Nhận
+                                                {t('profile.print_invoice', 'In Phiếu Xác Nhận')}
                                             </button>
                                         </div>
                                     </div>
@@ -513,16 +513,16 @@ const Profile = () => {
 
                 {/* ----------------- SETTINGS TAB ----------------- */}
                 {activeTab === 'settings' && (
-                    <div className="max-w-4xl mx-auto bg-white rounded-[3rem] border border-slate-100 p-12 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
-                        <div className="border-b border-slate-100 pb-10 mb-10 text-center">
-                            <h3 className="text-4xl font-serif italic text-slate-900">{t('profile.account_settings')}</h3>
-                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-4 font-sans">{t('profile.manage_identity')}</p>
+                    <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
+                        <div className="border-b border-slate-100 pb-6 mb-6 text-center">
+                            <h3 className="text-2xl font-serif italic text-slate-900">{t('profile.account_settings')}</h3>
+                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-2 font-sans">{t('profile.manage_identity')}</p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-16">
-                            <div className="space-y-10">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">{t('profile.basic_info')}</h4>
-                                <div className="space-y-8">
+                        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+                            <div className="space-y-6">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-2">{t('profile.basic_info')}</h4>
+                                <div className="space-y-4">
                                     {[
                                         { label: t('profile.full_name'), value: user?.fullName },
                                         { label: t('profile.contact_num'), value: user?.phone || t('profile.not_provided') },
@@ -537,16 +537,16 @@ const Profile = () => {
                                 </div>
                                 <button 
                                     onClick={handleEditProfile}
-                                    className="w-full py-4 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-md font-sans"
+                                    className="w-full py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm font-sans mt-4"
                                 >
                                     {t('profile.edit_info')}
                                 </button>
                             </div>
                             
-                            <div className="space-y-10">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-4">{t('profile.advanced_options')}</h4>
-                                <div className="space-y-6">
-                                    <div onClick={handleChangePassword} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
+                            <div className="space-y-6">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900 border-b border-slate-100 pb-2">{t('profile.advanced_options')}</h4>
+                                <div className="space-y-4">
+                                    <div onClick={handleChangePassword} className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between group cursor-pointer hover:border-slate-300 transition-colors">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm"><Shield size={16} /></div>
                                             <div>
@@ -588,12 +588,12 @@ const Profile = () => {
 
                 {/* ----------------- MEMBERSHIP TAB ----------------- */}
                 {activeTab === 'membership' && (
-                    <div className="max-w-4xl mx-auto space-y-16">
+                    <div className="max-w-4xl mx-auto space-y-8">
                         
                         {/* THE ELITE CARD - CENTERED MASSIVE */}
-                        <div className="relative group perspective-1000 max-w-2xl mx-auto">
-                            <div className="w-full h-80 md:h-[22rem] rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-[#1e293b] p-0.5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] transform transition-transform duration-700 hover:rotate-x-2">
-                                <div className="w-full h-full rounded-[2.4rem] p-10 flex flex-col justify-between overflow-hidden relative">
+                        <div className="relative group perspective-1000 max-w-xl mx-auto">
+                            <div className="w-full h-64 md:h-72 rounded-[2rem] bg-gradient-to-br from-slate-900 via-slate-800 to-[#1e293b] p-0.5 shadow-lg transform transition-transform duration-700 hover:rotate-x-2">
+                                <div className="w-full h-full rounded-[1.9rem] p-8 flex flex-col justify-between overflow-hidden relative">
                                     {/* Gold Accents */}
                                     <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/20 blur-[60px] rounded-full pointer-events-none"></div>
                                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-200/10 blur-[60px] rounded-full pointer-events-none"></div>
@@ -603,10 +603,10 @@ const Profile = () => {
                                         <Sparkles size={24} className="animate-pulse" />
                                     </div>
                                     <div className="relative z-10 text-white">
-                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-2 font-sans">{t('profile.member_identity')}</p>
-                                        <p className="text-3xl font-serif leading-none tracking-widest drop-shadow-md text-amber-50">{user?.fullName}</p>
+                                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-1 font-sans">{t('profile.member_identity')}</p>
+                                        <p className="text-2xl font-serif leading-none tracking-widest drop-shadow-md text-amber-50">{user?.fullName}</p>
                                         
-                                        <div className="w-full h-[1px] bg-gradient-to-r from-amber-500/50 to-transparent my-8"></div>
+                                        <div className="w-full h-[1px] bg-gradient-to-r from-amber-500/50 to-transparent my-6"></div>
                                         
                                         <div className="flex justify-between items-end">
                                             <div>
@@ -624,18 +624,18 @@ const Profile = () => {
                         </div>
 
                         {/* PERKS LIST */}
-                        <div className="grid md:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-3 gap-4">
                             {[
                                 { icon: Sparkles, title: t('profile.priority_upgrade'), desc: t('profile.priority_upgrade_desc') },
                                 { icon: Clock, title: t('profile.flexible_time'), desc: t('profile.flexible_time_desc') },
                                 { icon: Award, title: t('profile.double_points'), desc: t('profile.double_points_desc') }
                             ].map((perk, i) => (
-                                <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 text-center hover:shadow-lg transition-all">
-                                    <div className="w-14 h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-amber-600 mx-auto mb-6 shadow-sm">
-                                        <perk.icon size={20} />
+                                <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 text-center hover:shadow-md transition-all">
+                                    <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-amber-600 mx-auto mb-4 shadow-sm">
+                                        <perk.icon size={18} />
                                     </div>
-                                    <h4 className="text-sm font-bold text-slate-900 mb-3 font-sans">{perk.title}</h4>
-                                    <p className="text-[11px] text-slate-500 leading-relaxed font-medium">{perk.desc}</p>
+                                    <h4 className="text-xs font-bold text-slate-900 mb-2 font-sans">{perk.title}</h4>
+                                    <p className="text-[10px] text-slate-500 leading-relaxed font-medium">{perk.desc}</p>
                                 </div>
                             ))}
                         </div>

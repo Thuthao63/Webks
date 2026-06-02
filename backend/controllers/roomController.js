@@ -164,16 +164,26 @@ const createFullRoomInfo = async (req, res) => {
 // 6. Cập nhật phòng
 const updateFullRoomInfo = async (req, res) => {
     try {
-        const { roomNumber, status, TypeId, name, price, description } = req.body;
-        await Room.update({ roomNumber, status }, { where: { id: req.params.id } });
+        const { roomNumber, status, typeId, TypeId, name, price, description } = req.body;
         
-        let updateData = { name, price, description };
-        if (req.file) updateData.image = req.file.filename;
+        let roomUpdateData = { roomNumber, status };
+        if (typeId) roomUpdateData.typeId = typeId;
+        
+        await Room.update(roomUpdateData, { where: { id: req.params.id } });
+        
+        if (TypeId && (name || price || description || req.file)) {
+            let updateData = {};
+            if (name) updateData.name = name;
+            if (price) updateData.price = price;
+            if (description) updateData.description = description;
+            if (req.file) updateData.image = req.file.filename;
 
-        await RoomType.update(updateData, { where: { id: TypeId } });
+            await RoomType.update(updateData, { where: { id: TypeId } });
+        }
+        
         res.status(200).json({ message: 'Cập nhật thành công' });
     } catch (error) {
-        res.status(500).json({ message: 'Lỗi cập nhật' });
+        res.status(500).json({ message: 'Lỗi cập nhật', error: error.message });
     }
 };
 

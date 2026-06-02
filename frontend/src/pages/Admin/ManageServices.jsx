@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import AdminLayout from '../../components/AdminLayout';
+import { Plus, Coffee, MoreVertical, Trash2, X, Banknote, Loader2 } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { Loader2, RefreshCw, Plus, Edit2, Trash2, Coffee, Banknote, X, MoreVertical } from 'lucide-react';
-
-import AdminLayout from '../../components/AdminLayout';
 
 const ManageServices = () => {
   const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ name: '', price: '' });
+  const [loading, setLoading] = useState(true);
 
-  const fetchServices = () => {
+  const fetchServices = async () => {
     setLoading(true);
-    axiosClient.get('/services')
-      .then(res => setServices(res.data))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
+    try {
+      const res = await axiosClient.get('/services');
+      setServices(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { fetchServices(); }, []);
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   const luxurySwal = Swal.mixin({
     background: '#ffffff',
@@ -30,18 +35,18 @@ const ManageServices = () => {
       popup: 'border border-amber-500/20 rounded-[2.5rem] shadow-luxury backdrop-blur-3xl',
       title: 'font-serif italic text-amber-500 text-2xl',
       htmlContainer: 'text-slate-400 text-sm',
-      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
-      cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold  tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
+      confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black tracking-widest px-8 py-3 rounded-2xl hover:shadow-[0_0_20px_rgba(217,119,6,0.4)] transition-all',
+      cancelButton: 'bg-slate-100 border border-slate-200 text-slate-700 font-bold tracking-widest px-8 py-3 rounded-2xl hover:bg-slate-100 transition-colors'
     }
   });
 
   const handleOpenForm = (service = null) => {
     if (service) {
-        setEditingId(service.id);
-        setFormData({ name: service.name, price: service.price });
+      setEditingId(service.id);
+      setFormData({ name: service.name, price: service.price });
     } else {
-        setEditingId(null);
-        setFormData({ name: '', price: '' });
+      setEditingId(null);
+      setFormData({ name: '', price: '' });
     }
     setIsFormOpen(true);
   };
@@ -49,36 +54,36 @@ const ManageServices = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        if (editingId) {
-            await axiosClient.put(`/services/${editingId}`, formData);
-            luxurySwal.fire({ icon: 'success', title: '�� c?p nh?t', timer: 1500, showConfirmButton: false });
-        } else {
-            await axiosClient.post(`/services`, formData);
-            luxurySwal.fire({ icon: 'success', title: '�� th�m m?i', timer: 1500, showConfirmButton: false });
-        }
-        setIsFormOpen(false);
-        fetchServices();
+      if (editingId) {
+        await axiosClient.put(`/services/${editingId}`, formData);
+      } else {
+        await axiosClient.post('/services', formData);
+      }
+      luxurySwal.fire({ icon: 'success', title: 'Hoàn tất', timer: 1500, showConfirmButton: false });
+      setIsFormOpen(false);
+      fetchServices();
     } catch (err) {
-        luxurySwal.fire('Th?t b?i', 'Kh�ng th? luu tr? th�ng tin d?ch v?', 'error');
+      luxurySwal.fire('Thất bại', 'Không thể lưu trữ thông tin dịch vụ', 'error');
     }
   };
 
   const handleDeleteService = async (serviceTarget) => {
     const result = await luxurySwal.fire({
-      title: `G? b? d?ch v??`,
-      text: `D?ch v? "${serviceTarget.name}" s? b? x�a kh?i menu ni�m y?t.`,
+      title: `Gỡ bỏ dịch vụ?`,
+      text: `Dịch vụ "${serviceTarget.name}" sẽ bị xóa khỏi menu niêm yết.`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: '�?ng � x�a',
+      cancelButtonText: 'Hủy bỏ',
+      confirmButtonText: 'Xác nhận xóa'
     });
 
     if (result.isConfirmed) {
       try {
         await axiosClient.delete(`/services/${serviceTarget.id}`);
-        luxurySwal.fire({ icon: 'success', title: '�� x�a', timer: 1500, showConfirmButton: false });
+        luxurySwal.fire({ icon: 'success', title: 'Đã xóa', timer: 1500, showConfirmButton: false });
         fetchServices();
       } catch (err) {
-        luxurySwal.fire('L?i r�ng bu?c', 'D?ch v? n�y dang du?c s? d?ng trong c�c don d?t h�ng.', 'error');
+        luxurySwal.fire('Lỗi ràng buộc', 'Dịch vụ này đang được sử dụng trong các đơn đặt hàng.', 'error');
       }
     }
   };
@@ -86,12 +91,12 @@ const ManageServices = () => {
   if (loading) return (
     <div className="h-[calc(100vh-160px)] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-amber-500" size={40} />
-      <p className="text-slate-500 text-[10px] tracking-[0.3em]  font-bold animate-pulse">�ang t?i danh m?c ti?n �ch...</p>
+      <p className="text-slate-500 text-[10px] tracking-[0.3em] font-bold animate-pulse">Đang tải danh mục tiện ích...</p>
     </div>
   );
 
   return (
-    <AdminLayout title="Danh m?c d?ch v?" subtitle="Qu?n l� menu ti?n �ch, b?ng gi� & th�ng s? d?ch v? di k�m">
+    <AdminLayout title="Danh mục dịch vụ" subtitle="Quản lý menu tiện ích, bảng giá & thông số dịch vụ đi kèm">
       <div className="space-y-8 pb-10">
         
         {/* Actions Bar */}
@@ -101,17 +106,17 @@ const ManageServices = () => {
                 <Coffee size={20} />
              </div>
              <div>
-                <p className="text-[10px] text-slate-500 font-bold  tracking-widest">S?n ph?m hi?n c�</p>
-                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{services.length} h?ng m?c d?ch v?</p>
+                <p className="text-[10px] text-slate-500 font-bold tracking-widest">Sản phẩm hiện có</p>
+                <p className="text-lg font-serif italic text-slate-900 leading-none mt-1">{services.length} hạng mục dịch vụ</p>
              </div>
           </div>
           
           <button 
             onClick={() => handleOpenForm(null)} 
-            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black  tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} strokeWidth={3} />
-            Th�m d?ch v? m?i
+            Thêm dịch vụ mới
           </button>
         </div>
 
@@ -130,15 +135,15 @@ const ManageServices = () => {
                     </button>
                   </div>
 
-                  <h3 className="font-black text-xl text-slate-900 group-hover:text-amber-500 transition-colors  tracking-tight mb-2">{service.name}</h3>
+                  <h3 className="font-black text-xl text-slate-900 group-hover:text-amber-500 transition-colors tracking-tight mb-2">{service.name}</h3>
                   <div className="flex items-baseline gap-2 mb-8">
                      <span className="text-2xl font-serif italic text-slate-900">{Number(service.price).toLocaleString()}</span>
-                     <span className="text-[10px] text-slate-500 font-black  tracking-widest text-glow-amber">VN�</span>
+                     <span className="text-[10px] text-slate-500 font-black tracking-widest text-glow-amber">VNĐ</span>
                   </div>
 
                   <div className="flex gap-2 pt-6 border-t border-slate-100">
-                     <button onClick={() => handleOpenForm(service)} className="flex-1 py-3 bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-900 rounded-xl text-[10px] font-bold  tracking-widest transition-all">
-                        Ch?nh s?a
+                     <button onClick={() => handleOpenForm(service)} className="flex-1 py-3 bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-900 rounded-xl text-[10px] font-bold tracking-widest transition-all">
+                        Chỉnh sửa
                      </button>
                      <button onClick={() => handleDeleteService(service)} className="px-4 py-3 bg-slate-50 hover:bg-rose-500/10 text-slate-400 hover:text-rose-500 rounded-xl transition-all">
                         <Trash2 size={16} />
@@ -152,7 +157,7 @@ const ManageServices = () => {
         {services.length === 0 && (
            <div className="py-20 flex flex-col items-center justify-center bg-white border border-slate-100 rounded-[2.5rem]">
                <Coffee size={48} className="text-slate-300 mb-4" />
-               <p className="text-slate-500 text-[10px] font-bold  tracking-[0.3em]">Danh m?c dang tr?ng tr?i</p>
+               <p className="text-slate-500 text-[10px] font-bold tracking-[0.3em]">Danh mục đang trống trải</p>
            </div>
         )}
 
@@ -168,19 +173,19 @@ const ManageServices = () => {
                 </button>
 
                 <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
-                   {editingId ? 'C?p nh?t' : 'Th�m'} <span className="text-amber-500">D?ch v?</span>
+                   {editingId ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">Dịch vụ</span>
                 </h2>
-                <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Thi?t l?p tham s? cho h?ng m?c ti?n �ch</p>
+                <p className="text-[10px] text-slate-500 tracking-[0.2em] font-bold mb-10">Thiết lập tham số cho hạng mục tiện ích</p>
                 
                 <div className="space-y-6">
                     <div className="space-y-2">
-                        <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">T�n g?i d?ch v?</label>
-                        <input type="text" placeholder="VD: Gi?t ?i cao c?p" required
+                        <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Tên gọi dịch vụ</label>
+                        <input type="text" placeholder="VD: Giặt ủi cao cấp" required
                             value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
                             className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold text-sm" />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">�on gi� ni�m y?t</label>
+                        <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Đơn giá niêm yết</label>
                         <div className="relative">
                             <input type="number" placeholder="250000" required
                                 value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})}
@@ -191,8 +196,8 @@ const ManageServices = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-12">
-                    <button type="button" onClick={() => setIsFormOpen(false)} className="py-4 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-2xl font-bold  tracking-widest text-[10px] transition-all border border-slate-100">H?y</button>
-                    <button type="submit" className="py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black  tracking-widest text-[10px] transition-all shadow-luxury">Luu thay d?i</button>
+                    <button type="button" onClick={() => setIsFormOpen(false)} className="py-4 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-2xl font-bold tracking-widest text-[10px] transition-all border border-slate-100">Hủy</button>
+                    <button type="submit" className="py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black tracking-widest text-[10px] transition-all shadow-luxury">Lưu thay đổi</button>
                 </div>
             </form>
         </div>

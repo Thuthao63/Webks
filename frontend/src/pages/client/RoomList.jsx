@@ -167,11 +167,11 @@ const RoomList = () => {
                 {/* --- LỌC NGÀY (QUAN TRỌNG) --- */}
                 <div id="filter-dates" className="space-y-3 bg-amber-50/50 p-3 rounded-xl border border-amber-100">
                   <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-600 font-sans flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Thời gian lưu trú
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> {t('roomList.stay_duration', 'Thời gian lưu trú')}
                   </h4>
                   <div className="space-y-2">
                     <div>
-                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">Ngày Check-in</label>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.check_in_date', 'Ngày Check-in')}</label>
                       <input 
                         type="date" 
                         value={filters.checkInDate}
@@ -181,7 +181,7 @@ const RoomList = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">Ngày Check-out</label>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.check_out_date', 'Ngày Check-out')}</label>
                       <input 
                         type="date" 
                         value={filters.checkOutDate}
@@ -201,7 +201,7 @@ const RoomList = () => {
                       onClick={() => setFilters(prev => ({...prev, typeId: ''}))}
                       className={`px-2.5 py-1.5 rounded-lg text-left text-[11px] font-bold transition-luxury ${filters.typeId === '' ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
                     >
-                      Tất cả
+                      {t('roomList.all')}
                     </button>
                     {roomTypes.map(type => (
                       <button 
@@ -272,7 +272,7 @@ const RoomList = () => {
                 
                 {/* Lọc Khuyến mãi */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">Khuyến mãi</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-sans">{t('roomList.promotion', 'Khuyến mãi')}</label>
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative">
                       <input 
@@ -284,7 +284,7 @@ const RoomList = () => {
                       <div className={`w-9 h-5 rounded-full transition-luxury ${filters.hasDiscount ? 'bg-amber-500' : 'bg-slate-200'}`}></div>
                       <div className={`absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-luxury ${filters.hasDiscount ? 'translate-x-4' : ''}`}></div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">Đang giảm giá</span>
+                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-amber-500 transition-luxury font-sans">{t('roomList.on_sale', 'Đang giảm giá')}</span>
                   </label>
                 </div>
               </div>
@@ -295,7 +295,7 @@ const RoomList = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center bg-white px-4 py-2.5 rounded-xl border border-slate-100 shadow-sm gap-2">
                 <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest italic font-sans">
-                  Khám phá <span className="text-amber-500">{(() => {
+                  {t('roomList.explore_rooms_1', 'Khám phá')} <span className="text-amber-500">{(() => {
                     const displayed = rooms.filter(room => {
                        if (filters.hasDiscount) {
                           const hasActive = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
@@ -304,13 +304,13 @@ const RoomList = () => {
                        return true;
                     });
                     return displayed.length;
-                  })()}</span> phòng nghỉ cao cấp
+                  })()}</span> {t('roomList.explore_rooms_2', 'phòng nghỉ cao cấp')}
                 </p>
                 <div className="flex items-center gap-4">
                   {filtering && (
                     <div className="flex items-center gap-2 text-amber-500">
                       <Loader2 size={14} className="animate-spin" />
-                      <span className="text-[9px] font-black uppercase tracking-widest">Đang cập nhật...</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest">{t('roomList.updating', 'Đang cập nhật...')}</span>
                     </div>
                   )}
                   <div className="flex items-center gap-3 border-l border-slate-100 pl-4">
@@ -349,13 +349,13 @@ const RoomList = () => {
                   <Filter size={48} className="text-amber-500/20 mx-auto mb-8" />
                   <h3 className="text-4xl font-serif italic text-slate-900 mb-6">{t('roomList.no_results')}</h3>
                   <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed mb-10">
-                    Vui lòng điều chỉnh lại bộ lọc để tìm thấy căn phòng phù hợp nhất dành cho quý khách.
+                    {t('roomList.reset_filters')}
                   </p>
                   <button 
                     onClick={resetFilters}
                     className="bg-slate-900 text-white px-12 py-4 text-sm font-black uppercase tracking-widest rounded-xl hover:bg-amber-500 transition-luxury shadow-lg"
                   >
-                    Bắt đầu lại
+                    {t('roomList.start_over', 'Bắt đầu lại')}
                   </button>
                 </div>
               ) : (
@@ -385,15 +385,15 @@ const RoomList = () => {
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1500ms]"
                           />
                           <div className={`absolute top-3 left-3 backdrop-blur-md px-2.5 py-1 border text-[9px] font-black uppercase tracking-widest rounded-lg transition-colors ${isAvailable ? 'bg-emerald-50/90 text-emerald-600 border-emerald-100' : 'bg-red-50/90 text-red-600 border-red-100'}`}>
-                            {isAvailable ? 'Khả dụng' : 'Hết phòng'}
+                            {isAvailable ? t('roomList.available') : t('roomList.sold_out')}
                           </div>
                           {discount && (
                             <div className="absolute top-3 right-3 bg-rose-500 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg animate-pulse">
-                              Ưu đãi -{Math.floor(discount.discountPercent)}%
+                              {t('roomList.discount', 'Ưu đãi')} -{Math.floor(discount.discountPercent)}%
                             </div>
                           )}
                           <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2 py-1 rounded-lg text-[9px] font-black text-amber-500 border border-white/10 uppercase tracking-widest">
-                            Phòng {room.roomNumber}
+                            {t('roomDetails.room')} {room.roomNumber}
                           </div>
                         </div>
 
@@ -428,8 +428,8 @@ const RoomList = () => {
                                 <Users size={12} strokeWidth={1} />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">{details.capacity || 2} Khách</span>
-                                <span className="text-[7px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">Sức chứa</span>
+                                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest font-sans">{details.capacity || 2} {t('roomDetails.guests')}</span>
+                                <span className="text-[7px] text-slate-300 uppercase font-black tracking-widest mt-0.5 font-sans">{t('roomList.capacity')}</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 border-l border-slate-50 pl-2">
@@ -465,7 +465,7 @@ const RoomList = () => {
                                 }}
                                 className="flex-[1.5] py-1.5 text-[8px] font-black uppercase tracking-widest transition-luxury flex items-center justify-center gap-1.5 rounded-md shadow-lg shadow-slate-900/10 font-sans bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100"
                               >
-                                Vui lòng chọn ngày
+                                {t('roomList.please_select_date', 'Vui lòng chọn ngày')}
                               </button>
                             ) : (
                               <button 
@@ -477,7 +477,7 @@ const RoomList = () => {
                                   : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200 shadow-none'
                                 }`}
                               >
-                                {isAvailable ? <>{t('roomList.book_now')} <ArrowRight size={10} /></> : 'Đã hết'}
+                                {isAvailable ? <>{t('roomList.book_now')} <ArrowRight size={10} /></> : t('roomList.sold_out')}
                               </button>
                             )}
                           </div>

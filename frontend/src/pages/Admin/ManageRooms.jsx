@@ -12,6 +12,8 @@ const ManageRooms = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isNewType, setIsNewType] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [formData, setFormData] = useState({ roomNumber: '', typeId: '', name: '', price: '', status: 'Available', description: '', image: null });
 
   const selectedType = roomTypes.find(t => String(t.id) === String(formData.typeId));
@@ -66,14 +68,45 @@ const ManageRooms = () => {
     }
 
     try {
-      await axiosClient.post('/rooms', data, { headers: { 'Content-Type': 'multipart/form-data' } });
-      luxurySwal.fire({ icon: 'success', title: 'Hoàn tất quy trình', timer: 1500, showConfirmButton: false });
+      if (isEdit) {
+        await axiosClient.put(`/rooms/all-info/${editId}`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        luxurySwal.fire({ icon: 'success', title: 'Cập nhật hoàn tất', timer: 1500, showConfirmButton: false });
+      } else {
+        await axiosClient.post('/rooms', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+        luxurySwal.fire({ icon: 'success', title: 'Hoàn tất quy trình', timer: 1500, showConfirmButton: false });
+      }
       setShowModal(false);
       setFormData({ roomNumber: '', typeId: roomTypes[0]?.id || '', name: '', price: '', status: 'Available', description: '', image: null });
+      setIsEdit(false);
+      setEditId(null);
       fetchRooms();
     } catch (err) {
-      luxurySwal.fire('Thất bại', 'Khởi tạo phòng bị lỗi.', 'error');
+      luxurySwal.fire('Thất bại', isEdit ? 'Cập nhật phòng bị lỗi.' : 'Khởi tạo phòng bị lỗi.', 'error');
     }
+  };
+
+  const openEditModal = (room) => {
+    setIsEdit(true);
+    setEditId(room.id);
+    setIsNewType(false);
+    setFormData({
+      roomNumber: room.roomNumber || '',
+      typeId: room.typeId || room.roomType?.id || roomTypes[0]?.id || '',
+      status: room.status || 'Available',
+      name: room.name || '',
+      price: room.price || '',
+      description: room.description || '',
+      image: null
+    });
+    setShowModal(true);
+  };
+
+  const openAddModal = () => {
+    setIsEdit(false);
+    setEditId(null);
+    setIsNewType(false);
+    setFormData({ roomNumber: '', typeId: roomTypes[0]?.id || '', name: '', price: '', status: 'Available', description: '', image: null });
+    setShowModal(true);
   };
 
   const handleDelete = async (id) => {
@@ -176,7 +209,7 @@ const ManageRooms = () => {
           </div>
           
           <button
-            onClick={() => setShowModal(true)}
+            onClick={openAddModal}
             className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black tracking-widest text-[10px] rounded-2xl shadow-luxury hover:scale-105 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} strokeWidth={3} />
@@ -232,12 +265,12 @@ const ManageRooms = () => {
                     <td className="px-6 py-5 cursor-pointer" onClick={() => handleViewBookings(room)} title="Nhấn để xem lịch đặt phòng">
                        <span className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[9px] font-black hover:scale-105 tracking-widest border transition-all ${room.status === 'Available' ? 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5' : room.status === 'Occupied' ? 'text-rose-400 border-rose-500/20 bg-rose-500/5' : 'text-amber-400 border-amber-500/20 bg-amber-500/5'}`}>
                           <div className={`w-1.5 h-1.5 rounded-full ${room.status === 'Available' ? 'bg-emerald-400' : room.status === 'Occupied' ? 'bg-rose-400' : 'bg-amber-400'}`} />
-                          {room.status === 'Available' ? 'Trống' : room.status === 'Occupied' ? 'Có khách' : room.status}
+                          {room.status === 'Available' ? 'Trống' : room.status === 'Occupied' ? 'Có khách' : room.status === 'Maintenance' ? 'Bảo trì' : room.status}
                        </span>
                     </td>
                     <td className="px-8 py-5 text-right">
                        <div className="flex items-center justify-end gap-2 opacity-30 group-hover:opacity-100 transition-all">
-                          <button className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 transition-all">
+                          <button onClick={() => openEditModal(room)} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-slate-900 transition-all">
                              <Edit size={16} />
                           </button>
                           <button onClick={() => handleDelete(room.id)} className="p-2.5 rounded-xl bg-rose-500/5 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-black transition-all">
@@ -269,14 +302,16 @@ const ManageRooms = () => {
                </button>
 
                <h2 className="text-3xl font-serif italic text-slate-900 mb-2">
-                  Thêm <span className="text-amber-500">Phòng Mới</span>
+                  {isEdit ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">{isEdit ? 'Thông tin phòng' : 'Phòng Mới'}</span>
                </h2>
                <p className="text-[10px] text-slate-500 tracking-[0.2em] font-bold mb-10">Cung cấp các thông số định danh thiết yếu</p>
 
-               <div className="flex gap-4 mb-8 p-1.5 bg-slate-100 rounded-2xl w-fit">
-                  <button type="button" onClick={() => setIsNewType(false)} className={`px-6 py-2.5 rounded-xl text-[10px] font-black tracking-widest transition-all ${!isNewType ? 'bg-white text-amber-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>CHỌN HẠNG CÓ SẴN</button>
-                  <button type="button" onClick={() => setIsNewType(true)} className={`px-6 py-2.5 rounded-xl text-[10px] font-black tracking-widest transition-all ${isNewType ? 'bg-white text-amber-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>TẠO HẠNG MỚI</button>
-               </div>
+               {!isEdit && (
+                 <div className="flex gap-4 mb-8 p-1.5 bg-slate-100 rounded-2xl w-fit">
+                    <button type="button" onClick={() => setIsNewType(false)} className={`px-6 py-2.5 rounded-xl text-[10px] font-black tracking-widest transition-all ${!isNewType ? 'bg-white text-amber-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>CHỌN HẠNG CÓ SẴN</button>
+                    <button type="button" onClick={() => setIsNewType(true)} className={`px-6 py-2.5 rounded-xl text-[10px] font-black tracking-widest transition-all ${isNewType ? 'bg-white text-amber-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}>TẠO HẠNG MỚI</button>
+                 </div>
+               )}
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
                   <div className="space-y-2">
@@ -284,6 +319,23 @@ const ManageRooms = () => {
                      <input type="text" placeholder="101" required
                         className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold"
                         onChange={e => setFormData({ ...formData, roomNumber: e.target.value })} value={formData.roomNumber} />
+                  </div>
+
+                  <div className="space-y-2">
+                     <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Trạng thái <span className="text-rose-500">*</span></label>
+                     <div className="relative">
+                       <select 
+                          className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold appearance-none cursor-pointer"
+                          onChange={e => setFormData({ ...formData, status: e.target.value })} value={formData.status}
+                       >
+                          <option value="Available">Trống (Available)</option>
+                          <option value="Occupied">Có khách (Occupied)</option>
+                          <option value="Maintenance">Bảo trì (Maintenance)</option>
+                       </select>
+                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                       </div>
+                     </div>
                   </div>
 
                   {!isNewType ? (
@@ -353,8 +405,8 @@ const ManageRooms = () => {
                </div>
 
                <button type="submit" className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black tracking-widest text-[11px] shadow-2xl shadow-slate-900/20 hover:scale-[1.02] hover:bg-slate-800 active:scale-100 transition-all flex items-center justify-center gap-2">
-                  <Check size={16} className="text-amber-500" />
-                  XÁC NHẬN THÊM PHÒNG
+                  <CheckCircle size={16} className="text-amber-500" />
+                  {isEdit ? 'LƯU THAY ĐỔI' : 'XÁC NHẬN THÊM PHÒNG'}
                </button>
             </form>
           </div>
