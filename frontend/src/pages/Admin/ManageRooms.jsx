@@ -65,6 +65,10 @@ const ManageRooms = () => {
       if (formData.image) data.append('image', formData.image);
     } else {
       data.append('typeId', formData.typeId);
+      if (formData.image) {
+          data.append('TypeId', formData.typeId);
+          data.append('image', formData.image);
+      }
     }
 
     try {
@@ -367,13 +371,17 @@ const ManageRooms = () => {
                               </div>
                            </div>
                            <div className="space-y-2">
-                              <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Ảnh đại diện hạng</label>
-                              <div className="w-full h-[58px] bg-slate-100 border border-slate-200 rounded-2xl overflow-hidden relative">
-                                 <img src={selectedType.image ? `http://localhost:5000/uploads/${selectedType.image}` : `/Hinh anh/Hinh${((selectedType.id || 1) % 20) + 1}.png`} className="w-full h-full object-cover" alt="Preview" onError={(e) => { e.target.src = '/Hinh anh/Hinh1.png'; }} />
-                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-2.5">
+                              <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Ảnh đại diện hạng (Nhấn để đổi)</label>
+                              <label className="w-full h-[58px] bg-slate-100 border border-slate-200 rounded-2xl overflow-hidden relative cursor-pointer block group">
+                                 <img src={formData.image ? URL.createObjectURL(formData.image) : (selectedType.image ? `http://localhost:5000/uploads/${selectedType.image}` : `/Hinh anh/Hinh${((selectedType.id || 1) % 20) + 1}.png`)} className="w-full h-full object-cover group-hover:blur-[2px] transition-all" alt="Preview" onError={(e) => { e.target.src = '/Hinh anh/Hinh1.png'; }} />
+                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-2.5 group-hover:opacity-0 transition-all">
                                     <span className="text-[9px] text-white font-black tracking-widest uppercase truncate">{selectedType.typeName || selectedType.name}</span>
                                  </div>
-                              </div>
+                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40">
+                                    <ImageIcon size={20} className="text-white" />
+                                 </div>
+                                 <input type="file" className="hidden" onChange={e => setFormData({ ...formData, image: e.target.files[0] })} />
+                              </label>
                            </div>
                         </>
                       )}
