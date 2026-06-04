@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { sequelize } = require('./config/db.js');
-const Article = require('./models/Article.js');
+const { sequelize } = require('../config/db.js');
+const Article = require('../models/Article.js');
 
 const templates = [
   `
@@ -35,21 +35,21 @@ const templates = [
 async function updateAllArticles() {
   await sequelize.authenticate();
   console.log('Connected.');
-  
+
   const articles = await Article.findAll();
   console.log('Found ' + articles.length + ' articles.');
-  
+
   for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
     if (article.slug === 'kinh-nghiem-du-lich-phu-quoc-3-ngay-2-dem' || article.slug === 'cam-nang-du-lich-da-lat-tu-a-z') {
       continue;
     }
-    
+
     const template = templates[i % templates.length];
     await article.update({ content: template });
     console.log('Updated: ' + article.title);
   }
-  
+
   console.log('Finished updating all articles.');
   process.exit(0);
 }

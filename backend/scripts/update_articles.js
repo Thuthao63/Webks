@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { sequelize } = require('./config/db.js');
-const Article = require('./models/Article.js');
+const { sequelize } = require('../config/db.js');
+const Article = require('../models/Article.js');
 
 const richContent1 = `
 <h2>Ngày 1: Khám phá Bắc Đảo - Khởi đầu hoàn hảo</h2>

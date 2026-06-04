@@ -1,10 +1,10 @@
-const { connectDB, sequelize } = require('./config/db');
-const Article = require('./models/Article');
+const { connectDB, sequelize } = require('../config/db');
+const Article = require('../models/Article');
 
 async function updateImages() {
     try {
         await connectDB();
-        
+
         await Article.update(
             { thumbnail: '/uploads/phu_quoc_beach.png' },
             { where: { slug: 'kinh-nghiem-du-lich-phu-quoc-3-ngay-2-dem' } }
