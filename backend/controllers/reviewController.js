@@ -2,6 +2,7 @@ const Review = require('../models/Review');
 const User = require('../models/User');
 const Room = require('../models/Room');
 const Booking = require('../models/Booking');
+const RoomType = require('../models/RoomType');
 const { Op } = require('sequelize');
 
 // ==========================================
@@ -113,7 +114,12 @@ exports.getFeaturedReviews = async (req, res) => {
         const reviews = await Review.findAll({
             where: { rating: { [Op.gte]: 4 } },
             include: [
-                { model: User, as: 'reviewer', attributes: ['id', 'fullName', 'email'] }
+                { model: User, as: 'reviewer', attributes: ['id', 'fullName', 'email'] },
+                { 
+                    model: Room, 
+                    as: 'room',
+                    include: [{ model: RoomType, as: 'roomType', attributes: ['name'] }]
+                }
             ],
             order: [['createdAt', 'DESC']],
             limit: 3

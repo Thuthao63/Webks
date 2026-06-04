@@ -251,10 +251,10 @@ const Home = () => {
                   <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Spa" />
                </div>
                <div className="md:col-span-1 md:row-span-2 relative group overflow-hidden rounded-[3rem] shadow-xl">
-                  <img src="https://images.unsplash.com/photo-1550966842-307e07f474aa?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Dining" />
+                  <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Dining" />
                </div>
                <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-[2rem] shadow-xl">
-                  <img src="https://images.unsplash.com/photo-1582719477059-59eb59b19c69?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Bed" />
+                  <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt="Bed" />
                </div>
             </div>
          </div>
@@ -318,23 +318,29 @@ const Home = () => {
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900">{t('home.great_memories')} <span className="not-italic text-amber-600">{t('home.great_memories_italic')}</span></h3>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
               {reviews.map((rev) => (
-                <div key={rev.id} className="relative p-12 bg-white rounded-[3rem] border border-gray-50 shadow-premium hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 group">
-                  <Quote className="absolute top-10 right-10 text-amber-600/5 group-hover:text-amber-600/10 transition-colors" size={60} />
-                  <div className="flex gap-1.5 mb-8">
-                    {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} size={12} className="text-amber-600" fill="currentColor" />
-                    ))}
+                <div key={rev.id} className="relative p-8 bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group flex flex-col justify-between h-full">
+                  <Quote className="absolute top-8 right-8 text-amber-500/10 group-hover:text-amber-500/20 transition-colors" size={48} />
+                  
+                  <div>
+                    <div className="flex gap-1 mb-5">
+                      {[...Array(rev.rating)].map((_, i) => (
+                        <Star key={i} size={14} className="text-amber-500" fill="currentColor" />
+                      ))}
+                    </div>
+                    <p className="text-gray-600 italic leading-relaxed text-sm mb-8 relative z-10 line-clamp-4">"{rev.comment}"</p>
                   </div>
-                  <p className="text-gray-600 italic leading-loose text-sm mb-12 relative z-10">"{rev.comment}"</p>
-                  <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-slate-900 to-[#334155] flex items-center justify-center text-white font-black text-sm shadow-xl">
+                  
+                  <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-50">
+                    <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-md">
                       {rev.reviewer?.fullName?.charAt(0).toUpperCase() || 'G'}
                     </div>
                     <div>
-                      <p className="text-sm font-black uppercase tracking-widest text-slate-900">{rev.reviewer?.fullName || 'Khách hàng'}</p>
-                      <p className="text-sm text-amber-600 uppercase tracking-widest font-bold italic">{t('home.elite_member_badge')}</p>
+                      <p className="text-xs font-bold uppercase tracking-wider text-slate-900">{rev.reviewer?.fullName || 'Khách hàng'}</p>
+                      <p className="text-[10px] text-amber-600 uppercase tracking-widest font-semibold mt-0.5">
+                        {rev.room ? `Phòng ${rev.room.roomNumber}` : t('home.elite_member_badge')}
+                      </p>
                     </div>
                   </div>
                 </div>
