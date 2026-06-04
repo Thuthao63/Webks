@@ -1,4 +1,4 @@
-const { sendInvoiceEmail } = require('./utils/emailService');
+const { sendInvoiceEmail } = require('../utils/emailService');
 
 async function test() {
     const success = await sendInvoiceEmail('nt235657@gmail.com', {

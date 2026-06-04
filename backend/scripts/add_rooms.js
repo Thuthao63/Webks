@@ -1,5 +1,5 @@
-const Room = require('./models/Room');
-const { sequelize } = require('./config/db');
+const Room = require('../models/Room');
+const { sequelize } = require('../config/db');
 
 async function addRooms() {
     try {

@@ -1,6 +1,6 @@
-const Room = require('./models/Room');
-const RoomType = require('./models/RoomType');
-const { sequelize } = require('./config/db');
+const Room = require('../models/Room');
+const RoomType = require('../models/RoomType');
+const { sequelize } = require('../config/db');
 
 async function check() {
     try {
