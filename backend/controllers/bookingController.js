@@ -11,6 +11,11 @@ const createBooking = async (req, res) => {
     try {
         const { roomId, checkInDate, checkOutDate, totalPrice, serviceIds, services } = req.body;
 
+        // Bắt lỗi ngày trả trước ngày nhận
+        if (new Date(checkInDate) >= new Date(checkOutDate)) {
+            return res.status(400).json({ message: "Ngày trả phòng phải diễn ra sau ngày nhận phòng!" });
+        }
+
         const userId = req.user ? req.user.id : 1;
 
         // Kiểm tra xem phòng có bị trùng lịch không
@@ -154,6 +159,11 @@ const createWalkInBooking = async (req, res) => {
 
         if (!guestPhone || !guestEmail) {
             return res.status(400).json({ message: "Vui lòng cung cấp số điện thoại và email để liên hệ." });
+        }
+
+        // Bắt lỗi ngày trả trước ngày nhận
+        if (new Date(checkInDate) >= new Date(checkOutDate)) {
+            return res.status(400).json({ message: "Ngày trả phòng phải diễn ra sau ngày nhận phòng!" });
         }
 
         // 1. Kiểm tra xem User với email này đã tồn tại chưa, nếu chưa thì tạo mới

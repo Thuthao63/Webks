@@ -10,7 +10,10 @@ const { Op } = require('sequelize');
 // ==========================================
 exports.createReview = async (req, res) => {
     try {
-        const { comment, rating, roomId, userId } = req.body;
+        const { comment, rating, roomId } = req.body;
+        
+        // Bảo mật: Ép lấy userId từ Token của người đang đăng nhập (đã được verifyToken xử lý)
+        const userId = req.user?.id;
 
         if (!comment || !rating || !roomId || !userId) {
             return res.status(400).json({ message: "Vui lòng cung cấp đầy đủ thông tin đánh giá!" });

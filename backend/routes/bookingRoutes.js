@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const bookingController = require('../controllers/bookingController');
-const { verifyToken } = require('../middleware/authMiddleware');
+const { verifyToken, isAdmin } = require('../middleware/authMiddleware');
 
 // 1. Route dành cho khách (POST /api/bookings)
 // Thêm verifyToken để lấy được req.user khi đặt phòng
 router.post('/', verifyToken, bookingController.createBooking);
 
 // Lễ tân đặt phòng tại quầy (không cần auth client, nhưng cần auth admin)
-router.post('/walk-in', bookingController.createWalkInBooking);
+router.post('/walk-in', verifyToken, isAdmin, bookingController.createWalkInBooking);
 
 // 2. Route dành cho Admin/User cập nhật trạng thái
 router.put('/:id', verifyToken, bookingController.updateBookingStatus);
