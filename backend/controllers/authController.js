@@ -189,5 +189,79 @@ const changePassword = async (req, res) => {
         res.status(500).json({ message: "Lỗi server khi đổi mật khẩu." });
     }
 };
+// --- 6. HÀM QUÊN MẬT KHẨU (FORGOT PASSWORD) ---
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ where: { email } });
 
-module.exports = { register, verifyOTP, login, updateUser, changePassword };
+        if (!user) {
+            return res.status(404).json({ message: 'Email không tồn tại trong hệ thống!' });
+        }
+
+        // Tạo JWT Token có thời hạn ngắn (15 phút)
+        const resetToken = jwt.sign(
+            { id: user.id },
+            process.env.JWT_SECRET || 'bi_mat_khach_san_uy_nam',
+            { expiresIn: '15m' }
+        );
+
+        const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+
+        const mailOptions = {
+            from: `"Khách sạn Uy Nam" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: 'Khôi phục mật khẩu Uy Nam Luxury',
+            html: `
+                <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 30px; max-width: 600px; margin: auto; border-radius: 10px;">
+                    <h2 style="color: #d97706; text-align: center;">Uy Nam Luxury Hotel</h2>
+                    <p>Chào <b>${user.fullName}</b>,</p>
+                    <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu từ bạn. Hãy nhấn vào nút bên dưới để đặt lại mật khẩu:</p>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="${resetLink}" style="background-color: #d97706; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">ĐẶT LẠI MẬT KHẨU</a>
+                    </div>
+                    <p style="color: #666; font-size: 13px;">Liên kết này có hiệu lực trong 15 phút. Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: 'Email khôi phục đã được gửi!' });
+    } catch (error) {
+        console.error("❌ Lỗi quên mật khẩu:", error);
+        res.status(500).json({ message: 'Lỗi server khi gửi email khôi phục.' });
+    }
+};
+
+// --- 7. HÀM ĐẶT LẠI MẬT KHẨU (RESET PASSWORD) ---
+const resetPassword = async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+
+        if (!token || !newPassword) {
+            return res.status(400).json({ message: 'Dữ liệu không hợp lệ!' });
+        }
+
+        // Xác thực Token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'bi_mat_khach_san_uy_nam');
+        
+        const user = await User.findByPk(decoded.id);
+        if (!user) {
+            return res.status(404).json({ message: 'Người dùng không tồn tại!' });
+        }
+
+        // Cập nhật mật khẩu mới
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Đổi mật khẩu thành công!' });
+    } catch (error) {
+        console.error("❌ Lỗi đặt lại mật khẩu:", error);
+        res.status(400).json({ message: 'Liên kết không hợp lệ hoặc đã hết hạn!' });
+    }
+};
+
+module.exports = { register, verifyOTP, login, updateUser, changePassword, forgotPassword, resetPassword };

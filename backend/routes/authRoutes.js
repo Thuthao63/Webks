@@ -16,6 +16,9 @@ router.put('/:id', verifyToken, authController.updateUser);
 // Đổi mật khẩu
 router.put('/:id/password', verifyToken, authController.changePassword);
 
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
+
 // ==========================================
 // 2. ROUTES CHO LIÊN HỆ (CONTACT)
 // ==========================================
