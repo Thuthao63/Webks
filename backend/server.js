@@ -129,7 +129,6 @@ const startServer = async () => {
         const PORT = process.env.PORT || 5000;
         server.listen(PORT, () => {
             console.log(`📡 HTTP & SOCKET SERVER ĐANG CHẠY TẠI: http://localhost:${PORT}`);
-            console.log(`✅ Thảo có thể test API tại: http://localhost:${PORT}/api/rooms`);
         });
     } catch (err) {
         console.error('❌ Lỗi khởi động hệ thống:', err);

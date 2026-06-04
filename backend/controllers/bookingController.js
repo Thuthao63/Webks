@@ -11,8 +11,6 @@ const createBooking = async (req, res) => {
     try {
         const { roomId, checkInDate, checkOutDate, totalPrice, serviceIds, services } = req.body;
 
-        // Thảo lưu ý: Nếu chưa làm Login thì tạm thời gán userId = 1 
-        // Nếu đã có Login thì lấy từ req.user.id
         const userId = req.user ? req.user.id : 1;
 
         // Kiểm tra xem phòng có bị trùng lịch không
@@ -99,7 +97,7 @@ const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status, checkOutDate, totalPrice } = req.body;
-        
+
         const booking = await Booking.findByPk(id, {
             include: [
                 { model: User, as: 'user' },
@@ -107,13 +105,13 @@ const updateBookingStatus = async (req, res) => {
             ]
         });
         if (!booking) return res.status(404).json({ message: "Đơn hàng không tồn tại" });
-        
+
         const oldStatus = booking.status;
 
         if (status) booking.status = status;
         if (checkOutDate) booking.checkOutDate = checkOutDate;
         if (totalPrice) booking.totalPrice = totalPrice;
-        
+
         await booking.save();
 
         // Cập nhật trạng thái phòng dựa trên trạng thái đơn
@@ -129,7 +127,7 @@ const updateBookingStatus = async (req, res) => {
                 if (booking.user && booking.user.email) {
                     sendInvoiceEmail(booking.user.email, booking).catch(err => console.error("Lỗi gửi email ngầm", err));
                 }
-                
+
                 // [TÍNH NĂNG REAL-TIME] Bắn thông báo về cho Admin!
                 if (req.io) {
                     req.io.emit('newBooking', {
@@ -206,7 +204,7 @@ const createWalkInBooking = async (req, res) => {
                 { model: Room, as: 'room', include: [{ model: RoomType, as: 'roomType' }] }
             ]
         });
-        
+
         if (bookingWithDetails && bookingWithDetails.user && bookingWithDetails.user.email) {
             sendInvoiceEmail(bookingWithDetails.user.email, bookingWithDetails).catch(err => console.error("Lỗi gửi email ngầm", err));
         }

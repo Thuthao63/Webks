@@ -1,10 +1,10 @@
-const db = require('../config/db'); // Giữ nguyên đường dẫn này của Thảo nhé
+const db = require('../config/db');
 
 // 1. [CHO USER] Khách hàng gửi form liên hệ
 exports.sendContact = async (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body;
-    
+
     // Cú pháp chuẩn của Sequelize
     await db.sequelize.query(
       'INSERT INTO contacts (name, email, phone, subject, message, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, "Pending", NOW(), NOW())',
@@ -21,7 +21,7 @@ exports.sendContact = async (req, res) => {
 exports.getAllContacts = async (req, res) => {
   try {
     // Cú pháp lấy dữ liệu của Sequelize
-    const [contacts] = await db.sequelize.query('SELECT * FROM contacts ORDER BY createdAt DESC'); 
+    const [contacts] = await db.sequelize.query('SELECT * FROM contacts ORDER BY createdAt DESC');
     res.status(200).json(contacts);
   } catch (error) {
     console.error("Lỗi lấy liên hệ:", error);
@@ -36,7 +36,7 @@ exports.updateContactStatus = async (req, res) => {
     const { status } = req.body;
 
     await db.sequelize.query(
-      'UPDATE contacts SET status = ? WHERE id = ?', 
+      'UPDATE contacts SET status = ? WHERE id = ?',
       { replacements: [status, id] }
     );
     res.status(200).json({ message: "Cập nhật trạng thái thành công" });

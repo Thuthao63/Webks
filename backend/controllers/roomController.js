@@ -7,7 +7,7 @@ const Booking = require('../models/Booking');
 const getAllRooms = async (req, res) => {
     try {
         const { typeId, minPrice, maxPrice, capacity, status, checkInDate, checkOutDate } = req.query;
-        
+
         // Điều kiện lọc cho bảng Rooms
         let whereCondition = {};
         if (status) whereCondition.status = status;
@@ -47,8 +47,8 @@ const getAllRooms = async (req, res) => {
 
         const rooms = await Room.findAll({
             where: whereCondition,
-            include: [{ 
-                model: RoomType, 
+            include: [{
+                model: RoomType,
                 as: 'roomType',
                 where: Object.keys(typeWhereCondition).length > 0 ? typeWhereCondition : undefined
             }]
@@ -114,7 +114,7 @@ const getFeaturedRooms = async (req, res) => {
     }
 };
 
-// 3. Lấy tất cả loại phòng (HÀM ĐANG THIẾU NÈ THẢO)
+// 3. Lấy tất cả loại phòng 
 const getAllRoomTypes = async (req, res) => {
     try {
         const types = await RoomType.findAll();
@@ -165,12 +165,12 @@ const createFullRoomInfo = async (req, res) => {
 const updateFullRoomInfo = async (req, res) => {
     try {
         const { roomNumber, status, typeId, TypeId, name, price, description } = req.body;
-        
+
         let roomUpdateData = { roomNumber, status };
         if (typeId) roomUpdateData.typeId = typeId;
-        
+
         await Room.update(roomUpdateData, { where: { id: req.params.id } });
-        
+
         if (TypeId && (name || price || description || req.file)) {
             let updateData = {};
             if (name) updateData.name = name;
@@ -180,7 +180,7 @@ const updateFullRoomInfo = async (req, res) => {
 
             await RoomType.update(updateData, { where: { id: TypeId } });
         }
-        
+
         res.status(200).json({ message: 'Cập nhật thành công' });
     } catch (error) {
         res.status(500).json({ message: 'Lỗi cập nhật', error: error.message });
