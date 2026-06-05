@@ -24,7 +24,8 @@ const Profile = () => {
         const fetchData = async () => {
             try {
                 const res = await axiosClient.get(`/bookings/user/${user.id}`);
-                setMyBookings(res.data);
+                const sortedBookings = res.data.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
+                setMyBookings(sortedBookings);
             } catch (err) {
                 console.error("Lỗi lấy dữ liệu cá nhân:", err);
             } finally {
@@ -236,6 +237,64 @@ const Profile = () => {
             if (result.isConfirmed) {
                 logout();
                 navigate('/');
+            }
+        });
+    };
+
+    const handlePayNow = async (booking) => {
+        const depositAmount = booking.totalPrice * 0.5;
+        const formatCurrency = (value) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(Number(value));
+
+        await Swal.fire({
+            title: t('booking.secure_payment', 'Thanh toán an toàn'),
+            html: `
+                <div class="text-center mt-4 font-sans">
+                    <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-4">Số tiền cần cọc (50%): <span class="text-amber-600">${formatCurrency(depositAmount)}</span></p>
+                    <div class="inline-block p-4 bg-white border-2 border-amber-500 rounded-3xl shadow-lg relative mb-6">
+                        <img src="https://img.vietqr.io/image/vietcombank-1022103170-compact2.png?amount=${depositAmount}&addInfo=Thanh toan phong ${booking.id}&accountName=UY NAM" class="w-48 h-48 object-contain" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-vnpay" class="w-full bg-[#005BAA] hover:bg-[#004A8A] text-white p-3 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all">Thanh toán VNPay</button>
+                        <button id="btn-vietqr" class="w-full bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all">Đã chuyển khoản</button>
+                    </div>
+                </div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: t('booking.pay_later', 'Đóng'),
+            customClass: {
+                popup: 'rounded-[2.5rem] border border-slate-100 shadow-2xl p-6',
+                title: 'font-sans text-xl font-medium text-slate-900',
+                cancelButton: 'bg-slate-50 text-slate-500 w-full p-3 rounded-xl font-bold uppercase tracking-widest text-[10px] border border-slate-200 mt-2'
+            },
+            didOpen: () => {
+                document.getElementById('btn-vnpay').addEventListener('click', async () => {
+                    Swal.fire({ title: 'Đang kết nối VNPay...', didOpen: () => Swal.showLoading() });
+                    try {
+                        const res = await axiosClient.post('/payments/create_payment_url', {
+                            bookingId: booking.id,
+                            amount: depositAmount
+                        });
+                        if (res.data.paymentUrl) window.location.href = res.data.paymentUrl;
+                    } catch (err) {
+                        Swal.fire('Lỗi', 'Lỗi kết nối VNPay', 'error');
+                    }
+                });
+                
+                document.getElementById('btn-vietqr').addEventListener('click', async () => {
+                    Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    try {
+                        await axiosClient.put(`/bookings/${booking.id}`, { status: 'confirmed' });
+                        Swal.fire({ icon: 'success', title: 'Thành công', text: 'Thanh toán thành công. Đơn hàng đã được xác nhận!', confirmButtonColor: '#d97706', customClass: { popup: 'rounded-[2rem]' } });
+                        // Cập nhật lại danh sách
+                        const res = await axiosClient.get(`/bookings/user/${user.id}`);
+                        const sortedBookings = res.data.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
+                        setMyBookings(sortedBookings);
+                    } catch (err) {
+                        Swal.fire('Lỗi', 'Cập nhật thất bại', 'error');
+                    }
+                });
             }
         });
     };
@@ -487,12 +546,21 @@ const Profile = () => {
                                         <div className="flex flex-col items-center md:items-end gap-3">
                                             <span className="text-base font-bold text-slate-900">{Number(booking.totalPrice).toLocaleString()}đ</span>
                                             {renderStatusBadge(booking)}
+                                            {booking.status === 'pending' && (
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); handlePayNow(booking); }}
+                                                    className="px-4 py-2 mt-1 w-full bg-amber-600 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-700 transition-colors shadow-sm"
+                                                >
+                                                    <CreditCard size={12} />
+                                                    Thanh toán ngay
+                                                </button>
+                                            )}
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); setPrintingBooking(booking); setTimeout(() => window.print(), 500); }}
-                                                className="px-4 py-2 mt-1 bg-slate-900 text-white rounded-xl flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"
+                                                className="px-4 py-2 mt-1 w-full bg-slate-900 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"
                                             >
                                                 <Printer size={12} />
-                                                {t('profile.print_invoice', 'In Phiếu Xác Nhận')}
+                                                {t('profile.print_invoice', 'In Phiếu')}
                                             </button>
                                         </div>
                                     </div>
