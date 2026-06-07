@@ -11,6 +11,7 @@ const ManageDiscounts = () => {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
+        code: '',
         roomTypeId: '',
         discountPercent: '',
         startDate: '',
@@ -59,7 +60,7 @@ const ManageDiscounts = () => {
             await axiosClient.post('/discounts', formData);
             luxurySwal.fire({ icon: 'success', title: 'Thiết lập thành công', timer: 1500, showConfirmButton: false });
             setShowModal(false);
-            setFormData({ roomTypeId: '', discountPercent: '', startDate: '', endDate: '', description: '' });
+            setFormData({ code: '', roomTypeId: '', discountPercent: '', startDate: '', endDate: '', description: '' });
             fetchData();
         } catch (err) {
             const msg = err.response?.data?.message || 'Không thể tạo chương trình giảm giá.';
@@ -127,7 +128,8 @@ const ManageDiscounts = () => {
                         <table className="w-full text-left">
                             <thead className="text-[10px] text-slate-500  font-medium tracking-[0.2em] border-b border-slate-100 bg-slate-50/50 font-sans">
                                 <tr>
-                                    <th className="px-8 py-6">Đối tượng / Hạng phòng</th>
+                                    <th className="px-8 py-6">Mã Khuyến Mãi</th>
+                                    <th className="px-6 py-6">Hạng phòng áp dụng</th>
                                     <th className="px-6 py-6">Mức giảm</th>
                                     <th className="px-6 py-6">Thời gian áp dụng</th>
                                     <th className="px-6 py-6">Trạng thái</th>
@@ -143,13 +145,18 @@ const ManageDiscounts = () => {
                                         <tr key={discount.id} className="group hover:bg-slate-50/50 font-sans transition-all">
                                             <td className="px-8 py-5">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-amber-500 group-hover:border-amber-500/30 transition-all">
-                                                        <Tag size={18} />
+                                                    <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:border-amber-500/30 transition-all font-black text-sm uppercase tracking-widest">
+                                                        {discount.code}
                                                     </div>
                                                     <div>
-                                                        <p className="text-slate-700 font-medium text-sm font-sans">{discount.roomType?.name || 'Tất cả phòng'}</p>
-                                                        <p className="text-[9px] text-slate-500 font-bold  tracking-widest">{discount.description || 'Chương trình khuyến mãi'}</p>
+                                                        <p className="text-slate-700 font-medium text-sm font-sans">{discount.description || 'Chương trình khuyến mãi'}</p>
                                                     </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="flex items-center gap-2">
+                                                    <Tag size={14} className="text-slate-400" />
+                                                    <p className="text-slate-700 font-medium text-sm font-sans">{discount.roomType?.name || 'Tất cả phòng'}</p>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-5">
@@ -219,6 +226,25 @@ const ManageDiscounts = () => {
                             <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+                                <div className="space-y-2 md:col-span-2 relative">
+                                    <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Mã Khuyến Mãi</label>
+                                    <div className="relative">
+                                        <input 
+                                            type="text" placeholder="VD: SUMMER2024" required
+                                            className="w-full bg-slate-50 border border-slate-200 text-amber-600 uppercase p-4 pr-32 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-black tracking-widest"
+                                            value={formData.code}
+                                            onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                                        />
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setFormData({ ...formData, code: 'KSUN' + Math.floor(Math.random() * 9000 + 1000) })}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-amber-200 transition-colors"
+                                        >
+                                            Sinh mã ngẫu nhiên
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div className="space-y-2 md:col-span-2">
                                     <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Hạng phòng áp dụng</label>
                                     <select 

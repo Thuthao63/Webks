@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
-import { Calendar, CreditCard, ArrowLeft, Loader2, Info, CheckCircle2, Star } from 'lucide-react';
+import { Calendar, CreditCard, ArrowLeft, Loader2, Info, CheckCircle2, Star, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // Import DatePicker và CSS của nó
@@ -22,6 +22,12 @@ const Booking = () => {
   const [selectedServices, setSelectedServices] = useState({}); // { serviceId: quantity }
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  
+  // Promo Code States
+  const [promoCodeInput, setPromoCodeInput] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
+  const [applyingCode, setApplyingCode] = useState(false);
+  const [showVouchers, setShowVouchers] = useState(false);
   
   // Payment States
   const [showPayment, setShowPayment] = useState(false);
@@ -81,9 +87,8 @@ const Booking = () => {
       if (diffDays > 0) {
         setDays(diffDays);
         
-        // Tính giảm giá
-        const activeDiscount = activeDiscounts.find(d => d.roomTypeId === (room.roomType?.id || room.typeId));
-        const discountFactor = activeDiscount ? (1 - Number(activeDiscount.discountPercent) / 100) : 1;
+        // Tính giảm giá dựa trên mã đã áp dụng
+        const discountFactor = appliedDiscount ? (1 - Number(appliedDiscount.discountPercent) / 100) : 1;
         
         const roomTotal = Math.round(diffDays * price * discountFactor);
         
@@ -99,7 +104,33 @@ const Booking = () => {
         setTotalPrice(0);
       }
     }
-  }, [startDate, endDate, room, activeDiscounts, selectedServices, availableServices]);
+  }, [startDate, endDate, room, appliedDiscount, selectedServices, availableServices]);
+
+  // Handle Promo Code Apply
+  const handleApplyPromoCode = async (codeToApply = promoCodeInput) => {
+      if (!codeToApply.trim()) return;
+      setApplyingCode(true);
+      try {
+          const res = await axiosClient.post('/discounts/validate-code', {
+              code: codeToApply,
+              roomTypeId: room?.roomType?.id || room?.typeId
+          });
+          setAppliedDiscount(res.data);
+          setPromoCodeInput(res.data.code);
+          setShowVouchers(false);
+          Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `Áp dụng thành công mã giảm ${Math.floor(res.data.discountPercent)}%`, showConfirmButton: false, timer: 3000 });
+      } catch (err) {
+          setAppliedDiscount(null);
+          Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: err.response?.data?.message || 'Mã không hợp lệ', showConfirmButton: false, timer: 3000 });
+      } finally {
+          setApplyingCode(false);
+      }
+  };
+
+  const handleRemovePromoCode = () => {
+      setAppliedDiscount(null);
+      setPromoCodeInput('');
+  };
 
   const updateServiceQuantity = (serviceId, delta) => {
     setSelectedServices(prev => {
@@ -328,6 +359,65 @@ const Booking = () => {
                   </div>
                 </div>
 
+                {/* Promo Code Section */}
+                <div className="pt-6 border-t border-gray-50 space-y-4">
+                  <div className="space-y-3 relative">
+                    <label className="text-xs uppercase tracking-widest text-gray-400 font-medium ml-4 font-sans">Mã Khuyến Mãi / Voucher</label>
+                    <div className="flex gap-2 relative">
+                        <input 
+                            type="text" 
+                            placeholder="Nhập mã (VD: SUMMER)" 
+                            value={promoCodeInput}
+                            onChange={(e) => setPromoCodeInput(e.target.value.toUpperCase())}
+                            disabled={!!appliedDiscount || applyingCode}
+                            className="flex-1 bg-gray-50 border border-gray-100 p-4 rounded-2xl text-sm focus:border-amber-600 focus:bg-white outline-none transition-all text-gray-900 font-bold uppercase tracking-widest disabled:opacity-50"
+                        />
+                        {appliedDiscount ? (
+                            <button onClick={handleRemovePromoCode} className="px-6 bg-rose-50 text-rose-500 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-rose-100 transition-colors">
+                                Hủy
+                            </button>
+                        ) : (
+                            <button onClick={() => handleApplyPromoCode()} disabled={applyingCode || !promoCodeInput} className="px-6 bg-slate-900 text-white rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors disabled:opacity-50">
+                                {applyingCode ? <Loader2 size={16} className="animate-spin" /> : 'Áp dụng'}
+                            </button>
+                        )}
+                    </div>
+                    
+                    {!appliedDiscount && activeDiscounts.length > 0 && (
+                        <div className="mt-2">
+                           <button onClick={() => setShowVouchers(!showVouchers)} className="text-[11px] text-amber-600 font-bold uppercase tracking-widest hover:underline flex items-center gap-1 ml-4">
+                               <Tag size={12} /> Hoặc chọn mã có sẵn ({activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length})
+                           </button>
+                           
+                           {showVouchers && (
+                               <div className="mt-3 bg-white border border-amber-200/50 rounded-2xl p-2 space-y-2 shadow-xl absolute z-20 w-full left-0">
+                                   {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).map(d => (
+                                       <div key={d.id} className="flex items-center justify-between p-3 hover:bg-amber-50 rounded-xl transition-colors border border-transparent hover:border-amber-100 group cursor-pointer" onClick={() => handleApplyPromoCode(d.code)}>
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-black text-xs">
+                                                    %
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-black text-gray-900 uppercase tracking-widest">{d.code}</div>
+                                                    <div className="text-[10px] text-gray-500">{d.description}</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-sm font-bold text-rose-500">-{Math.floor(d.discountPercent)}%</div>
+                                                <button className="text-[10px] text-amber-600 font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Áp dụng</button>
+                                            </div>
+                                       </div>
+                                   ))}
+                                   {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length === 0 && (
+                                       <div className="p-4 text-center text-xs text-gray-500">Không có mã nào áp dụng cho phòng này</div>
+                                   )}
+                               </div>
+                           )}
+                        </div>
+                    )}
+                  </div>
+                </div>
+
                 <div className="pt-6 border-t border-gray-50 space-y-3">
                   <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gray-400 font-medium font-sans">
                     <span>{t('booking.duration')}</span>
@@ -337,10 +427,10 @@ const Booking = () => {
                     <span>{t('booking.unit_price')}</span>
                     <span className="text-gray-900">{formatCurrency(room?.roomType?.price || 0)} {t('booking.per_night')}</span>
                   </div>
-                  {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
+                  {appliedDiscount && (
                     <div className="flex justify-between items-center text-xs uppercase tracking-widest text-rose-500 font-medium font-sans">
-                      <span>{t('booking.discount_applied')}</span>
-                      <span>-{Math.floor(activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).discountPercent)}%</span>
+                      <span>Mã giảm giá ({appliedDiscount.code})</span>
+                      <span>-{Math.floor(appliedDiscount.discountPercent)}%</span>
                     </div>
                   )}
                   {Object.keys(selectedServices).length > 0 && (
@@ -360,7 +450,7 @@ const Booking = () => {
                       <div className="text-sm text-gray-500">{days} {t('booking.night')} • {formatCurrency(room?.roomType?.price || 0)} {t('booking.per_night')}</div>
                     </div>
                      <div className="text-right">
-                      {activeDiscounts.find(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)) && (
+                      {appliedDiscount && (
                          <div className="text-sm text-gray-400 line-through mb-0.5">
                             {formatCurrency((days * (room?.roomType?.price || room?.typeDetails?.price || 0)) + Object.entries(selectedServices).reduce((sum, [id, qty]) => {
                                const s = availableServices.find(x => x.id === Number(id));

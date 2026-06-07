@@ -7,6 +7,11 @@ const Discount = sequelize.define('Discount', {
         primaryKey: true,
         autoIncrement: true
     },
+    code: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true
+    },
     roomTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false

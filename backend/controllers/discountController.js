@@ -18,8 +18,14 @@ exports.getAllDiscounts = async (req, res) => {
 // 2. Tạo giảm giá mới
 exports.createDiscount = async (req, res) => {
     try {
-        const { roomTypeId, discountPercent, startDate, endDate, description } = req.body;
+        const { code, roomTypeId, discountPercent, startDate, endDate, description } = req.body;
         
+        // Kiểm tra xem đã có khuyến mãi nào trùng mã chưa
+        const existingCode = await Discount.findOne({ where: { code } });
+        if (existingCode) {
+            return res.status(400).json({ message: 'Mã khuyến mãi này đã tồn tại. Vui lòng chọn mã khác.' });
+        }
+
         // Kiểm tra xem đã có khuyến mãi nào trùng lặp cho loại phòng này trong khoảng thời gian này chưa
         const existing = await Discount.findOne({
             where: {
@@ -40,6 +46,7 @@ exports.createDiscount = async (req, res) => {
         }
 
         const discount = await Discount.create({
+            code,
             roomTypeId,
             discountPercent,
             startDate,
@@ -77,5 +84,39 @@ exports.getActiveDiscounts = async (req, res) => {
         res.status(200).json(discounts);
     } catch (err) {
         res.status(500).json({ message: 'Lỗi lấy khuyến mãi hiện tại', error: err.message });
+    }
+};
+
+// 5. Xác thực mã khuyến mãi (validate-code)
+exports.validateCode = async (req, res) => {
+    try {
+        const { code, roomTypeId } = req.body;
+        
+        if (!code || !roomTypeId) {
+            return res.status(400).json({ message: 'Vui lòng cung cấp mã khuyến mãi và hạng phòng.' });
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        
+        const discount = await Discount.findOne({
+            where: {
+                code,
+                isActive: true,
+                startDate: { [Op.lte]: today },
+                endDate: { [Op.gte]: today }
+            }
+        });
+
+        if (!discount) {
+            return res.status(404).json({ message: 'Mã khuyến mãi không hợp lệ, không tồn tại hoặc đã hết hạn.' });
+        }
+
+        if (discount.roomTypeId !== Number(roomTypeId)) {
+            return res.status(400).json({ message: 'Mã khuyến mãi này không áp dụng cho hạng phòng bạn đã chọn.' });
+        }
+
+        res.status(200).json(discount);
+    } catch (err) {
+        res.status(500).json({ message: 'Lỗi xác thực mã khuyến mãi', error: err.message });
     }
 };

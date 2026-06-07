@@ -10,5 +10,6 @@ router.delete('/:id', verifyToken, isAdmin, discountController.deleteDiscount);
 
 // Cho khách hàng
 router.get('/active', discountController.getActiveDiscounts);
+router.post('/validate-code', discountController.validateCode);
 
 module.exports = router;
