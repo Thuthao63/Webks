@@ -13,6 +13,9 @@ router.post('/walk-in', verifyToken, isAdmin, bookingController.createWalkInBook
 // 2. Route dành cho Admin/User cập nhật trạng thái
 router.put('/:id', verifyToken, bookingController.updateBookingStatus);
 
+// [POST] /api/bookings/:id/services - Thêm dịch vụ cho đơn đang hoạt động (Khách hàng)
+router.post('/:id/services', verifyToken, bookingController.addServicesToBooking);
+
 // 3. Các route lấy danh sách
 router.get('/', verifyToken, bookingController.getAllBookings);
 router.get('/user/:userId', verifyToken, bookingController.getUserBookings);

@@ -9,7 +9,7 @@ const ManageServices = () => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', price: '', roomTypeId: '' });
+  const [formData, setFormData] = useState({ name: '', price: '', applicableRoomTypes: [] });
   const [loading, setLoading] = useState(true);
 
   const fetchServicesAndTypes = async () => {
@@ -48,10 +48,10 @@ const ManageServices = () => {
   const handleOpenForm = (service = null) => {
     if (service) {
       setEditingId(service.id);
-      setFormData({ name: service.name, price: service.price, roomTypeId: service.roomTypeId || '' });
+      setFormData({ name: service.name, price: service.price, applicableRoomTypes: service.applicableRoomTypes || [] });
     } else {
       setEditingId(null);
-      setFormData({ name: '', price: '', roomTypeId: roomTypes[0]?.id || '' });
+      setFormData({ name: '', price: '', applicableRoomTypes: [] });
     }
     setIsFormOpen(true);
   };
@@ -143,7 +143,9 @@ const ManageServices = () => {
                   <h3 className="font-black text-xl text-slate-900 group-hover:text-amber-500 transition-colors tracking-tight mb-2">{service.name}</h3>
                   <div className="mb-4">
                      <span className="inline-block px-2.5 py-1 bg-amber-50 text-amber-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-amber-100">
-                         {service.roomType?.name || 'Chưa gán'}
+                         {service.applicableRoomTypes?.length > 0 ? 
+                             service.applicableRoomTypes.map(id => roomTypes.find(rt => rt.id === id)?.name).filter(Boolean).join(', ') 
+                             : 'Chưa gán'}
                      </span>
                   </div>
                   <div className="flex items-baseline gap-2 mb-8">
@@ -203,19 +205,27 @@ const ManageServices = () => {
                             <Banknote className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                         </div>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                         <label className="text-[9px] text-slate-500 font-black tracking-widest ml-1">Áp dụng cho Loại phòng</label>
-                        <select 
-                            required
-                            value={formData.roomTypeId} 
-                            onChange={e => setFormData({...formData, roomTypeId: e.target.value})}
-                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-sm cursor-pointer appearance-none"
-                        >
-                            <option value="" disabled>-- Chọn loại phòng --</option>
+                        <div className="flex flex-col gap-2.5 mt-2 bg-slate-50 border border-slate-200 p-4 rounded-xl">
                             {roomTypes.map(type => (
-                                <option key={type.id} value={type.id}>{type.name}</option>
+                                <label key={type.id} className="flex items-center gap-3 cursor-pointer group">
+                                    <input 
+                                        type="checkbox"
+                                        checked={formData.applicableRoomTypes.includes(type.id)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setFormData({ ...formData, applicableRoomTypes: [...formData.applicableRoomTypes, type.id] });
+                                            } else {
+                                                setFormData({ ...formData, applicableRoomTypes: formData.applicableRoomTypes.filter(id => id !== type.id) });
+                                            }
+                                        }}
+                                        className="w-4 h-4 rounded text-amber-500 border-slate-300 focus:ring-amber-500 focus:ring-2 cursor-pointer accent-amber-500"
+                                    />
+                                    <span className="text-sm font-bold text-slate-700 group-hover:text-amber-600 transition-colors">{type.name}</span>
+                                </label>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 </div>
 

@@ -226,11 +226,62 @@ const createWalkInBooking = async (req, res) => {
     }
 };
 
+// 6. Khách hàng/Lễ tân gọi thêm dịch vụ cho đơn đang hoạt động
+const addServicesToBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { services } = req.body; // Array of { serviceId, quantity, price }
+
+        if (!services || services.length === 0) {
+            return res.status(400).json({ message: "Vui lòng chọn ít nhất một dịch vụ." });
+        }
+
+        const booking = await Booking.findByPk(id);
+        if (!booking) {
+            return res.status(404).json({ message: "Không tìm thấy đơn đặt phòng." });
+        }
+
+        if (booking.status !== 'checked_in' && booking.status !== 'confirmed') {
+            return res.status(400).json({ message: "Chỉ có thể gọi dịch vụ cho phòng đang lưu trú hoặc đã xác nhận." });
+        }
+
+        let addedTotal = 0;
+        for (const s of services) {
+            // Check if service already exists in booking
+            const existing = await BookingService.findOne({
+                where: { bookingId: id, serviceId: s.serviceId }
+            });
+
+            if (existing) {
+                existing.quantity += s.quantity;
+                await existing.save();
+            } else {
+                await BookingService.create({
+                    bookingId: id,
+                    serviceId: s.serviceId,
+                    quantity: s.quantity
+                });
+            }
+            addedTotal += (Number(s.price) * Number(s.quantity));
+        }
+
+        // Cập nhật tổng tiền đơn hàng
+        booking.totalPrice = Number(booking.totalPrice) + addedTotal;
+        await booking.save();
+
+        res.status(200).json({ message: "Gọi dịch vụ thành công!", booking });
+    } catch (error) {
+        console.error("Lỗi gọi dịch vụ:", error);
+        res.status(500).json({ message: "Lỗi hệ thống khi gọi dịch vụ" });
+    }
+};
+
 // QUAN TRỌNG: Export tất cả để Route nhìn thấy
 module.exports = {
     createBooking,
     getUserBookings,
     getAllBookings,
     updateBookingStatus,
-    createWalkInBooking
+    createWalkInBooking,
+    addServicesToBooking
 };

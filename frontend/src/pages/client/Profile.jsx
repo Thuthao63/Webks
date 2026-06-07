@@ -12,7 +12,7 @@ const Profile = () => {
     const [myBookings, setMyBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('dashboard');
-    const [printingBooking, setPrintingBooking] = useState(null);
+    const [filterStatus, setFilterStatus] = useState('all');
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -20,6 +20,8 @@ const Profile = () => {
             navigate('/login');
             return;
         }
+
+        window.scrollTo(0, 0);
 
         const fetchData = async () => {
             try {
@@ -299,6 +301,112 @@ const Profile = () => {
         });
     };
 
+    const handleOrderService = async (booking) => {
+        try {
+            Swal.fire({ title: 'Đang tải danh sách dịch vụ...', didOpen: () => Swal.showLoading() });
+            const res = await axiosClient.get(`/services?roomTypeId=${booking.room?.typeId}`);
+            const availableServices = res.data;
+            
+            if (availableServices.length === 0) {
+                return Swal.fire({ icon: 'info', title: 'Rất tiếc', text: 'Hiện chưa có dịch vụ nào cho loại phòng này.', confirmButtonColor: '#0f172a' });
+            }
+
+            const htmlServices = availableServices.map(s => `
+                <div class="flex items-center justify-between border-b border-slate-100 py-4 last:border-0">
+                    <div class="text-left pr-4">
+                        <p class="font-bold text-sm text-slate-900 line-clamp-2">${s.name}</p>
+                        <p class="text-amber-600 font-bold text-xs mt-1">${Number(s.price).toLocaleString()}đ</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 p-1 rounded-full border border-slate-100">
+                        <button type="button" class="btn-decrease w-7 h-7 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-slate-500 hover:text-rose-500 transition-colors" data-id="${s.id}">-</button>
+                        <span class="font-bold w-4 text-center text-sm qty-display" id="qty-${s.id}">0</span>
+                        <button type="button" class="btn-increase w-7 h-7 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-slate-500 hover:text-emerald-500 transition-colors" data-id="${s.id}">+</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const { isConfirmed, value } = await Swal.fire({
+                title: 'Gọi Dịch Vụ',
+                html: `
+                    <div class="mt-4 max-h-72 overflow-y-auto pr-2" id="service-list-container">
+                        ${htmlServices}
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center bg-amber-50 p-4 rounded-xl">
+                        <span class="font-bold text-xs text-amber-700 uppercase tracking-widest">Tạm tính:</span>
+                        <span class="font-black text-xl text-amber-600 drop-shadow-sm" id="total-price-preview">0đ</span>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận gọi',
+                cancelButtonText: 'Hủy',
+                customClass: {
+                    popup: 'rounded-[2rem] border border-slate-100 shadow-2xl p-6 w-full max-w-md',
+                    title: 'font-sans text-xl font-bold text-slate-900',
+                    confirmButton: 'bg-gradient-to-r from-amber-600 to-amber-500 hover:scale-105 text-white font-bold uppercase tracking-widest text-[10px] px-6 py-3.5 rounded-xl transition-all shadow-md',
+                    cancelButton: 'bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold uppercase tracking-widest text-[10px] px-6 py-3.5 rounded-xl transition-all'
+                },
+                didOpen: () => {
+                    const quantities = {};
+                    availableServices.forEach(s => quantities[s.id] = 0);
+                    
+                    const updateTotal = () => {
+                        let total = 0;
+                        availableServices.forEach(s => {
+                            total += (s.price * quantities[s.id]);
+                        });
+                        document.getElementById('total-price-preview').innerText = total.toLocaleString() + 'đ';
+                    };
+
+                    document.querySelectorAll('.btn-decrease').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.getAttribute('data-id');
+                            if (quantities[id] > 0) {
+                                quantities[id]--;
+                                document.getElementById(`qty-${id}`).innerText = quantities[id];
+                                updateTotal();
+                            }
+                        });
+                    });
+
+                    document.querySelectorAll('.btn-increase').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.getAttribute('data-id');
+                            quantities[id]++;
+                            document.getElementById(`qty-${id}`).innerText = quantities[id];
+                            updateTotal();
+                        });
+                    });
+                },
+                preConfirm: () => {
+                    const selected = [];
+                    availableServices.forEach(s => {
+                        const qty = parseInt(document.getElementById(`qty-${s.id}`).innerText);
+                        if (qty > 0) {
+                            selected.push({ serviceId: s.id, quantity: qty, price: s.price });
+                        }
+                    });
+                    if (selected.length === 0) {
+                        Swal.showValidationMessage('Vui lòng chọn ít nhất một dịch vụ');
+                        return false;
+                    }
+                    return selected;
+                }
+            });
+
+            if (isConfirmed && value) {
+                Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+                await axiosClient.post(`/bookings/${booking.id}/services`, { services: value });
+                Swal.fire({ icon: 'success', title: 'Thành công', text: 'Đã thêm dịch vụ vào hóa đơn của bạn!', confirmButtonColor: '#d97706', customClass: { popup: 'rounded-[2.5rem]' } });
+                
+                const resBookings = await axiosClient.get(`/bookings/user/${user.id}`);
+                setMyBookings(resBookings.data.sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id)));
+            }
+
+        } catch (err) {
+            Swal.fire('Lỗi', 'Không thể gọi dịch vụ lúc này', 'error');
+        }
+    };
+
     const renderStatusBadge = (booking) => {
         const status = booking.status;
         const checkInDate = new Date(booking.checkInDate);
@@ -522,16 +630,41 @@ const Profile = () => {
                 {/* ----------------- BOOKINGS TAB ----------------- */}
                 {activeTab === 'bookings' && (
                     <div className="space-y-8 max-w-4xl mx-auto">
-                        <div className="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
-                            <div>
-                                <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.stay_history')}</h3>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">{t('profile.discover_moments')}</p>
+                        <div className="flex flex-col gap-4 border-b border-slate-200 pb-6 mb-6">
+                            <div className="flex justify-between items-end">
+                                <div>
+                                    <h3 className="text-xl font-medium font-sans text-slate-900">{t('profile.stay_history')}</h3>
+                                    <p className="text-xs text-slate-500 mt-1 font-medium">{t('profile.discover_moments')}</p>
+                                </div>
+                                <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
                             </div>
-                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
+                            
+                            {/* Filter Tags Grid */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mt-2">
+                                {[
+                                    { id: 'all', label: 'Tất cả' },
+                                    { id: 'pending', label: 'Chờ thanh toán' },
+                                    { id: 'active', label: 'Sắp & Đang ở' },
+                                    { id: 'completed', label: 'Hoàn thành' },
+                                    { id: 'cancelled', label: 'Đã hủy' }
+                                ].map(filter => (
+                                    <button 
+                                        key={filter.id}
+                                        onClick={() => setFilterStatus(filter.id)}
+                                        className={`px-2 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all text-center whitespace-nowrap ${filterStatus === filter.id ? 'bg-slate-900 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+                                    >
+                                        {filter.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         <div className="grid gap-4">
-                            {myBookings.map((booking) => (
+                            {myBookings.filter(b => {
+                                if (filterStatus === 'all') return true;
+                                if (filterStatus === 'active') return b.status === 'confirmed' || b.status === 'checked_in';
+                                return b.status === filterStatus;
+                            }).map((booking) => (
                                 <div key={booking.id} className="group bg-white border border-slate-100 p-4 rounded-2xl hover:shadow-md transition-all duration-300 flex flex-col md:flex-row gap-4 items-center cursor-pointer" onClick={() => navigate(`/room/${booking.roomId}`)}>
                                     <div className="w-full md:w-32 h-24 rounded-xl overflow-hidden relative shrink-0">
                                         <img src={`/Hinh anh/Hinh${(booking.roomId % 20) + 1}.png`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Room" />
@@ -555,21 +688,27 @@ const Profile = () => {
                                                     Thanh toán ngay
                                                 </button>
                                             )}
-                                            <button 
-                                                onClick={(e) => { e.stopPropagation(); setPrintingBooking(booking); setTimeout(() => window.print(), 500); }}
-                                                className="px-4 py-2 mt-1 w-full bg-slate-900 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors shadow-sm"
-                                            >
-                                                <Printer size={12} />
-                                                {t('profile.print_invoice', 'In Phiếu')}
-                                            </button>
+                                            {(booking.status === 'checked_in' || booking.status === 'confirmed') && (
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); handleOrderService(booking); }}
+                                                    className="px-4 py-2 mt-1 w-full bg-emerald-600 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-700 transition-colors shadow-sm"
+                                                >
+                                                    <Bell size={12} />
+                                                    Gọi dịch vụ
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             ))}
-                            {myBookings.length === 0 && (
+                            {myBookings.filter(b => {
+                                if (filterStatus === 'all') return true;
+                                if (filterStatus === 'active') return b.status === 'confirmed' || b.status === 'checked_in';
+                                return b.status === filterStatus;
+                            }).length === 0 && (
                                 <div className="text-center py-24 bg-white border border-dashed border-slate-200 rounded-[3rem]">
                                     <Package size={48} className="mx-auto text-slate-300 mb-6" strokeWidth={1} />
-                                    <p className="text-slate-500 font-sans text-xl font-medium">{t('profile.new_journeys')}</p>
+                                    <p className="text-slate-500 font-sans text-xl font-medium">Không tìm thấy chuyến đi nào khớp với bộ lọc</p>
                                 </div>
                             )}
                         </div>
@@ -708,74 +847,7 @@ const Profile = () => {
                 )}
             </div>
 
-            {/* 🖨️ INVOICE TEMPLATE (Chỉ hiển thị khi in) */}
-            {printingBooking && (
-                <div className="hidden print:block fixed inset-0 bg-white text-black z-[9999] p-12 font-sans overflow-visible">
-                    <div className="max-w-4xl mx-auto border border-gray-200 p-12 rounded-xl">
-                        {/* Invoice Header */}
-                        <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
-                            <div>
-                                <h1 className="text-xl font-medium font-sans text-slate-900 mb-2">Uy Nam <span className="text-amber-600">Luxury</span></h1>
-                                <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin size={12}/> 123 Đường Ngọc Trai, Vinpearl, Việt Nam</p>
-                            </div>
-                            <div className="text-right">
-                                <h2 className="text-3xl font-black uppercase tracking-widest text-slate-200">PHIẾU XÁC NHẬN</h2>
-                                <p className="text-sm text-slate-600 font-bold mt-2">Mã Đơn: #{String(printingBooking.id).toUpperCase()}</p>
-                                <p className="text-xs text-slate-500 mt-1">Ngày lập: {new Date().toLocaleDateString('vi-VN')}</p>
-                            </div>
-                        </div>
 
-                        {/* Customer & Booking Info */}
-                        <div className="flex justify-between mb-12">
-                            <div className="bg-slate-50 p-6 rounded-2xl w-[45%]">
-                                <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-2">Thông tin khách hàng</p>
-                                <p className="font-bold text-slate-900 text-lg">{user?.fullName || 'Khách hàng'}</p>
-                                <p className="text-sm text-slate-600 mt-1">{user?.email}</p>
-                                <p className="text-sm text-slate-600">{user?.phone}</p>
-                            </div>
-                            <div className="bg-amber-50/50 p-6 rounded-2xl w-[45%] text-right">
-                                <p className="text-[10px] uppercase font-black tracking-widest text-amber-500 mb-2">Chi tiết đặt phòng</p>
-                                <p className="font-bold text-slate-900 text-lg">Phòng {printingBooking.room?.roomNumber || '---'}</p>
-                                <p className="text-sm text-slate-600 mt-1">Check-in: {new Date(printingBooking.checkInDate).toLocaleDateString('vi-VN')}</p>
-                                <p className="text-sm text-slate-600">Check-out: {new Date(printingBooking.checkOutDate).toLocaleDateString('vi-VN')}</p>
-                            </div>
-                        </div>
-
-                        {/* Table */}
-                        <table className="w-full text-left mb-12">
-                            <thead>
-                                <tr className="border-b-2 border-slate-900">
-                                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900">Diễn giải dịch vụ</th>
-                                    <th className="py-4 text-xs font-black uppercase tracking-widest text-slate-900 text-right w-1/4">Thành tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="border-b border-slate-100">
-                                    <td className="py-6">
-                                        <p className="text-sm font-bold text-slate-900">Phòng lưu trú hạng Sang (Room {printingBooking.room?.roomNumber})</p>
-                                        <p className="text-xs text-slate-500 mt-1">Trạng thái: {printingBooking.status === 'confirmed' ? 'Đã xác nhận' : printingBooking.status === 'pending' ? 'Đang chờ duyệt' : printingBooking.status === 'completed' ? 'Đã hoàn tất' : 'Đã hủy'}</p>
-                                    </td>
-                                    <td className="py-6 text-right text-sm font-black">{Number(printingBooking.totalPrice).toLocaleString('vi-VN')} đ</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        {/* Total & Signature */}
-                        <div className="flex justify-between items-end mt-10">
-                            <div className="w-1/2">
-                                <p className="text-[10px] font-bold text-slate-400">Vui lòng xuất trình phiếu này khi làm thủ tục nhận phòng.</p>
-                                <p className="text-[10px] font-bold text-slate-400">Uy Nam Luxury hân hạnh được phục vụ quý khách!</p>
-                            </div>
-                            <div className="w-1/3">
-                                <div className="flex justify-between py-4 text-amber-600">
-                                    <span className="font-black uppercase tracking-widest text-lg">Tổng giá trị</span>
-                                    <span className="font-black text-2xl">{Number(printingBooking.totalPrice).toLocaleString('vi-VN')} đ</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

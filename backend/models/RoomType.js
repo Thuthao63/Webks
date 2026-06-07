@@ -48,10 +48,10 @@ RoomType.associate = (models) => {
         as: 'rooms' 
     });
 
-    // Một Loại Phòng có thể có nhiều Dịch vụ riêng
-    RoomType.hasMany(models.Service, {
+    // 1 Loại phòng có nhiều Đơn giảm giá
+    RoomType.hasMany(models.Discount, {
         foreignKey: 'roomTypeId',
-        as: 'services'
+        as: 'discounts'
     });
 };
 
