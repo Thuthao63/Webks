@@ -14,6 +14,14 @@ const Service = sequelize.define('Service', {
     price: { 
         type: DataTypes.DECIMAL(10, 2), 
         allowNull: false 
+    },
+    roomTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'roomtypes',
+            key: 'id'
+        }
     }
 }, {
     tableName: 'services', // Khớp ERD
@@ -27,6 +35,12 @@ Service.associate = (models) => {
         through: models.BookingService, 
         foreignKey: 'serviceId',
         as: 'bookings' 
+    });
+
+    // 1 Dịch vụ chỉ thuộc về 1 Loại Phòng
+    Service.belongsTo(models.RoomType, {
+        foreignKey: 'roomTypeId',
+        as: 'roomType'
     });
 };
 

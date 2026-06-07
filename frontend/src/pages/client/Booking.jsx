@@ -61,12 +61,17 @@ const Booking = () => {
     window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
-        const [roomRes, discountRes, serviceRes] = await Promise.all([
-          axiosClient.get(`/rooms/${roomId}`),
+        const roomRes = await axiosClient.get(`/rooms/${roomId}`);
+        const currentRoom = roomRes.data;
+        setRoom(currentRoom);
+
+        const rTypeId = currentRoom?.roomType?.id || currentRoom?.typeId;
+
+        const [discountRes, serviceRes] = await Promise.all([
           axiosClient.get('/discounts/active'),
-          axiosClient.get('/services')
+          axiosClient.get(`/services?roomTypeId=${rTypeId}`)
         ]);
-        setRoom(roomRes.data);
+        
         setActiveDiscounts(discountRes.data || []);
         setAvailableServices(serviceRes.data || []);
       } catch (err) {

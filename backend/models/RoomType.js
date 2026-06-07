@@ -47,6 +47,12 @@ RoomType.associate = (models) => {
         foreignKey: 'typeId', 
         as: 'rooms' 
     });
+
+    // Một Loại Phòng có thể có nhiều Dịch vụ riêng
+    RoomType.hasMany(models.Service, {
+        foreignKey: 'roomTypeId',
+        as: 'services'
+    });
 };
 
 module.exports = RoomType;

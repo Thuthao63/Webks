@@ -64,7 +64,6 @@ const Footer = () => {
             <ul className="space-y-4">
               <FooterLink to="/about">{t('footer.story')}</FooterLink>
               <FooterLink to="/rooms">{t('footer.rooms')}</FooterLink>
-              <FooterLink to="/services">{t('footer.services')}</FooterLink>
               <FooterLink to="/contact">{t('footer.contact')}</FooterLink>
             </ul>
           </div>

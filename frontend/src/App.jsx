@@ -15,7 +15,6 @@ const RoomDetails = lazy(() => import('./pages/client/RoomDetails'));
 const Booking = lazy(() => import('./pages/client/Booking'));
 const PaymentResult = lazy(() => import('./pages/client/PaymentResult'));
 const Profile = lazy(() => import('./pages/client/Profile'));
-const Services = lazy(() => import('./pages/client/Services'));
 const Contact = lazy(() => import('./pages/client/Contact'));
 const About = lazy(() => import('./pages/client/About'));
 // Gallery and Promotions removed to simplify site
@@ -84,7 +83,6 @@ const AppContent = () => {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />

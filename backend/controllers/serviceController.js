@@ -1,10 +1,22 @@
 const Service = require('../models/Service');
 const BookingService = require('../models/BookingService');
 
+const RoomType = require('../models/RoomType');
+
 // Lấy danh sách dịch vụ
 exports.getAllServices = async (req, res) => {
     try {
-        const services = await Service.findAll({ order: [['createdAt', 'DESC']] });
+        const { roomTypeId } = req.query;
+        let whereClause = {};
+        if (roomTypeId) {
+            whereClause.roomTypeId = roomTypeId;
+        }
+
+        const services = await Service.findAll({ 
+            where: whereClause,
+            include: [{ model: RoomType, as: 'roomType', attributes: ['id', 'name'] }],
+            order: [['createdAt', 'DESC']] 
+        });
         res.status(200).json(services);
     } catch (error) {
         console.error("❌ Lỗi lấy dịch vụ:", error);
@@ -15,10 +27,10 @@ exports.getAllServices = async (req, res) => {
 // Tạo dịch vụ mới
 exports.createService = async (req, res) => {
     try {
-        const { name, price } = req.body;
-        if (!name || isNaN(price)) return res.status(400).json({ message: "Tên và giá hợp lệ là bắt buộc!" });
+        const { name, price, roomTypeId } = req.body;
+        if (!name || isNaN(price) || !roomTypeId) return res.status(400).json({ message: "Tên, giá và loại phòng hợp lệ là bắt buộc!" });
 
-        const service = await Service.create({ name, price });
+        const service = await Service.create({ name, price, roomTypeId });
         res.status(201).json({ message: "Thêm dịch vụ thành công!", service });
     } catch (error) {
         console.error("❌ Lỗi thêm dịch vụ:", error);
@@ -30,12 +42,12 @@ exports.createService = async (req, res) => {
 exports.updateService = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, price } = req.body;
+        const { name, price, roomTypeId } = req.body;
 
         const service = await Service.findByPk(id);
         if (!service) return res.status(404).json({ message: "Dịch vụ không tồn tại!" });
 
-        await service.update({ name, price });
+        await service.update({ name, price, roomTypeId: roomTypeId || service.roomTypeId });
         res.status(200).json({ message: "Cập nhật thành công!", service });
     } catch (error) {
         console.error("❌ Lỗi cập nhật dịch vụ:", error);

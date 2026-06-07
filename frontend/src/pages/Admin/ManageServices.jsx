@@ -6,16 +6,21 @@ import Swal from 'sweetalert2';
 
 const ManageServices = () => {
   const [services, setServices] = useState([]);
+  const [roomTypes, setRoomTypes] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', price: '' });
+  const [formData, setFormData] = useState({ name: '', price: '', roomTypeId: '' });
   const [loading, setLoading] = useState(true);
 
-  const fetchServices = async () => {
+  const fetchServicesAndTypes = async () => {
     setLoading(true);
     try {
-      const res = await axiosClient.get('/services');
-      setServices(res.data);
+      const [resServices, resTypes] = await Promise.all([
+        axiosClient.get('/services'),
+        axiosClient.get('/rooms/types')
+      ]);
+      setServices(resServices.data);
+      setRoomTypes(resTypes.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -24,7 +29,7 @@ const ManageServices = () => {
   };
 
   useEffect(() => {
-    fetchServices();
+    fetchServicesAndTypes();
   }, []);
 
   const luxurySwal = Swal.mixin({
@@ -43,10 +48,10 @@ const ManageServices = () => {
   const handleOpenForm = (service = null) => {
     if (service) {
       setEditingId(service.id);
-      setFormData({ name: service.name, price: service.price });
+      setFormData({ name: service.name, price: service.price, roomTypeId: service.roomTypeId || '' });
     } else {
       setEditingId(null);
-      setFormData({ name: '', price: '' });
+      setFormData({ name: '', price: '', roomTypeId: roomTypes[0]?.id || '' });
     }
     setIsFormOpen(true);
   };
@@ -61,7 +66,7 @@ const ManageServices = () => {
       }
       luxurySwal.fire({ icon: 'success', title: 'Hoàn tất', timer: 1500, showConfirmButton: false });
       setIsFormOpen(false);
-      fetchServices();
+      fetchServicesAndTypes();
     } catch (err) {
       luxurySwal.fire('Thất bại', 'Không thể lưu trữ thông tin dịch vụ', 'error');
     }
@@ -81,7 +86,7 @@ const ManageServices = () => {
       try {
         await axiosClient.delete(`/services/${serviceTarget.id}`);
         luxurySwal.fire({ icon: 'success', title: 'Đã xóa', timer: 1500, showConfirmButton: false });
-        fetchServices();
+        fetchServicesAndTypes();
       } catch (err) {
         luxurySwal.fire('Lỗi ràng buộc', 'Dịch vụ này đang được sử dụng trong các đơn đặt hàng.', 'error');
       }
@@ -136,6 +141,11 @@ const ManageServices = () => {
                   </div>
 
                   <h3 className="font-black text-xl text-slate-900 group-hover:text-amber-500 transition-colors tracking-tight mb-2">{service.name}</h3>
+                  <div className="mb-4">
+                     <span className="inline-block px-2.5 py-1 bg-amber-50 text-amber-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-amber-100">
+                         {service.roomType?.name || 'Chưa gán'}
+                     </span>
+                  </div>
                   <div className="flex items-baseline gap-2 mb-8">
                      <span className="text-xl font-medium font-sans text-slate-900">{Number(service.price).toLocaleString()}</span>
                      <span className="text-[10px] text-slate-500 font-black tracking-widest text-glow-amber">VNĐ</span>
@@ -192,6 +202,20 @@ const ManageServices = () => {
                                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 pr-10 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-black text-sm" />
                             <Banknote className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                         </div>
+                    </div>
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] text-slate-500 font-black tracking-widest ml-1">Áp dụng cho Loại phòng</label>
+                        <select 
+                            required
+                            value={formData.roomTypeId} 
+                            onChange={e => setFormData({...formData, roomTypeId: e.target.value})}
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-sm cursor-pointer appearance-none"
+                        >
+                            <option value="" disabled>-- Chọn loại phòng --</option>
+                            {roomTypes.map(type => (
+                                <option key={type.id} value={type.id}>{type.name}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
