@@ -167,37 +167,37 @@ const ManageServices = () => {
       {isFormOpen && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
             <div className="absolute inset-0" onClick={() => setIsFormOpen(false)} />
-            <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-10 rounded-[3.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
-                <button type="button" onClick={() => setIsFormOpen(false)} className="absolute top-8 right-8 text-slate-500 hover:text-slate-900 bg-slate-50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
-                    <X size={20} />
+            <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-sm p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
+                <button type="button" onClick={() => setIsFormOpen(false)} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 bg-slate-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                    <X size={16} />
                 </button>
 
-                <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
+                <h2 className="text-lg font-medium font-sans text-slate-900 mb-1">
                    {editingId ? 'Cập nhật' : 'Thêm'} <span className="text-amber-500">Dịch vụ</span>
                 </h2>
-                <p className="text-[10px] text-slate-500 tracking-[0.2em] font-bold mb-10">Thiết lập tham số cho hạng mục tiện ích</p>
+                <p className="text-[9px] text-slate-500 tracking-[0.2em] font-bold mb-6">Thiết lập tham số cho hạng mục tiện ích</p>
                 
-                <div className="space-y-6">
-                    <div className="space-y-2">
-                        <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Tên gọi dịch vụ</label>
+                <div className="space-y-4">
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] text-slate-500 font-black tracking-widest ml-1">Tên gọi dịch vụ</label>
                         <input type="text" placeholder="VD: Giặt ủi cao cấp" required
                             value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold text-sm" />
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-bold text-sm" />
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Đơn giá niêm yết</label>
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] text-slate-500 font-black tracking-widest ml-1">Đơn giá niêm yết</label>
                         <div className="relative">
                             <input type="number" placeholder="250000" required
                                 value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})}
-                                className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 pr-12 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-black text-sm" />
-                            <Banknote className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 pr-10 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all placeholder:text-slate-400 font-black text-sm" />
+                            <Banknote className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                         </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-12">
-                    <button type="button" onClick={() => setIsFormOpen(false)} className="py-4 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-2xl font-bold tracking-widest text-[10px] transition-all border border-slate-100">Hủy</button>
-                    <button type="submit" className="py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black tracking-widest text-[10px] transition-all shadow-luxury">Lưu thay đổi</button>
+                <div className="grid grid-cols-2 gap-3 mt-8">
+                    <button type="button" onClick={() => setIsFormOpen(false)} className="py-3 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-xl font-bold tracking-widest text-[9px] transition-all border border-slate-100">Hủy</button>
+                    <button type="submit" className="py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-xl font-black tracking-widest text-[9px] transition-all shadow-luxury">Lưu thay đổi</button>
                 </div>
             </form>
         </div>

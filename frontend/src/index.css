@@ -92,7 +92,7 @@
 /* ========================================================
    SWEETALERT2 LUXURY OVERRIDES
 ======================================================== */
-div:where(.swal2-container) div:where(.swal2-popup) {
+div:where(.swal2-container) div:where(.swal2-popup):not(.swal2-toast) {
   border-radius: 1.5rem !important;
   padding: 2.5rem 2rem !important;
   box-shadow: var(--shadow-luxury) !important;
@@ -101,7 +101,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   background-color: #ffffff !important;
 }
 
-div:where(.swal2-container) h2:where(.swal2-title) {
+div:where(.swal2-container):not(.swal2-top-end) h2:where(.swal2-title) {
   font-family: var(--font-serif) !important;
   font-style: italic !important;
   color: #0f172a !important; /* slate-900 */
@@ -110,7 +110,7 @@ div:where(.swal2-container) h2:where(.swal2-title) {
   margin-bottom: 0.5rem !important;
 }
 
-div:where(.swal2-container) div:where(.swal2-html-container) {
+div:where(.swal2-container):not(.swal2-top-end) div:where(.swal2-html-container) {
   color: #64748b !important; /* slate-500 */
   font-size: 0.875rem !important;
   margin: 0 !important;

@@ -24,7 +24,8 @@ axiosClient.interceptors.response.use(
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             if (window.location.pathname !== '/login') {
-                window.location.href = '/login';
+                const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
+                window.location.href = `/login?returnUrl=${currentUrl}`;
             }
         }
         return Promise.reject(error);

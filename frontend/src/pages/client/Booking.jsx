@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { Calendar, CreditCard, ArrowLeft, Loader2, Info, CheckCircle2, Star, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { AuthContext } from '../../context/AuthContext';
 
 // Import DatePicker và CSS của nó
 import DatePicker from "react-datepicker";
@@ -22,12 +23,13 @@ const Booking = () => {
   const [selectedServices, setSelectedServices] = useState({}); // { serviceId: quantity }
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const { user } = useContext(AuthContext);
   
-  // Promo Code States
   const [promoCodeInput, setPromoCodeInput] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(null);
   const [applyingCode, setApplyingCode] = useState(false);
   const [showVouchers, setShowVouchers] = useState(false);
+  const [promoError, setPromoError] = useState('');
   
   // Payment States
   const [showPayment, setShowPayment] = useState(false);
@@ -110,6 +112,7 @@ const Booking = () => {
   const handleApplyPromoCode = async (codeToApply = promoCodeInput) => {
       if (!codeToApply.trim()) return;
       setApplyingCode(true);
+      setPromoError('');
       try {
           const res = await axiosClient.post('/discounts/validate-code', {
               code: codeToApply,
@@ -121,7 +124,7 @@ const Booking = () => {
           Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `Áp dụng thành công mã giảm ${Math.floor(res.data.discountPercent)}%`, showConfirmButton: false, timer: 3000 });
       } catch (err) {
           setAppliedDiscount(null);
-          Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: err.response?.data?.message || 'Mã không hợp lệ', showConfirmButton: false, timer: 3000 });
+          setPromoError(err.response?.data?.message || 'Mã không hợp lệ');
       } finally {
           setApplyingCode(false);
       }
@@ -130,6 +133,7 @@ const Booking = () => {
   const handleRemovePromoCode = () => {
       setAppliedDiscount(null);
       setPromoCodeInput('');
+      setPromoError('');
   };
 
   const updateServiceQuantity = (serviceId, delta) => {
@@ -147,6 +151,25 @@ const Booking = () => {
   };
 
   const handleBooking = async () => {
+    if (!user) {
+        Swal.fire({
+            title: t('booking.login_required') || 'Vui lòng đăng nhập',
+            text: t('booking.login_to_book') || 'Bạn cần đăng nhập hoặc tạo tài khoản để giữ chỗ và thanh toán.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#d97706',
+            cancelButtonColor: '#f87171',
+            confirmButtonText: 'Đăng nhập ngay',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const returnUrl = `/booking/${roomId}?checkInDate=${startDate.toISOString().split('T')[0]}&checkOutDate=${endDate.toISOString().split('T')[0]}`;
+                navigate(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+            }
+        });
+        return;
+    }
+
     if (totalPrice <= 0) {
       return Swal.fire(t('booking.notice'), t('booking.invalid_dates'), 'warning');
     }
@@ -360,62 +383,71 @@ const Booking = () => {
                 </div>
 
                 {/* Promo Code Section */}
-                <div className="pt-6 border-t border-gray-50 space-y-4">
-                  <div className="space-y-3 relative">
-                    <label className="text-xs uppercase tracking-widest text-gray-400 font-medium ml-4 font-sans">Mã Khuyến Mãi / Voucher</label>
-                    <div className="flex gap-2 relative">
-                        <input 
-                            type="text" 
-                            placeholder="Nhập mã (VD: SUMMER)" 
-                            value={promoCodeInput}
-                            onChange={(e) => setPromoCodeInput(e.target.value.toUpperCase())}
-                            disabled={!!appliedDiscount || applyingCode}
-                            className="flex-1 bg-gray-50 border border-gray-100 p-4 rounded-2xl text-sm focus:border-amber-600 focus:bg-white outline-none transition-all text-gray-900 font-bold uppercase tracking-widest disabled:opacity-50"
-                        />
-                        {appliedDiscount ? (
-                            <button onClick={handleRemovePromoCode} className="px-6 bg-rose-50 text-rose-500 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-rose-100 transition-colors">
-                                Hủy
-                            </button>
-                        ) : (
-                            <button onClick={() => handleApplyPromoCode()} disabled={applyingCode || !promoCodeInput} className="px-6 bg-slate-900 text-white rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors disabled:opacity-50">
-                                {applyingCode ? <Loader2 size={16} className="animate-spin" /> : 'Áp dụng'}
-                            </button>
-                        )}
-                    </div>
-                    
-                    {!appliedDiscount && activeDiscounts.length > 0 && (
-                        <div className="mt-2">
-                           <button onClick={() => setShowVouchers(!showVouchers)} className="text-[11px] text-amber-600 font-bold uppercase tracking-widest hover:underline flex items-center gap-1 ml-4">
-                               <Tag size={12} /> Hoặc chọn mã có sẵn ({activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length})
-                           </button>
-                           
-                           {showVouchers && (
-                               <div className="mt-3 bg-white border border-amber-200/50 rounded-2xl p-2 space-y-2 shadow-xl absolute z-20 w-full left-0">
-                                   {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).map(d => (
-                                       <div key={d.id} className="flex items-center justify-between p-3 hover:bg-amber-50 rounded-xl transition-colors border border-transparent hover:border-amber-100 group cursor-pointer" onClick={() => handleApplyPromoCode(d.code)}>
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-black text-xs">
-                                                    %
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm font-black text-gray-900 uppercase tracking-widest">{d.code}</div>
-                                                    <div className="text-[10px] text-gray-500">{d.description}</div>
-                                                </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-sm font-bold text-rose-500">-{Math.floor(d.discountPercent)}%</div>
-                                                <button className="text-[10px] text-amber-600 font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Áp dụng</button>
-                                            </div>
-                                       </div>
-                                   ))}
-                                   {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length === 0 && (
-                                       <div className="p-4 text-center text-xs text-gray-500">Không có mã nào áp dụng cho phòng này</div>
-                                   )}
-                               </div>
-                           )}
-                        </div>
-                    )}
+                <div className="pt-6 border-t border-gray-50 space-y-2.5">
+                  <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold ml-4 font-sans">Mã Khuyến Mãi / Voucher</label>
+                  <div className="relative">
+                      <div className={`flex items-center bg-gray-50 border ${promoError ? 'border-rose-400 focus-within:border-rose-500' : 'border-gray-100 focus-within:border-amber-600'} rounded-xl focus-within:bg-white transition-all overflow-hidden p-1 shadow-sm`}>
+                          <Tag size={14} className={promoError ? "text-rose-400 ml-3" : "text-amber-500 ml-3"} />
+                          <input 
+                              type="text" 
+                              placeholder="Nhập mã ưu đãi..." 
+                              value={promoCodeInput}
+                              onChange={(e) => { setPromoCodeInput(e.target.value.toUpperCase()); setPromoError(''); }}
+                              disabled={!!appliedDiscount || applyingCode}
+                              className={`flex-1 bg-transparent border-none p-2 text-xs outline-none font-bold uppercase tracking-widest disabled:opacity-50 ${promoError ? 'text-rose-500' : 'text-gray-900'}`}
+                          />
+                          {appliedDiscount ? (
+                              <button onClick={handleRemovePromoCode} className="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-[9px] font-bold uppercase tracking-widest hover:bg-rose-100 transition-colors whitespace-nowrap">
+                                  Hủy mã
+                              </button>
+                          ) : (
+                              <button onClick={() => handleApplyPromoCode()} disabled={applyingCode || !promoCodeInput} className="px-4 py-2 bg-slate-900 text-white rounded-lg text-[9px] font-bold uppercase tracking-widest hover:bg-amber-600 transition-colors disabled:opacity-50 whitespace-nowrap">
+                                  {applyingCode ? <Loader2 size={12} className="animate-spin" /> : 'Áp dụng'}
+                              </button>
+                          )}
+                      </div>
+                      {promoError && (
+                          <p className="text-rose-500 text-[9px] font-bold mt-2 ml-4 uppercase tracking-widest flex items-center gap-1 animate-in fade-in slide-in-from-top-1">
+                              <Info size={10} /> {promoError}
+                          </p>
+                      )}
                   </div>
+                  
+                  {!appliedDiscount && activeDiscounts.length > 0 && (
+                      <div className="relative mt-2">
+                         <button onClick={() => setShowVouchers(!showVouchers)} className="text-[10px] text-amber-600 font-bold uppercase tracking-widest hover:underline flex items-center gap-1.5 ml-4">
+                             <Tag size={10} /> Khám phá {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length} mã có sẵn
+                         </button>
+                         
+                         {showVouchers && (
+                             <div className="mt-2 bg-white border border-gray-100 rounded-2xl p-3 shadow-xl absolute z-20 w-full left-0 origin-top animate-in fade-in zoom-in-95 duration-200">
+                                 <h4 className="text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2 ml-1">Voucher khả dụng</h4>
+                                 <div className="space-y-1.5 max-h-48 overflow-y-auto admin-scrollbar pr-1">
+                                     {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).map(d => (
+                                         <div key={d.id} className="flex items-center justify-between p-2.5 hover:bg-amber-50/50 rounded-xl transition-all border border-gray-50 hover:border-amber-200 group cursor-pointer" onClick={() => handleApplyPromoCode(d.code)}>
+                                              <div className="flex items-center gap-3">
+                                                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-[10px] border border-amber-100 shrink-0">
+                                                      %
+                                                  </div>
+                                                  <div>
+                                                      <div className="text-xs font-black text-gray-900 uppercase tracking-widest">{d.code}</div>
+                                                      <div className="text-[9px] text-gray-500 font-medium line-clamp-1 mt-0.5">{d.description}</div>
+                                                  </div>
+                                              </div>
+                                              <div className="text-right flex flex-col items-end gap-1 shrink-0 ml-2">
+                                                  <div className="text-xs font-black text-rose-500">-{Math.floor(d.discountPercent)}%</div>
+                                                  <button className="text-[8px] bg-amber-100 text-amber-700 px-2 py-1 rounded-md font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Áp dụng</button>
+                                              </div>
+                                         </div>
+                                     ))}
+                                     {activeDiscounts.filter(d => d.roomTypeId === (room?.roomType?.id || room?.typeId)).length === 0 && (
+                                         <div className="p-3 text-center text-[10px] text-gray-500">Không có mã nào áp dụng cho phòng này</div>
+                                     )}
+                                 </div>
+                             </div>
+                         )}
+                      </div>
+                  )}
                 </div>
 
                 <div className="pt-6 border-t border-gray-50 space-y-3">

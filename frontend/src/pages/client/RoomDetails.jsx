@@ -152,16 +152,10 @@ const RoomDetails = () => {
                             <div>
                                 <p className="text-[10px] text-slate-400 uppercase tracking-[0.1em] font-black mb-2 italic flex items-center gap-2 font-sans">
                                     {t('room_details.standard_fee')}
-                                    {discount && <span className="bg-rose-500 text-white px-2 py-0.5 rounded text-[8px] animate-pulse font-sans">-{Math.floor(discount.discountPercent)}% OFF</span>}
                                 </p>
                                 <div className="flex items-baseline gap-3">
-                                    {discount && (
-                                        <p className="text-lg text-slate-300 line-through font-sans">
-                                            {Number(details.price || 0).toLocaleString()}
-                                        </p>
-                                    )}
                                     <p className="text-xl font-medium text-amber-500 font-sans">
-                                        {(Number(details.price || 0) * (discount ? (1 - discount.discountPercent / 100) : 1)).toLocaleString()}
+                                        {Number(details.price || 0).toLocaleString()}
                                         <span className="text-[10px] text-slate-400 not-italic uppercase font-black tracking-widest ml-3 font-sans">{t('room_details.currency_per_night')}</span>
                                     </p>
                                 </div>

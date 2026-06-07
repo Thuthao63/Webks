@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { AuthContext } from '../../context/AuthContext';
 import { Mail, Lock, Eye, EyeOff, Loader2, LogIn } from 'lucide-react';
@@ -17,6 +17,7 @@ const Login = () => {
   const { t } = useTranslation();
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,7 +40,9 @@ const Login = () => {
       if (res.data.user.role?.toLowerCase() === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        navigate('/');
+        const searchParams = new URLSearchParams(location.search);
+        const returnUrl = searchParams.get('returnUrl');
+        navigate(returnUrl || '/');
       }
     } catch (err) {
       Swal.fire({
@@ -142,7 +145,7 @@ const Login = () => {
       >
         <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">
           {t('auth.no_account')}
-          <Link to="/register" className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.register')}</Link>
+          <Link to={`/register${new URLSearchParams(location.search).get('returnUrl') ? `?returnUrl=${encodeURIComponent(new URLSearchParams(location.search).get('returnUrl'))}` : ''}`} className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.register')}</Link>
         </p>
       </motion.div>
     </AuthLayout>

@@ -145,11 +145,11 @@ const ManageDiscounts = () => {
                                         <tr key={discount.id} className="group hover:bg-slate-50/50 font-sans transition-all">
                                             <td className="px-8 py-5">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:border-amber-500/30 transition-all font-black text-sm uppercase tracking-widest">
+                                                    <div className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 font-black text-xs uppercase tracking-widest whitespace-nowrap shadow-sm">
                                                         {discount.code}
                                                     </div>
-                                                    <div>
-                                                        <p className="text-slate-700 font-medium text-sm font-sans">{discount.description || 'Chương trình khuyến mãi'}</p>
+                                                    <div className="flex-1">
+                                                        <p className="text-slate-700 font-medium text-sm font-sans line-clamp-2">{discount.description || 'Chương trình khuyến mãi'}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -215,41 +215,41 @@ const ManageDiscounts = () => {
                 {showModal && (
                     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
                         <div className="absolute inset-0" onClick={() => setShowModal(false)} />
-                        <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-xl p-10 rounded-[3.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
-                            <button type="button" onClick={() => setShowModal(false)} className="absolute top-8 right-8 text-slate-500 hover:text-slate-900 bg-slate-50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
-                                <X size={20} />
+                        <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
+                            <button type="button" onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 bg-slate-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                                <X size={16} />
                             </button>
 
-                            <h2 className="text-xl font-medium font-sans text-slate-900 mb-2">
+                            <h2 className="text-lg font-medium font-sans text-slate-900 mb-1">
                                 Thiết lập <span className="text-amber-500">Giảm giá</span>
                             </h2>
-                            <p className="text-[10px] text-slate-500  tracking-[0.2em] font-bold mb-10">Tạo chương trình khuyến mãi mới cho loại phòng</p>
+                            <p className="text-[9px] text-slate-500  tracking-[0.2em] font-bold mb-6">Tạo chương trình khuyến mãi mới cho loại phòng</p>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
-                                <div className="space-y-2 md:col-span-2 relative">
-                                    <label className="text-[10px] text-slate-500 font-black tracking-widest ml-1">Mã Khuyến Mãi</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6">
+                                <div className="space-y-1.5 md:col-span-2 relative">
+                                    <label className="text-[9px] text-slate-500 font-black tracking-widest ml-1">Mã Khuyến Mãi</label>
                                     <div className="relative">
                                         <input 
                                             type="text" placeholder="VD: SUMMER2024" required
-                                            className="w-full bg-slate-50 border border-slate-200 text-amber-600 uppercase p-4 pr-32 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-black tracking-widest"
+                                            className="w-full bg-slate-50 border border-slate-200 text-amber-600 uppercase p-3 pr-28 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-black tracking-widest text-sm"
                                             value={formData.code}
                                             onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                                         />
                                         <button 
                                             type="button" 
                                             onClick={() => setFormData({ ...formData, code: 'KSUN' + Math.floor(Math.random() * 9000 + 1000) })}
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-amber-200 transition-colors"
+                                            className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-amber-100 text-amber-700 px-2.5 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-amber-200 transition-colors"
                                         >
                                             Sinh mã ngẫu nhiên
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Hạng phòng áp dụng</label>
+                                <div className="space-y-1.5 md:col-span-2">
+                                    <label className="text-[9px] text-slate-500  font-black tracking-widest ml-1">Hạng phòng áp dụng</label>
                                     <select 
                                         required 
-                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold appearance-none cursor-pointer"
+                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold appearance-none cursor-pointer text-sm"
                                         value={formData.roomTypeId}
                                         onChange={e => setFormData({ ...formData, roomTypeId: e.target.value })}
                                     >
@@ -262,41 +262,41 @@ const ManageDiscounts = () => {
                                     </select>
                                 </div>
                                 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Mức giảm (%)</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-[9px] text-slate-500  font-black tracking-widest ml-1">Mức giảm (%)</label>
                                     <input 
                                         type="number" placeholder="20" required min="1" max="90"
-                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-amber-500"
+                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-amber-500 text-sm"
                                         value={formData.discountPercent}
                                         onChange={e => setFormData({ ...formData, discountPercent: e.target.value })}
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Mô tả ngắn</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-[9px] text-slate-500  font-black tracking-widest ml-1">Mô tả ngắn</label>
                                     <input 
                                         type="text" placeholder="Ưu đãi mùa hè" required
-                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
+                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-sm"
                                         value={formData.description}
                                         onChange={e => setFormData({ ...formData, description: e.target.value })}
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Ngày bắt đầu</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-[9px] text-slate-500  font-black tracking-widest ml-1">Ngày bắt đầu</label>
                                     <input 
                                         type="date" required
-                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
+                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-sm"
                                         value={formData.startDate}
                                         onChange={e => setFormData({ ...formData, startDate: e.target.value })}
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-slate-500  font-black tracking-widest ml-1">Ngày kết thúc</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-[9px] text-slate-500  font-black tracking-widest ml-1">Ngày kết thúc</label>
                                     <input 
                                         type="date" required
-                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-4 rounded-2xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold"
+                                        className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-3 rounded-xl outline-none focus:border-amber-500/50 focus:bg-slate-100 transition-all font-bold text-sm"
                                         value={formData.endDate}
                                         onChange={e => setFormData({ ...formData, endDate: e.target.value })}
                                     />
@@ -306,7 +306,7 @@ const ManageDiscounts = () => {
                             <button 
                                 type="submit" 
                                 disabled={submitting}
-                                className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black  tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                                className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-xl font-black tracking-widest text-[10px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
                             >
                                 {submitting ? (
                                     <Loader2 className="animate-spin mx-auto" size={18} />

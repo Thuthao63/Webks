@@ -366,9 +366,6 @@ const RoomList = () => {
                     const isAvailable = room.status !== 'Maintenance';
                     const discount = activeDiscounts.find(d => d.roomTypeId === details.id);
                     const originalPrice = Number(details.price || 0);
-                    const discountedPrice = discount 
-                      ? originalPrice * (1 - Number(discount.discountPercent) / 100) 
-                      : originalPrice;
                     
                     return (
                       <div 
@@ -387,11 +384,7 @@ const RoomList = () => {
                           <div className={`absolute top-3 left-3 backdrop-blur-md px-2.5 py-1 border text-[9px] font-black uppercase tracking-widest rounded-lg transition-colors ${isAvailable ? 'bg-emerald-50/90 text-emerald-600 border-emerald-100' : 'bg-red-50/90 text-red-600 border-red-100'}`}>
                             {isAvailable ? t('roomList.available') : t('roomList.sold_out')}
                           </div>
-                          {discount && (
-                            <div className="absolute top-3 right-3 bg-rose-500 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg animate-pulse">
-                              {t('roomList.discount', 'Ưu đãi')} -{Math.floor(discount.discountPercent)}%
-                            </div>
-                          )}
+
                           <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2 py-1 rounded-lg text-[9px] font-black text-amber-500 border border-white/10 uppercase tracking-widest">
                             {t('roomDetails.room')} {room.roomNumber}
                           </div>
@@ -410,13 +403,8 @@ const RoomList = () => {
                               <p className="text-[8px] text-slate-400 uppercase tracking-widest font-black italic font-sans">Private Collection</p>
                             </div>
                             <div className="text-right">
-                              {discount && (
-                                <p className="text-[9px] text-slate-300 line-through font-bold decoration-rose-500/30">
-                                  {originalPrice.toLocaleString()}đ
-                                </p>
-                              )}
                               <p className="text-amber-500 font-serif text-[15px] italic leading-none mt-1">
-                                {discountedPrice.toLocaleString()}
+                                {originalPrice.toLocaleString()}
                               </p>
                               <span className="text-[8px] text-slate-300 uppercase tracking-widest font-black mt-1 block">{t('roomList.per_night')}</span>
                             </div>

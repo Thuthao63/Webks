@@ -16,6 +16,7 @@ const Verify = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email || "Email của bạn";
+  const returnUrl = location.state?.returnUrl;
 
   // Focus ô đầu tiên khi load
   useEffect(() => {
@@ -62,7 +63,7 @@ const Verify = () => {
         confirmButtonColor: '#d97706',
         timer: 2000 
       });
-      navigate('/login');
+      navigate(returnUrl ? `/login?returnUrl=${encodeURIComponent(returnUrl)}` : '/login');
     } catch (err) {
       Swal.fire({
         icon: 'error',

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { Mail, Lock, Phone, User, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
@@ -17,6 +17,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -44,7 +45,9 @@ const Register = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      navigate('/verify', { state: { email: formData.email } });
+      const searchParams = new URLSearchParams(location.search);
+      const returnUrl = searchParams.get('returnUrl');
+      navigate('/verify', { state: { email: formData.email, returnUrl } });
     } catch (err) {
       Swal.fire({
         icon: 'error',
@@ -166,7 +169,7 @@ const Register = () => {
       >
         <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">
           {t('auth.has_account')} 
-          <Link to="/login" className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.login_btn')}</Link>
+          <Link to={`/login${new URLSearchParams(location.search).get('returnUrl') ? `?returnUrl=${encodeURIComponent(new URLSearchParams(location.search).get('returnUrl'))}` : ''}`} className="text-amber-500 hover:text-amber-400 ml-1.5 transition-colors font-black uppercase underline decoration-amber-500/30 underline-offset-4">{t('auth.login_btn')}</Link>
         </p>
       </motion.div>
     </AuthLayout>
