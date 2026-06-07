@@ -318,27 +318,27 @@ const Home = () => {
               <h3 className="text-4xl md:text-6xl italic font-serif text-gray-900">{t('home.great_memories')} <span className="not-italic text-amber-600">{t('home.great_memories_italic')}</span></h3>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-6">
               {reviews.map((rev) => (
-                <div key={rev.id} className="relative p-8 bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group flex flex-col justify-between h-full">
-                  <Quote className="absolute top-8 right-8 text-amber-500/10 group-hover:text-amber-500/20 transition-colors" size={48} />
+                <div key={rev.id} className="relative p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between h-full">
+                  <Quote className="absolute top-6 right-6 text-amber-500/10 group-hover:text-amber-500/20 transition-colors" size={32} />
                   
                   <div>
-                    <div className="flex gap-1 mb-5">
+                    <div className="flex gap-1 mb-3">
                       {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} size={14} className="text-amber-500" fill="currentColor" />
+                        <Star key={i} size={12} className="text-amber-500" fill="currentColor" />
                       ))}
                     </div>
-                    <p className="text-gray-600 italic leading-relaxed text-sm mb-8 relative z-10 line-clamp-4">"{rev.comment}"</p>
+                    <p className="text-gray-600 italic leading-relaxed text-sm mb-4 relative z-10 line-clamp-4">"{rev.comment}"</p>
                   </div>
                   
-                  <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-50">
-                    <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                  <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-50">
+                    <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xs shadow-sm">
                       {rev.reviewer?.fullName?.charAt(0).toUpperCase() || 'G'}
                     </div>
                     <div>
                       <p className="text-xs font-bold uppercase tracking-wider text-slate-900">{rev.reviewer?.fullName || 'Khách hàng'}</p>
-                      <p className="text-[10px] text-amber-600 uppercase tracking-widest font-semibold mt-0.5">
+                      <p className="text-[9px] text-amber-600 uppercase tracking-widest font-semibold mt-0.5">
                         {rev.room ? `Phòng ${rev.room.roomNumber}` : t('home.elite_member_badge')}
                       </p>
                     </div>

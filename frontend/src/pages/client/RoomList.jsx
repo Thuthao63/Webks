@@ -150,7 +150,7 @@ const RoomList = () => {
           <div className="flex flex-col lg:flex-row gap-6">
             
             {/* Sidebar Bộ lọc */}
-            <aside className="lg:w-1/5 space-y-4 h-fit lg:sticky lg:top-24">
+            <aside className="lg:w-1/5 space-y-4 h-fit lg:sticky lg:top-[100px] max-h-[calc(100vh-120px)] overflow-y-auto no-scrollbar">
               <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-premium space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">

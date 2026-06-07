@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import AdminLayout from '../../components/AdminLayout';
 import { Plus, Edit, Trash2, Bed, X, Loader2, Calendar, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
@@ -297,10 +298,12 @@ const ManageRooms = () => {
         )}
 
         {/* Modal Form */}
-        {showModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-            <div className="absolute inset-0" onClick={() => setShowModal(false)} />
-            <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
+        {showModal && createPortal(
+          <div className="fixed inset-0 z-[100]">
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+            <div className="fixed inset-0 overflow-y-auto custom-scrollbar">
+              <div className="flex min-h-full items-start justify-center p-4 pt-16 pb-20">
+                <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-6 sm:p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300 max-h-[85vh] overflow-y-auto custom-scrollbar">
                <button type="button" onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 bg-slate-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
                   <X size={16} />
                </button>
@@ -416,8 +419,11 @@ const ManageRooms = () => {
                   <CheckCircle size={14} className="text-amber-500" />
                   {isEdit ? 'LƯU THAY ĐỔI' : 'XÁC NHẬN THÊM PHÒNG'}
                </button>
-            </form>
-          </div>
+               </form>
+              </div>
+            </div>
+          </div>,
+          document.body
         )}
       </div>
     </AdminLayout>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import axiosClient from '../../api/axiosClient';
 import Swal from 'sweetalert2';
 import { FileText, Plus, Trash2, Edit, X, Calendar, Image as ImageIcon } from 'lucide-react';
@@ -181,10 +182,12 @@ const ManageBlogs = () => {
                 )}
 
                 {/* Modal Form */}
-                {showModal && (
-                    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-                        <div className="absolute inset-0" onClick={() => { setShowModal(false); setEditId(null); setFormData({ title: '', slug: '', image: null, tags: '', content: '' }); }} />
-                        <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-2xl p-10 rounded-[3.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto admin-scrollbar">
+                {showModal && createPortal(
+                    <div className="fixed inset-0 z-[100]">
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => { setShowModal(false); setEditId(null); setFormData({ title: '', slug: '', image: null, tags: '', content: '' }); }} />
+                        <div className="fixed inset-0 overflow-y-auto custom-scrollbar">
+                            <div className="flex min-h-full items-start justify-center p-4 pt-16 pb-20">
+                                <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-2xl p-6 sm:p-10 rounded-[3.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300 max-h-[85vh] overflow-y-auto custom-scrollbar">
                             <button type="button" onClick={() => { setShowModal(false); setEditId(null); setFormData({ title: '', slug: '', image: null, tags: '', content: '' }); }} className="absolute top-8 right-8 text-slate-500 hover:text-slate-900 bg-slate-50 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
                                 <X size={20} />
                             </button>
@@ -234,8 +237,11 @@ const ManageBlogs = () => {
                             <button type="submit" className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-2xl font-black  tracking-widest text-[11px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all">
                                 {editId ? 'Lưu cập nhật' : 'Xuất bản bài viết'}
                             </button>
-                        </form>
-                    </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
                 )}
             </div>
         </AdminLayout>

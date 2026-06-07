@@ -205,57 +205,42 @@ const Navbar = () => {
                   {isUserMenuOpen && (
                     <>
                       <div className="fixed inset-0 z-[-1]" onClick={() => setIsUserMenuOpen(false)}></div>
-                      <div className="absolute right-0 mt-4 w-64 bg-white/95 backdrop-blur-3xl border border-slate-200/60 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                        {/* Member Card Header */}
-                        <div className="p-5 bg-gradient-to-br from-amber-500/10 to-transparent relative overflow-hidden group/header border-b border-slate-100">
-                          <Star className="absolute top-4 right-4 text-amber-500 opacity-10 group-hover/header:opacity-30 group-hover/header:rotate-12 transition-all duration-700" size={32} strokeWidth={1} />
-                          
-                          <div className="relative z-10">
-                            <span className="text-[10px] text-amber-600 uppercase font-black tracking-[0.15em] mb-1.5 block">{t('nav.elite_member')}</span>
-                            <h4 className="text-slate-900 font-serif text-lg italic leading-none mb-1.5">{user.fullName}</h4>
-                            <p className="text-xs text-slate-500 tracking-wide font-medium truncate">
-                              {user.email}
-                            </p>
-                          </div>
+                      <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                        {/* Header */}
+                        <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                          <p className="text-sm font-bold text-slate-900 truncate">{user.fullName}</p>
+                          <p className="text-xs text-slate-500 truncate">{user.email}</p>
                         </div>
 
-                        <div className="p-2 space-y-1 bg-white/50">
+                        {/* Menu Items */}
+                        <div className="py-1">
                           {user.role?.toLowerCase() === 'admin' && (
                             <button 
                               onClick={() => { navigate('/admin/dashboard'); setIsUserMenuOpen(false); }} 
-                              className="w-full flex items-center gap-3 px-4 py-2.5 text-amber-600 hover:bg-amber-50 rounded-2xl transition-colors duration-300"
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors"
                             >
-                              <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center">
-                                <Settings size={14} />
-                              </div>
-                              <div className="text-left">
-                                <p className="text-xs font-black uppercase tracking-wider leading-none mb-0.5">{t('nav.admin_system')}</p>
-                                <p className="text-[9px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.full_control')}</p>
-                              </div>
+                              <Settings size={16} className="text-slate-400" />
+                              <span>{t('nav.admin_system', 'Hệ thống Admin')}</span>
                             </button>
                           )}
                           
                           <button 
                             onClick={() => { navigate('/profile'); setIsUserMenuOpen(false); }} 
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-700 hover:bg-slate-50 rounded-2xl transition-colors duration-300"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors"
                           >
-                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                              <User size={14} className="text-slate-500" />
-                            </div>
-                            <div className="text-left">
-                              <p className="text-xs font-black uppercase tracking-wider leading-none mb-0.5">{t('nav.personal_profile')}</p>
-                              <p className="text-[9px] text-slate-400 uppercase tracking-widest leading-none">{t('nav.guest_settings')}</p>
-                            </div>
+                            <User size={16} className="text-slate-400" />
+                            <span>{t('nav.personal_profile', 'Hồ sơ cá nhân')}</span>
                           </button>
                         </div>
 
-                        <div className="p-3 bg-slate-50/80 border-t border-slate-100">
+                        {/* Logout */}
+                        <div className="border-t border-slate-100 py-1">
                           <button 
                             onClick={handleLogout} 
-                            className="w-full flex items-center justify-center gap-2 py-2.5 text-rose-500 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-xl transition-colors duration-300 text-[11px] font-black uppercase tracking-widest"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors"
                           >
-                            <LogOut size={14} />
-                            <span>{t('nav.logout_now')}</span>
+                            <LogOut size={16} className="text-rose-500" />
+                            <span>{t('nav.logout_now', 'Đăng xuất')}</span>
                           </button>
                         </div>
                       </div>

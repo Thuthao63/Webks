@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import AdminLayout from '../../components/AdminLayout';
 import axiosClient from '../../api/axiosClient';
-import { Plus, Trash2, Tag, Calendar, Loader2, X, Percent, AlertCircle } from "lucide-react";
+import { Plus, Trash2, Tag, Calendar, Loader2, X, Percent, AlertCircle, CheckCircle } from "lucide-react";
 import Swal from 'sweetalert2';
 
 const ManageDiscounts = () => {
@@ -212,10 +213,12 @@ const ManageDiscounts = () => {
                 )}
 
                 {/* Modal Form */}
-                {showModal && (
-                    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-                        <div className="absolute inset-0" onClick={() => setShowModal(false)} />
-                        <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
+                {showModal && createPortal(
+                    <div className="fixed inset-0 z-[100]">
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+                        <div className="fixed inset-0 overflow-y-auto custom-scrollbar">
+                            <div className="flex min-h-full items-start justify-center p-4 pt-16 pb-20">
+                                <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-md p-6 sm:p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300 max-h-[85vh] overflow-y-auto custom-scrollbar">
                             <button type="button" onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 bg-slate-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
                                 <X size={16} />
                             </button>
@@ -306,18 +309,22 @@ const ManageDiscounts = () => {
                             <button 
                                 type="submit" 
                                 disabled={submitting}
-                                className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-xl font-black tracking-widest text-[10px] shadow-luxury hover:scale-[1.02] active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                                className="w-full py-3.5 bg-slate-900 text-white rounded-xl font-black tracking-widest text-[10px] shadow-2xl shadow-slate-900/20 hover:scale-[1.02] hover:bg-slate-800 active:scale-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                             >
                                 {submitting ? (
                                     <Loader2 className="animate-spin mx-auto" size={18} />
                                 ) : (
-                                    <span className="flex items-center justify-center gap-2">
-                                        Kích hoạt chương trình <ArrowUpRight size={16} strokeWidth={3} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                    </span>
+                                    <>
+                                        <CheckCircle size={14} className="text-amber-500" />
+                                        KÍCH HOẠT CHƯƠNG TRÌNH
+                                    </>
                                 )}
                             </button>
                         </form>
-                    </div>
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
                 )}
             </div>
             

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import AdminLayout from '../../components/AdminLayout';
 import { Plus, Coffee, MoreVertical, Trash2, X, Banknote, Loader2 } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
@@ -176,10 +177,12 @@ const ManageServices = () => {
       </div>
 
       {/* Modal Form */}
-      {isFormOpen && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-            <div className="absolute inset-0" onClick={() => setIsFormOpen(false)} />
-            <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-sm p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300">
+      {isFormOpen && createPortal(
+        <div className="fixed inset-0 z-[100]">
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsFormOpen(false)} />
+            <div className="fixed inset-0 overflow-y-auto custom-scrollbar">
+                <div className="flex min-h-full items-start justify-center p-4 pt-16 pb-20">
+                    <form onSubmit={handleSubmit} className="relative bg-white border border-slate-200 w-full max-w-sm p-6 sm:p-8 rounded-[2.5rem] shadow-luxury z-10 animate-in zoom-in-95 duration-300 max-h-[85vh] overflow-y-auto custom-scrollbar">
                 <button type="button" onClick={() => setIsFormOpen(false)} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 bg-slate-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
                     <X size={16} />
                 </button>
@@ -233,8 +236,11 @@ const ManageServices = () => {
                     <button type="button" onClick={() => setIsFormOpen(false)} className="py-3 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-xl font-bold tracking-widest text-[9px] transition-all border border-slate-100">Hủy</button>
                     <button type="submit" className="py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-black rounded-xl font-black tracking-widest text-[9px] transition-all shadow-luxury">Lưu thay đổi</button>
                 </div>
-            </form>
-        </div>
+                </form>
+                </div>
+            </div>
+        </div>,
+        document.body
       )}
     </AdminLayout>
   );

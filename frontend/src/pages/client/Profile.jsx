@@ -639,19 +639,19 @@ const Profile = () => {
                                 <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full font-sans shadow-sm">{myBookings.length} {t('profile.trips')}</span>
                             </div>
                             
-                            {/* Filter Tags Grid */}
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mt-2">
+                            {/* Filter Segmented Control */}
+                            <div className="flex overflow-x-auto no-scrollbar gap-1.5 bg-slate-50/80 p-1.5 rounded-2xl border border-slate-100 mt-2 max-w-full w-full">
                                 {[
                                     { id: 'all', label: 'Tất cả' },
-                                    { id: 'pending', label: 'Chờ thanh toán' },
-                                    { id: 'active', label: 'Sắp & Đang ở' },
-                                    { id: 'completed', label: 'Hoàn thành' },
+                                    { id: 'pending', label: 'Chờ TT' },
+                                    { id: 'active', label: 'Đang ở' },
+                                    { id: 'completed', label: 'Hoàn tất' },
                                     { id: 'cancelled', label: 'Đã hủy' }
                                 ].map(filter => (
                                     <button 
                                         key={filter.id}
                                         onClick={() => setFilterStatus(filter.id)}
-                                        className={`px-2 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all text-center whitespace-nowrap ${filterStatus === filter.id ? 'bg-slate-900 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+                                        className={`px-4 py-2.5 rounded-[10px] text-[10px] font-bold uppercase tracking-widest transition-all text-center whitespace-nowrap shrink-0 flex-1 ${filterStatus === filter.id ? 'bg-white text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-slate-200/50' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 border border-transparent'}`}
                                     >
                                         {filter.label}
                                     </button>

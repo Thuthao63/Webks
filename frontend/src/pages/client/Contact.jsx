@@ -117,33 +117,33 @@ const Contact = () => {
           </div>
 
           {/* CONTACT FORM - LUXURY DARK CARD */}
-          <div className="lg:col-span-7 bg-slate-900 p-8 md:p-14 lg:p-16 rounded-[2.5rem] shadow-[0_30px_60px_rgba(15,23,42,0.15)] relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-1000">
+          <div className="lg:col-span-6 lg:col-start-7 bg-slate-900 p-8 md:p-10 lg:p-10 rounded-3xl shadow-[0_30px_60px_rgba(15,23,42,0.15)] relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-1000">
              
              {/* Decorative background glows */}
              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none"></div>
              <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none"></div>
              
              {success ? (
-               <div className="h-full flex flex-col items-center justify-center text-center py-24 relative z-10">
-                  <div className="w-20 h-20 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-8">
-                     <CheckCircle size={32} strokeWidth={1.5} />
+               <div className="h-full flex flex-col items-center justify-center text-center py-20 relative z-10">
+                  <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-6">
+                     <CheckCircle size={28} strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-3xl font-serif text-white mb-4">{t('contact.mail_sent')}</h3>
-                  <p className="text-slate-400 font-medium mb-12 text-sm">{t('contact.mail_sent_desc')}</p>
+                  <h3 className="text-2xl font-serif text-white mb-3">{t('contact.mail_sent')}</h3>
+                  <p className="text-slate-400 font-medium mb-10 text-xs">{t('contact.mail_sent_desc')}</p>
                   <button 
                     onClick={() => setSuccess(false)} 
-                    className="border border-white/20 text-white px-8 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all rounded-full"
+                    className="border border-white/20 text-white px-6 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all rounded-full"
                   >
                     {t('contact.send_another')}
                   </button>
                </div>
              ) : (
-               <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                  <div className="mb-12">
-                     <h3 className="text-3xl font-serif text-white mb-3 flex items-center gap-3">
-                       {t('contact.leave_message')} <Star size={18} className="text-amber-500" />
+               <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div className="mb-8">
+                     <h3 className="text-2xl font-serif text-white mb-2 flex items-center gap-3">
+                       {t('contact.leave_message')} <Star size={16} className="text-amber-500" />
                      </h3>
-                     <p className="text-xs text-slate-400 uppercase tracking-widest">{t('contact.leave_message_desc')}</p>
+                     <p className="text-[10px] text-slate-400 uppercase tracking-widest">{t('contact.leave_message_desc')}</p>
                   </div>
                   
                   <div className="grid md:grid-cols-2 gap-8 md:gap-6">

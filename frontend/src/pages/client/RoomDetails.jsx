@@ -232,30 +232,25 @@ const RoomDetails = () => {
                         )}
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div className="flex flex-col gap-0 border-t border-slate-100">
                         {reviews.length > 0 ? reviews.map(review => (
-                            <div key={review.id} className="relative bg-cream p-4 rounded-xl border border-slate-50 hover:border-amber-500/30 transition-luxury group shadow-sm">
-                                <Quote className="absolute top-3 right-3 text-amber-500/10 group-hover:text-amber-500/20 transition-luxury" size={24} strokeWidth={1} />
-                                
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-amber-500 font-black text-sm shadow-sm font-sans">
-                                            {(review.reviewer?.fullName || 'G').charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <p className="font-black uppercase tracking-[0.15em] text-[11px] text-slate-900 font-sans">{review.reviewer?.fullName || t('room_details.customer')}</p>
-                                            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black mt-0.5 italic font-sans">{new Date(review.createdAt).toLocaleDateString('vi-VN')}</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="space-y-1.5">
+                            <div key={review.id} className="flex gap-4 py-6 border-b border-slate-100 last:border-0 group">
+                                <div className="w-10 h-10 shrink-0 bg-slate-900 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm font-sans">
+                                    {(review.reviewer?.fullName || 'G').charAt(0).toUpperCase()}
+                                </div>
+                                <div className="flex flex-col w-full">
+                                    <p className="font-bold text-sm text-slate-900 font-sans">{review.reviewer?.fullName || t('room_details.customer')}</p>
+                                    <div className="mt-1 mb-2">
                                         {renderStars(review.rating)}
-                                        <p className="text-slate-600 italic leading-relaxed text-xs font-medium font-sans line-clamp-3">"{review.comment}"</p>
                                     </div>
+                                    <p className="text-[10px] text-slate-400 mb-3 font-sans">
+                                        {new Date(review.createdAt).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' })} | Loại phòng: {room.roomType?.name || 'Phòng'}
+                                    </p>
+                                    <p className="text-slate-700 leading-relaxed text-sm font-sans whitespace-pre-wrap">"{review.comment}"</p>
                                 </div>
                             </div>
                         )) : (
-                            <div className="col-span-full py-10 flex flex-col items-center justify-center bg-cream border border-dashed border-slate-200 rounded-xl">
+                            <div className="py-10 flex flex-col items-center justify-center bg-cream border border-dashed border-slate-200 rounded-xl mt-4">
                                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
                                     <Star size={20} className="text-amber-500/20" />
                                 </div>
