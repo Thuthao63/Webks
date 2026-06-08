@@ -29,7 +29,7 @@ router.get('/:id', roomController.getRoomById);
 // Xóa phòng
 router.delete('/:id', verifyToken, isAdmin, roomController.deleteRoom);
 
-// THÊM/SỬA PHÒNG KÈM THEO UPLOAD ẢNH (Từ trang Admin)
+// Thêm/Sửa phòng
 router.post('/', verifyToken, isAdmin, upload.single('image'), roomController.createFullRoomInfo);
 router.put('/all-info/:id', verifyToken, isAdmin, upload.single('image'), roomController.updateFullRoomInfo);
 
