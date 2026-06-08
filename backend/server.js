@@ -91,7 +91,7 @@ const articleRoutes = require('./routes/articleRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const searchRoutes = require('./routes/searchRoutes');
-const { startCronJobs } = require('./cron/jobs');
+// const { startCronJobs } = require('./cron/jobs'); // Đã bị xóa nên tạm comment lại
 
 app.use('/api/auth', authRoutes);
 app.use('/api/rooms', roomRoutes);
@@ -107,7 +107,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/search', searchRoutes);
 
 // Bắt đầu chạy các Cron Jobs ngầm (Tự động trả phòng...)
-startCronJobs();
+// startCronJobs(); // Tạm comment vì file không còn tồn tại
 
 app.get('/', (req, res) => {
     res.send('🚀 Hệ thống Backend Khách sạn Uy Nam đang sẵn sàng!');

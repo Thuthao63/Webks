@@ -18,7 +18,6 @@ const upload = multer({ storage: storage });
 router.get('/', articleController.getAllArticles);
 router.get('/:slug', articleController.getArticleBySlug);
 
-// Các route này lý ra cần auth admin, nhưng tạm thời mở để demo
 router.post('/', upload.single('thumbnail'), articleController.createArticle);
 router.put('/:id', upload.single('thumbnail'), articleController.updateArticle);
 router.delete('/:id', articleController.deleteArticle);

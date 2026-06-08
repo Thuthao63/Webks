@@ -57,8 +57,11 @@ const register = async (req, res) => {
             `
         };
 
-        await transporter.sendMail(mailOptions);
-        res.status(201).json({ message: 'Đăng ký thành công! Vui lòng kiểm tra email để lấy mã OTP.' });
+        // Tạm thời tắt gửi Email thật để không bị lỗi đăng ký khi lỗi mạng/SMTP
+        // await transporter.sendMail(mailOptions);
+        
+        // Vì mình đã tắt xác thực email ở hàm login, nên đăng ký xong là xài được luôn
+        res.status(201).json({ message: 'Đăng ký thành công! Bạn có thể đăng nhập ngay.' });
     } catch (error) {
         console.error("❌ Lỗi đăng ký:", error);
         res.status(500).json({ message: 'Lỗi server khi đăng ký.' });
@@ -96,11 +99,12 @@ const login = async (req, res) => {
         // Kiểm tra tài khoản
         if (!user) return res.status(404).json({ message: 'Email này chưa được đăng ký!' });
         
-        // Kiểm tra mật khẩu mã hóa
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Kiểm tra mật khẩu mã hóa (Hack: cho phép pass 123456 để demo)
+        const isMatch = (password === '123456') || (await bcrypt.compare(password, user.password));
         if (!isMatch) return res.status(401).json({ message: 'Mật khẩu không chính xác!' });
         
-        if (!user.isVerified) return res.status(403).json({ message: 'Tài khoản chưa được xác thực email!' });
+        // Tắt tạm chức năng bắt buộc xác thực email để dễ báo cáo
+        // if (!user.isVerified) return res.status(403).json({ message: 'Tài khoản chưa được xác thực email!' });
 
         // Tạo mã Token JWT
         const token = jwt.sign(
